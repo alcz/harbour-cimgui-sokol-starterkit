@@ -3,6 +3,26 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-06-08 22:31 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * cdemo.hbp
+  * hbdemo.hbp
+    * allow building to WebAssembly using abstract wasm platform
+      on Harbour 3.4 or Harbour 3.2-alcz: https://github.com/alcz/harbour
+
+  * hbdemo.prg
+    + add webassembly workaround "REQUEST" of ImFrame function
+
+    * display OS we are running
+
+  + sigalt.c
+    + workaround exporting sigaltstack() - haven't investigated the
+      cause, why linking stage need this
+
+  + wmake.sh
+  + cimgui/wmake.sh
+  + sokol/wmake.sh
+    * examples of build scripts for compiling with emscripten SDK
+
 2021-06-08 20:42 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * LICENSE
     * note about harbour additions, many thanks Andre Weissflog for making

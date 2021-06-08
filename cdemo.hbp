@@ -6,6 +6,7 @@
 
 cdemo.prg
 demo.c
+{abstr}sigalt.c
 
 cimgui/cimgui.hbc
 sokol/sokol.hbc
@@ -14,6 +15,6 @@ sokol/sokol.hbc
 
 {win}-fullstatic
 
--gtgui
+{win}-gtgui
 
 -gui

@@ -9,7 +9,12 @@
 #include "hbimenum.ch"
 
 PROCEDURE Main
-   sapp_run( )
+   sapp_run() /* execute sokol library based application */
+
+#ifdef __PLATFORM__WEB
+   ImFrame() /* This is a dummy call, REQUEST placed here doesn't work with
+                emscripten and it aggresively optimizes out this symbol */
+#endif
    RETURN
 
 PROCEDURE ImFrame
@@ -20,6 +25,8 @@ PROCEDURE ImFrame
    igSetNextWindowPos( {10,10}, ImGuiCond_Once, {0,0} )
    igSetNextWindowSize( {650, 350}, ImGuiCond_Once )
    igBegin( "Hello Dear ImGui!", 0, ImGuiWindowFlags_None )
+
+   igText( hb_version() + " OS: " + OS() )
 
    IF igButton( "dupa.8" )
       counter++

@@ -5,6 +5,7 @@
 -depincpathlocal=sokol:sokol
 
 hbdemo.prg
+{abstr}sigalt.c
 
 -ohbdemo
 
@@ -13,8 +14,8 @@ sokol/sokol.hbc
 
 {gcc|mingw|mingw64}-lstdc++
 
-{win}-fullstatic
+{win|abstr}-fullstatic
 
--gtgui
+{win}-gtgui
 
 -gui

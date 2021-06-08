@@ -1,0 +1,66 @@
+/* Encoding: UTF-8 (No BOM)  Notation (in 5th position):
+     * Change, ! Fix, % Optimization, + Addition, - Removal, ; Comment
+   Entries may not always be in chronological/commit order.
+   See license at the end of file. */
+
+2021-06-08 20:42 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * LICENSE
+    * note about harbour additions, many thanks Andre Weissflog for making
+      cimgui-sokol-starterkit self contained project and sokol project too
+
+  * demo.c
+    * diminish the role of sokol_main() and rename to hb_sokol_main(),
+      we will use Harbour startup functions
+
+  * sokol/sokol_app.h
+    * note that debug routine will not work on default Win10 installation,
+      though it probably does work on average D3D Windows programmer workstation.
+      It is OK on default Win7 too
+
+  + ChangeLog.txt
+    + added Harbour style change log
+
+  + cimgui/cimgui.hbc
+  + cimgui/cimgui.hbp
+  + sokol/sokol.hbc
+  + sokol/sokol.hbp
+  + hbdemo.hbp
+  + cdemo.hbp
+    + created Harbour style build/project files while looking at CMakeLists.txt
+
+  + cdemo.prg
+    + basic demo that builds using hbmk2 and goes through MAIN procedure, but still
+      paints widgets from .c code
+
+  + hbdemo.prg
+    + test build displaying few widgets from .prg code, picking up some data
+      using static variables passed as reference and updating them
+  
+  + cimgui/exstyles.cpp
+  + cimgui/exstyles.h
+    + added styling examples
+
+  + cimgui/hbfunc.prg
+    + hb_igAddFontFromFileTTF( <cFile>, <nSizePx>, <xConfig>, <xCdpList>, <lDefaultRange>, <lMerge> )
+      hb_igAddFontFromMemoryTTF( <cBuffer>, <nSizePx>, <xConfig>, <xCdpList>, <lDefaultRange>, <lMerge> )
+
+  + cimgui/hbfunc_.c
+    + hb_igFps( @<nMs>[, @<nFps> ] ) -> frames/s
+                                        (or ms/frame when 1 is passed in <nMs>)
+
+    + internally called
+      __igAddFont( <lBuf>, <cBufOrFile>, <nSizePx>, <xConfig>, <xCdpList>, <lDefaultRange>, <lMerge> )
+
+  + cimgui/hbhlp.c
+    + handling callbacks from Dear imgui code here
+
+  + cimgui/hbimenum.ch
+    + enums translated to #define's - output of generator/generator.prg
+
+  + cimgui/hbimgui.cpp
+    + wrappers to cimgui exported functions - output of generator/generator.prg
+      We may eventually switch to calling .cpp exported methods directly, if there
+      are no objections. While still using definitions from cimgui project I guess
+
+  + generator/placeholder.txt
+    + Harbour functions generator based on cimgui definitions will be here later

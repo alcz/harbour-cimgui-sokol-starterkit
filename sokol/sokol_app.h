@@ -5315,6 +5315,7 @@ _SOKOL_PRIVATE void _sapp_d3d11_create_device_and_swapchain(void) {
     sc_desc->BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     UINT create_flags = D3D11_CREATE_DEVICE_SINGLETHREADED | D3D11_CREATE_DEVICE_BGRA_SUPPORT;
     #if defined(SOKOL_DEBUG)
+        /* will fail on default installation of Windows 10 */
         create_flags |= D3D11_CREATE_DEVICE_DEBUG;
     #endif
     D3D_FEATURE_LEVEL feature_level;

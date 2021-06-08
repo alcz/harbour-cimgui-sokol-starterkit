@@ -1,0 +1,19 @@
+# C test build entering via Harbour MAIN procedure
+-depkeyhead=cimgui:cimgui.h
+-depincpathlocal=cimgui:cimgui
+-depkeyhead=sokol:sokol_imgui.h
+-depincpathlocal=sokol:sokol
+
+cdemo.prg
+demo.c
+
+cimgui/cimgui.hbc
+sokol/sokol.hbc
+
+{gcc|mingw|mingw64}-lstdc++
+
+{win}-fullstatic
+
+-gtgui
+
+-gui

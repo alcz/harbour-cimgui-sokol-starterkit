@@ -1,0 +1,20 @@
+# hbssk demo - sokol starter kit (shortened)
+-depkeyhead=cimgui:cimgui.h
+-depincpathlocal=cimgui:cimgui
+-depkeyhead=sokol:sokol_imgui.h
+-depincpathlocal=sokol:sokol
+
+hbdemo.prg
+
+-ohbdemo
+
+cimgui/cimgui.hbc
+sokol/sokol.hbc
+
+{gcc|mingw|mingw64}-lstdc++
+
+{win}-fullstatic
+
+-gtgui
+
+-gui

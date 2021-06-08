@@ -1,0 +1,22 @@
+description=Sokol wrapper
+
+incpaths=.
+
+#headers=${hb_name}.ch
+
+libs=${_HB_DYNPREF}${hb_name}${_HB_DYNSUFF}
+
+libpaths=./
+
+{linux}libs=X11 
+{linux}libs=Xi
+{linux}libs=Xcursor 
+{linux}libs=GL
+{linux}libs=dl 
+{linux}libs=lm
+
+{win}libs=dxgi
+{win}libs=d3d11
+{win}libs=dxguid
+
+{win}libs=gdi32

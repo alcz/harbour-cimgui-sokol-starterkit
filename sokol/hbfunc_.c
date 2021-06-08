@@ -23,22 +23,22 @@
 HB_FUNC( HB_SOKOL_IMGUIFONT2TEXTURE )
 {
    ImGuiIO    *io = igGetIO();
-   unsigned char* font_pixels; 
-   int font_width, font_height; 
+   unsigned char* font_pixels;
+   int font_width, font_height;
    int bytes_per_pixel;
 
    /* create font texture for the custom font */
 
    ImFontAtlas_GetTexDataAsRGBA32( io->Fonts, &font_pixels, &font_width, &font_height, &bytes_per_pixel );
-   sg_image_desc img_desc = { }; 
-   img_desc.width = font_width; 
-   img_desc.height = font_height; 
-   img_desc.pixel_format = SG_PIXELFORMAT_RGBA8; 
-   img_desc.wrap_u = SG_WRAP_CLAMP_TO_EDGE; 
-   img_desc.wrap_v = SG_WRAP_CLAMP_TO_EDGE; 
-   img_desc.min_filter = SG_FILTER_LINEAR; 
-   img_desc.mag_filter = SG_FILTER_LINEAR; 
-   img_desc.data.subimage[0][0].ptr = font_pixels; 
-   img_desc.data.subimage[0][0].size = font_width * font_height * 4; 
-   io->Fonts->TexID = ( ImTextureID )( uintptr_t ) sg_make_image( &img_desc ).id; 
+   sg_image_desc img_desc = { };
+   img_desc.width = font_width;
+   img_desc.height = font_height;
+   img_desc.pixel_format = SG_PIXELFORMAT_RGBA8;
+   img_desc.wrap_u = SG_WRAP_CLAMP_TO_EDGE;
+   img_desc.wrap_v = SG_WRAP_CLAMP_TO_EDGE;
+   img_desc.min_filter = SG_FILTER_LINEAR;
+   img_desc.mag_filter = SG_FILTER_LINEAR;
+   img_desc.data.subimage[0][0].ptr = font_pixels;
+   img_desc.data.subimage[0][0].size = font_width * font_height * 4;
+   io->Fonts->TexID = ( ImTextureID )( uintptr_t ) sg_make_image( &img_desc ).id;
 }

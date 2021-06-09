@@ -3,6 +3,14 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-06-09 12:56 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * cimgui/hbfunc.prg
+    ! fix c&p typo cFile -> cBuffer
+
+  * cimgui/hbfunc_.c
+    ! fix incorrect usage of hb_strdupn(), changed to hb_xmemdup(),
+      of course font body contains multiple \0's
+
 2021-06-09 12:11 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   + sokol/sokol.hbp
   + sokol/hbsokol.c

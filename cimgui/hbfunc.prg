@@ -41,7 +41,7 @@ FUNCTION hb_igAddFontFromMemoryTTF( cBuffer, nSizePx, xConfig, xCdpList, lDefaul
       nSizePx := 10
    ENDIF
 
-   RETURN __igAddFont( .T., cFile, nSizePx, xConfig, __cdpRange( xCdpList ), lDefaultRange, lMerge )
+   RETURN __igAddFont( .T., cBuffer, nSizePx, xConfig, __cdpRange( xCdpList ), lDefaultRange, lMerge )
 
 STATIC FUNCTION __cdpRange( xCdpList )
    LOCAL cCdp, cCdpVM, hRet := { => }, i

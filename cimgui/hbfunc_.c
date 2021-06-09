@@ -52,7 +52,7 @@ HB_FUNC( __IGADDFONT )
 
    if( bMem )
    {
-      char * szFontBuf = hb_strndup( szFont, hb_parclen( 2 ) );
+      char * szFontBuf = ( char * ) hb_xmemdup( ( void * ) szFont, hb_parclen( 2 ) );
       cfg->FontDataOwnedByAtlas = false; /* mark ownership - when added from memory, region shouldn't be ever freed by imgui! */
 
       if( ! ImFontAtlas_AddFontFromMemoryTTF( io->Fonts, szFontBuf, hb_parclen( 2 ), fSizePx, cfg, ranges->Data ) )

@@ -3,6 +3,27 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-06-09 12:11 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  + sokol/sokol.hbp
+  + sokol/hbsokol.c
+    + added default minimally configurable application template, for use
+      by examples.
+      Parameters specification are:
+      sapp_default_run( <cWindowCaption>, [ <nWidth> ], [ <nHeight> ] )
+
+    + hb_sokol_imguiNoDefaultFont( <lSet> ) which should be called with .T.
+      parameter before sapp_*_run(), to prevent generating textures for
+      Dear ImGui default font.
+
+  +  examples/OpenSans-Regular.ttf
+  +  examples/loadfont.prg
+  +  examples/hbmk.hbm
+  +  examples/wmake.sh
+     + added example of loading custom font, which is important functionality,
+       as OS font rendering is not used by Dear ImGui.
+       Build by calling "hbmk2 loadfont.prg". For emscripten/WebAssembly
+       try with helper script "wmake.sh loadfont.prg"
+
 2021-06-08 22:31 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * cdemo.hbp
   * hbdemo.hbp

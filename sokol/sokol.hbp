@@ -14,3 +14,4 @@
 {darwin}sokol.m
 {!darwin}sokol.c
 hbfunc_.c
+hbsokol.c

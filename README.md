@@ -1,7 +1,9 @@
-# cimgui-sokol-starterkit
+# harbour-cimgui-sokol-starterkit
 
 A minimal cross-platform starter-kit to write simple
 Dear ImGui tools for Windows, Linux and macOS in C.
+
+forked from cimgui-sokol-starterkit at https://github.com/floooh/cimgui-sokol-starterkit
 
 [WASM version](https://floooh.github.io/cimgui-sokol-starterkit/) (see below for build instructions)
 

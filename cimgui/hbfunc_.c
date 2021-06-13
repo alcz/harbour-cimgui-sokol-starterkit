@@ -1,8 +1,8 @@
 /*
     cimgui/hbfunc_.c    -- support functions exposed to Harbour
 
-                           hb_igAddFontFromFileTTF()
-                           hb_igAddFontFromMemoryTTF()
+                           __igAddFont()
+                           hb_igFps()
 
     license is MIT, see ../LICENSE
 

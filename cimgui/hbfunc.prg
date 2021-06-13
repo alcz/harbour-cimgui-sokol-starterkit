@@ -18,7 +18,6 @@
 */
 
 FUNCTION hb_igAddFontFromFileTTF( cFile, nSizePx, xConfig, xCdpList, lDefaultRange, lMerge )
-   LOCAL aCdpChars := __cdpRange( xCdpList )
 
    IF ! File( cFile )
       RETURN .F.
@@ -31,7 +30,6 @@ FUNCTION hb_igAddFontFromFileTTF( cFile, nSizePx, xConfig, xCdpList, lDefaultRan
    RETURN __igAddFont( .F., cFile, nSizePx, xConfig, __cdpRange( xCdpList ), lDefaultRange, lMerge )
 
 FUNCTION hb_igAddFontFromMemoryTTF( cBuffer, nSizePx, xConfig, xCdpList, lDefaultRange, lMerge )
-   LOCAL aCdpChars := __cdpRange( xCdpList )
 
    IF Empty( cBuffer )
       RETURN .F.

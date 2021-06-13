@@ -11,6 +11,9 @@ REQUEST HB_CODEPAGE_EL737
 REQUEST HB_CODEPAGE_UTF8EX
 
 PROCEDURE MAIN
+
+   hb_cdpSelect("UTF8EX")
+
 #ifndef __PLATFORM__WEB
    IF ! File( "OpenSans-Regular.ttf" )
       Alert("can't find my font")

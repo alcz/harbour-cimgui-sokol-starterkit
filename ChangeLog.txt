@@ -3,6 +3,23 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-06-13 12:57 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * cimgui/hbfunc.prg
+    % unused var and declaration
+
+  * examples/loadfont.prg
+    * use UTF8EX as Harbour codepage, either this or plain US-ASCII
+      should be used. Due to nature of Dear ImGui I don't plan
+      to add codepage translations, as they would be executed on
+      every repaint. Instead do open your databases/connections
+      with translations.
+
+  * cimgui/hbfunc_.c
+    * updated function list in the header
+
+  * README.md
+    * updated project name
+
 2021-06-09 12:56 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * cimgui/hbfunc.prg
     ! fix c&p typo cFile -> cBuffer

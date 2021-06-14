@@ -400,6 +400,10 @@ void TerminalEmulator::selnormalize(void)
     selsnap(&sel.nb.x, &sel.nb.y, -1);
     selsnap(&sel.ne.x, &sel.ne.y, +1);
 
+    /* selection is over terminal size? */
+    sel.nb.y = MIN( term.bot, sel.nb.y );
+    sel.ne.y = MIN( term.bot, sel.ne.y );
+
     /* expand selection over line breaks */
     if (sel.type == SEL_RECTANGULAR)
         return;
@@ -515,7 +519,7 @@ TerminalEmulator::getsel(void)
     ptr = str = (char *)xmalloc(bufsize);
 
     /* append every set & selected glyph to the selection */
-    for (y = sel.nb.y; y <= sel.ne.y && y <= term.row; y++)
+    for (y = sel.nb.y; y <= sel.ne.y && y < term.row; y++)
     {
         if ((linelen = tlinelen(y)) == 0)
         {

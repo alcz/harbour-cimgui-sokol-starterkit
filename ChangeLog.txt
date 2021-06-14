@@ -3,6 +3,10 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-06-14 20:49 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * hexeterminal/src/TerminalEmulator.cpp
+    ! fix out-of-bounds GPF during text selection
+
 2021-06-14 11:52 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * hexeterminal/src/Hexe/System/Pipe.h
   * hexeterminal/src/Hexe/System/Process.h

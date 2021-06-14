@@ -585,6 +585,32 @@ void TerminalEmulator::_die(const char *errstr, ...)
 }
 
 size_t
+TerminalEmulator::Feed(const char *s, size_t n)
+{
+    int written;
+
+    /* NOTE: m_buf is limited to 8192 */
+
+    if( n )
+    {
+       if(m_buflen + n > sizeof(m_buf))
+         n = sizeof(m_buf) - m_buflen - n - 1;
+
+       memcpy(m_buf + m_buflen, s, n);
+       m_buflen += n;
+       written = twrite(m_buf, m_buflen, 0);
+       m_buflen -= written;
+
+       if (m_buflen > 0)
+          memmove(m_buf, m_buf + written, m_buflen);
+
+       return written;
+    }
+
+    return 0;
+}
+
+size_t
 TerminalEmulatorPty::ttyread(void)
 {
     int ret, written;
@@ -612,7 +638,7 @@ TerminalEmulatorPty::ttyread(void)
     return 0;
 }
 
-void TerminalEmulatorPty::ttywrite(const char *s, size_t n, int may_echo)
+void TerminalEmulator::ttywrite(const char *s, size_t n, int may_echo)
 {
     const char *next;
 
@@ -650,6 +676,12 @@ void TerminalEmulatorPty::ttywriteraw(const char *s, size_t n)
     {
         _die("Failed to write to TTY");
     }
+}
+
+void TerminalEmulator::ttywriteraw(const char *s, size_t n)
+{
+    s = s;
+    n = n;
 }
 
 void TerminalEmulatorPty::ttyhangup()
@@ -2516,7 +2548,7 @@ void TerminalEmulator::xsetpointermotion(int)
     // TODO: Figure something out
 }
 
-std::unique_ptr<TerminalEmulator> TerminalEmulator::Create(PtyPtr &&pty, ProcPtr &&process, const std::shared_ptr<TerminalDisplay> &display)
+std::unique_ptr<TerminalEmulatorPty> TerminalEmulatorPty::Create(PtyPtr &&pty, ProcPtr &&process, const std::shared_ptr<TerminalDisplay> &display)
 {
     if (!pty || !process)
     {
@@ -2524,12 +2556,67 @@ std::unique_ptr<TerminalEmulator> TerminalEmulator::Create(PtyPtr &&pty, ProcPtr
         return nullptr;
     }
 
-    return std::unique_ptr<TerminalEmulator>(new TerminalEmulator(std::move(pty), std::move(process), display));
+    return std::unique_ptr<TerminalEmulatorPty>(new TerminalEmulatorPty(std::move(pty), std::move(process), display));
+}
+
+TerminalEmulator::TerminalEmulator(void)
+{
+}
+
+TerminalEmulator::TerminalEmulator(int columns, int rows, const std::shared_ptr<TerminalDisplay> &display)
+{
+    /* intentionally not used C++ m_var(initializers), they're somewhat unreadable, maybe will bring them back later */
+
+    m_dpy = display;
+    m_colorsLoaded = false;
+    m_exitCode = 1;
+    m_status = STARTING;
+    m_buflen = 0;
+    defaultfg = 7;
+    defaultbg = 0;
+    defaultcs = 7;
+    defaultrcs = 0;
+    allowaltscreen = 1;
+    allowwindowops = 1;
+
+    memset(m_buf, 0, sizeof(m_buf));
+    memset(&term, 0, sizeof(term));
+    memset(&sel, 0, sizeof(sel));
+    memset(&csiescseq, 0, sizeof(csiescseq));
+    memset(&strescseq, 0, sizeof(strescseq));
+
+    tnew(columns, rows);
+    if (display)
+    {
+        display->SetCursorMode((Hexe::Terminal::cursor_mode)cursorshape);
+        display->Attach(this);
+        LoadColors();
+    }
+    selinit();
+    resettitle();
+
 }
 
 TerminalEmulatorPty::TerminalEmulatorPty(PtyPtr &&pty, ProcPtr &&process, const std::shared_ptr<TerminalDisplay> &display)
-    : m_dpy(display), m_pty(std::move(pty)), m_process(std::move(process)), m_colorsLoaded(false), m_exitCode(1), m_status(STARTING), m_buflen(0), defaultfg(7), defaultbg(0), defaultcs(7), defaultrcs(0), allowaltscreen(1), allowwindowops(1)
 {
+    /* intentionally not used C++ m_var(initializers), they're somewhat unreadable, maybe will bring them back later */
+
+    /* TODO: use parent constructor */
+
+    m_dpy = display;
+    m_pty = std::move(pty);
+    m_process = std::move(process);
+    m_colorsLoaded = false;
+    m_exitCode = 1;
+    m_status = STARTING;
+    m_buflen = 0;
+    defaultfg = 7;
+    defaultbg = 0;
+    defaultcs = 7;
+    defaultrcs = 0;
+    allowaltscreen = 1;
+    allowwindowops = 1;
+
     memset(m_buf, 0, sizeof(m_buf));
     memset(&term, 0, sizeof(term));
     memset(&sel, 0, sizeof(sel));
@@ -2557,8 +2644,18 @@ TerminalEmulator::~TerminalEmulator()
         if (dpy)
             dpy->Detach(this);
     }
+}
+
+TerminalEmulatorPty::~TerminalEmulatorPty()
+{
+    {
+        auto dpy = m_dpy.lock();
+        if (dpy)
+            dpy->Detach(this);
+    }
     m_process->Terminate();
 }
+
 
 void TerminalEmulator::LogError(const char *msg)
 {
@@ -2566,6 +2663,15 @@ void TerminalEmulator::LogError(const char *msg)
 }
 
 void TerminalEmulator::Terminate()
+{
+    if (m_status == STARTING || m_status == RUNNING)
+    {
+        m_exitCode = 1;
+        m_status = TERMINATED;
+    }
+}
+
+void TerminalEmulatorPty::Terminate()
 {
     if (m_status == STARTING || m_status == RUNNING)
     {
@@ -2615,6 +2721,12 @@ int TerminalEmulator::GetExitCode() const
     return m_exitCode;
 }
 
+void TerminalEmulator::Resize(int columns, int rows)
+{
+    tresize(columns, rows);
+    Redraw();
+}
+
 void TerminalEmulatorPty::Resize(int columns, int rows)
 {
     if (!m_pty->Resize(columns, rows))
@@ -2626,13 +2738,24 @@ void TerminalEmulatorPty::Resize(int columns, int rows)
     Redraw();
 }
 
-void TerminalEmulator::Resize(int columns, int rows)
+void TerminalEmulator::Update()
 {
-    tresize(columns, rows);
-    Redraw();
+    if (m_status == TerminalEmulator::STARTING)
+    {
+        m_status = TerminalEmulator::RUNNING;
+    }
+    else if (m_status != TerminalEmulator::RUNNING)
+    {
+        return;
+    }
+
+    // TODO: Handle blink
+
+    // TODO: Do not draw every update
+    draw();
 }
 
-void TerminalEmulator::Update()
+void TerminalEmulatorPty::Update()
 {
     if (m_status == TerminalEmulator::STARTING)
     {

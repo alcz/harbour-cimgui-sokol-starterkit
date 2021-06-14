@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-#include "Hexe/Terminal/PseudoTerminal.h"
+#include "../Terminal/PseudoTerminal.h"
 #include "IProcess.h"
 
 #ifndef WIN32

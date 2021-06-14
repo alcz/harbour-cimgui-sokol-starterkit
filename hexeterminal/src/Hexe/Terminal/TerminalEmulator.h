@@ -234,9 +234,10 @@ namespace Hexe
             void xximspot(int, int);
 
         protected:
-            TerminalEmulator(const std::shared_ptr<TerminalDisplay> &display);
+            TerminalEmulator();
 
         public:
+            TerminalEmulator(int columns, int rows, const std::shared_ptr<TerminalDisplay> &display);
             ~TerminalEmulator();
             TerminalEmulator(const TerminalEmulator &) = delete;
             TerminalEmulator(TerminalEmulator &&) = delete;
@@ -248,7 +249,9 @@ namespace Hexe
             void Redraw();
             void LogError(const char *err);
             void Update();
+            size_t Feed(const char *s, size_t n);
             void Terminate();
+            inline int Write(const char *buf, size_t buflen) { return 0; /* no-op */ } /* where to write keys */
             bool HasExited() const;
             int GetExitCode() const;
             inline bool IsSelected(int column, int row) { return selected(column, row); }
@@ -281,6 +284,11 @@ namespace Hexe
 
             void ttyhangup();
 
+/*
+        protected:
+            TerminalEmulator(const std::shared_ptr<TerminalDisplay> &display);
+*/
+
         private:
             TerminalEmulatorPty(PtyPtr &&pty, ProcPtr &&process, const std::shared_ptr<TerminalDisplay> &display);
 
@@ -292,7 +300,6 @@ namespace Hexe
             void Update();
             void Terminate();
             void Resize(int columns, int rows);
-            size_t Feed(const char *s, size_t n);
             inline int Write(const char *buf, size_t buflen) { return m_pty->Write(buf, (int)buflen); }
         };
 

@@ -1114,6 +1114,18 @@ std::shared_ptr<ImGuiTerminal> ImGuiTerminal::Create(std::shared_ptr<Hexe::Termi
     return terminal;
 }
 
+std::shared_ptr<ImGuiTerminal> ImGuiTerminal::Create(int columns, int rows, uint32_t options)
+{
+    using namespace Hexe::System;
+
+    ImGuiTerminalConfig config{};
+    config.options = options;
+
+    std::shared_ptr<ImGuiTerminal> terminal = std::shared_ptr<ImGuiTerminal>(new ImGuiTerminal(columns, rows, &config));
+    terminal->m_terminal = std::shared_ptr<Hexe::Terminal::TerminalEmulator>(new Hexe::Terminal::TerminalEmulator(columns, rows, terminal));
+    return terminal;
+}
+
 /* -- move to subclass ImGuiTerminalPlatform
 #include "Hexe/System/Process.h"
 #include "Hexe/System/ProcessFactory.h"

@@ -21,8 +21,8 @@
 //  DEALINGS IN THE SOFTWARE.
 #pragma once
 
-#include "Hexe/System/IPipe.h"
-#include "Hexe/AutoHandle.h"
+#include "IPipe.h"
+#include "../AutoHandle.h"
 #include <memory>
 
 namespace Hexe

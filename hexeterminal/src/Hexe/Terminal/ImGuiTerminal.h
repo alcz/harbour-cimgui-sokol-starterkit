@@ -123,7 +123,10 @@ namespace Hexe
             virtual void Update();
             void Draw(const ImVec4 &contentArea, float scale = 1.0f);
 
+            inline size_t Feed(const char *buf, size_t buflen) { return m_terminal->Feed(buf, buflen); }
+
             static std::shared_ptr<ImGuiTerminal> Create(std::shared_ptr<Hexe::Terminal::TerminalEmulator> &&terminalEmulator, ImGuiTerminalConfig *config = 0);
+            static std::shared_ptr<ImGuiTerminal> Create(int columns, int rows, uint32_t options = 0);
 //            static std::shared_ptr<ImGuiTerminal> Create(int columns, int rows, const std::string &program, const ImVector<std::string> &args, const std::string &workingDir, uint32_t options = 0, System::IProcessFactory *processFactory = nullptr);
         };
     } // namespace Terminal

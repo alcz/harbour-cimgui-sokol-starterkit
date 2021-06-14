@@ -3,6 +3,26 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-06-14 11:52 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * hexeterminal/src/Hexe/System/Pipe.h
+  * hexeterminal/src/Hexe/System/Process.h
+  * hexeterminal/src/Hexe/Terminal/ImGuiTerminal.h
+  * hexeterminal/src/Hexe/Terminal/TerminalEmulator.h
+  * hexeterminal/src/ImGuiTerminal.cpp
+  * hexeterminal/src/TerminalEmulator.cpp
+    * completed decoupling of the TerminalEmulator class from
+      pty abstractions. New class TerminalEmulatorPty is
+      created for this old main purpose which is now
+      additional.
+
+      Now the base version can be filled programatically with
+      this method:
+      ->Feed( const char * buf, size_t buf_len )
+
+      For more complete history of changes see this
+      (unbuildable) fork:
+      https://github.com/alcz/HexeTerminal
+
 2021-06-14 11:26 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   + hexeterminal/LICENSE
   + hexeterminal/README.md

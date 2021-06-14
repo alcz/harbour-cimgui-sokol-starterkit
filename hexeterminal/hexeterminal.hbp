@@ -1,0 +1,30 @@
+-hblib
+
+-ohexeterminal
+
+-depkeyhead=cimgui:cimgui.h
+-depincpathlocal=cimgui:../cimgui
+
+-depkeyhead=imgui:imgui.h
+-depincpathlocal=imgui:../cimgui/imgui
+
+-depkeyhead=sokol:sokol_imgui.h
+-depincpathlocal=sokol:../sokol
+
+{cflag}-I./
+
+src/TerminalDisplay.cpp
+src/TerminalEmulator.cpp
+
+src/ImGuiTerminal.cpp
+src/ImGuiTerminal.keys.cpp
+
+# NOTE: platform support disabled (move to separate hexeplatform.hbp(?))
+# platform/AutoHandle.cpp
+# platform/Pipe.win32.cpp
+# {!win}platform/Process.cpp
+# src/ProcessFactory.cpp
+# {!win}platform/PseudoTerminal.cpp
+# NOTE: pty is Windows 10 recent builds only
+# {win}platform/PseudoTerminal.win32.cpp
+# {win}platform/Process.win32.cpp

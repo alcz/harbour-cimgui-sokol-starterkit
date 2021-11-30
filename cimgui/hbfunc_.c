@@ -83,3 +83,19 @@ HB_FUNC( HB_IGFPS )
    if( pFps && HB_ISBYREF( 2 ) )
       hb_itemPutND( pFps, ( double ) io->Framerate );
 }
+
+HB_FUNC( HB_IGCONFIGFLAGSADD )
+{
+   int iFlags       = hb_parnidef( 1, 0 );
+   ImGuiIO *io      = igGetIO();
+   hb_retni( io->ConfigFlags );
+   io->ConfigFlags |= iFlags;
+}
+
+HB_FUNC( HB_IGCONFIGFLAGSDEL )
+{
+   int iFlags       = hb_parnidef( 1, 0 );
+   ImGuiIO *io      = igGetIO();
+   hb_retni( io->ConfigFlags );
+   io->ConfigFlags &= iFlags;
+}

@@ -1,0 +1,14 @@
+-hblib
+-depkeyhead=cimgui:cimgui.h
+-depincpathlocal=cimgui:../cimgui
+
+-depkeyhead=imgui:imgui.h
+-depincpathlocal=imgui:../cimgui/imgui
+
+cimplot.cpp
+{cflag}-I./implot/
+hbimplot.cpp
+
+implot/implot.cpp
+implot/implot_items.cpp
+implot/implot_demo.cpp

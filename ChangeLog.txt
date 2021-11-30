@@ -3,6 +3,32 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-11-30 16:22 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui/hbfunc_.c
+    + added functions:
+      hb_igConfigFlagsAdd( <nFlags> ) -> <nOldFlags>
+      - sets additional bits in ImGui's io->ConfigFlags
+      hb_igConfigFlagsDel( <nFlags> ) -> <nOldFlags>
+      - unsets bits passed in integer parameter
+      These are may be not in final form.
+
+  * examples/loadfont.prg
+    * detect if the sample was linked with dear ImGui docking branch,
+      and enable most trivial docking configuration using
+      hb_igConfigFlagsAdd( ImGuiConfigFlags_DockingEnable )
+
+  + cimgui-docking/*
+    cimgui-docking/imgui/*
+    + added Dear ImGui 1.85 docking branch together with cimgui
+      and generated Harbour wrappers
+
+  ; cimgui/* is still at 1.80 level
+
+  + cimplot/*
+    cimplot/implot
+    + added ImPlot 0.12 together with cimplot and wrappers
+      (library builds, but not tested yet)
+
 2021-06-14 20:49 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * hexeterminal/src/TerminalEmulator.cpp
     ! fix out-of-bounds GPF during text selection

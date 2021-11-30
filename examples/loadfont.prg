@@ -39,10 +39,19 @@ PROCEDURE ImInit
 #endif
 
    hb_sokol_imguiFont2Texture()
+
+#ifdef ImGuiConfigFlags_DockingEnable
+   hb_igConfigFlagsAdd( ImGuiConfigFlags_DockingEnable )
+#endif
+
    RETURN
 
 PROCEDURE ImFrame
    STATIC counter := 0, s, c
+
+#ifdef ImGuiConfigFlags_DockingEnable
+   igDockSpaceOverViewPort()
+#endif
 
    igSetNextWindowPos( {10,10}, ImGuiCond_Once, {0,0} )
    igSetNextWindowSize( {650, 350}, ImGuiCond_Once )

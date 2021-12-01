@@ -9,7 +9,7 @@
 #include "./imgui/imgui_internal.h"
 #include "cimgui.h"
 
-#include "hbhlp.c"
+#include "../cimgui/hbhlp.c"
 
 /* const ImGuiPayload* igAcceptDragDropPayload(const char* type,ImGuiDragDropFlags flags) */
 HB_FUNC( IGACCEPTDRAGDROPPAYLOAD )
@@ -491,12 +491,14 @@ HB_FUNC( IGBUTTONEX )
 /* void igCalcItemSize(ImVec2 *pOut,ImVec2 size,float default_w,float default_h) */
 HB_FUNC( IGCALCITEMSIZE )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM psize = hb_param( 2, HB_IT_ARRAY );
    ImVec2 size = ImVec2{ _paf( psize, 1 ), _paf( psize, 2 ) };
    float default_w = ( float ) hb_parnd( 3 );
    float default_h = ( float ) hb_parnd( 4 );
-   igCalcItemSize(pOut,size,default_w,default_h);
+   igCalcItemSize(&pOut,size,default_w,default_h);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* float igCalcItemWidth() */
@@ -523,12 +525,14 @@ HB_FUNC( IGCALCLISTCLIPPING )
 /* void igCalcTextSize(ImVec2 *pOut,const char* text,const char* text_end,bool hide_text_after_double_hash,float wrap_width) */
 HB_FUNC( IGCALCTEXTSIZE )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    const char* text = hb_parcx( 2 );
    const char* text_end = hb_parcx( 3 );
    bool hide_text_after_double_hash = hb_parldef( 4, 0 );
    float wrap_width = ( float ) hb_parnd( 5 );
-   igCalcTextSize(pOut,text,text_end,hide_text_after_double_hash,wrap_width);
+   igCalcTextSize(&pOut,text,text_end,hide_text_after_double_hash,wrap_width);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* int igCalcTypematicRepeatAmount(float t0,float t1,float repeat_delay,float repeat_rate) */
@@ -545,9 +549,11 @@ HB_FUNC( IGCALCTYPEMATICREPEATAMOUNT )
 /* void igCalcWindowNextAutoFitSize(ImVec2 *pOut,ImGuiWindow* window) */
 HB_FUNC( IGCALCWINDOWNEXTAUTOFITSIZE )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 2 );
-   igCalcWindowNextAutoFitSize(pOut,window);
+   igCalcWindowNextAutoFitSize(&pOut,window);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* float igCalcWrapWidthForPos(const ImVec2 pos,float wrap_pos_x) */
@@ -784,9 +790,11 @@ HB_FUNC( IGCOLORCONVERTRGBTOHSV )
 /* void igColorConvertU32ToFloat4(ImVec4 *pOut,ImU32 in) */
 HB_FUNC( IGCOLORCONVERTU32TOFLOAT4 )
 {
-   ImVec4* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec4 pOut;
    ImU32 in = ( HB_U32 ) hb_parnl( 2 );
-   igColorConvertU32ToFloat4(pOut,in);
+   igColorConvertU32ToFloat4(&pOut,in);
+   _ImVec4toA( &pOut, pOutItem );
 }
 
 /* bool igColorEdit3(const char* label,float col[3],ImGuiColorEditFlags flags) */
@@ -1034,9 +1042,10 @@ HB_FUNC( IGDEBUGNODEDOCKNODE )
 }
 
 /* void igDebugNodeDrawCmdShowMeshAndBoundingBox(ImDrawList* out_draw_list,const ImDrawList* draw_list,const ImDrawCmd* draw_cmd,bool show_mesh,bool show_aabb) */
+/*
 HB_FUNC( IGDEBUGNODEDRAWCMDSHOWMESHANDBOUNDINGBOX )
 {
-   ImDrawList _out_draw_list;
+   ImDrawList _out_draw_list; // <- TOFIX invalid (not a struct)
    ImDrawList* out_draw_list = &_out_draw_list;
    const ImDrawList* draw_list = ( const ImDrawList* ) hb_parptr( 2 );
    const ImDrawCmd* draw_cmd = ( const ImDrawCmd* ) hb_parptr( 3 );
@@ -1044,6 +1053,7 @@ HB_FUNC( IGDEBUGNODEDRAWCMDSHOWMESHANDBOUNDINGBOX )
    bool show_aabb = hb_parl( 5 );
    igDebugNodeDrawCmdShowMeshAndBoundingBox(out_draw_list,draw_list,draw_cmd,show_mesh,show_aabb);
 }
+*/
 
 /* void igDebugNodeDrawList(ImGuiWindow* window,ImGuiViewportP* viewport,const ImDrawList* draw_list,const char* label) */
 HB_FUNC( IGDEBUGNODEDRAWLIST )
@@ -1783,15 +1793,18 @@ HB_FUNC( IGERRORCHECKENDWINDOWRECOVER )
 /* void igFindBestWindowPosForPopup(ImVec2 *pOut,ImGuiWindow* window) */
 HB_FUNC( IGFINDBESTWINDOWPOSFORPOPUP )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 2 );
-   igFindBestWindowPosForPopup(pOut,window);
+   igFindBestWindowPosForPopup(&pOut,window);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igFindBestWindowPosForPopupEx(ImVec2 *pOut,const ImVec2 ref_pos,const ImVec2 size,ImGuiDir* last_dir,const ImRect r_outer,const ImRect r_avoid,ImGuiPopupPositionPolicy policy) */
 HB_FUNC( IGFINDBESTWINDOWPOSFORPOPUPEX )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pref_pos = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 ref_pos = ImVec2{ _paf( pref_pos, 1 ), _paf( pref_pos, 2 ) };
    PHB_ITEM psize = hb_param( 3, HB_IT_ARRAY );
@@ -1802,7 +1815,8 @@ HB_FUNC( IGFINDBESTWINDOWPOSFORPOPUPEX )
    PHB_ITEM pr_avoid = hb_param( 6, HB_IT_ARRAY );
    const ImRect r_avoid = ImRect{ ImVec2{ _paf( pr_avoid, 1 ), _paf( pr_avoid, 2 ) }, ImVec2{ _paf( pr_avoid, 3 ), _paf( pr_avoid, 4 ) } };
    ImGuiPopupPositionPolicy policy = ( ImGuiPopupPositionPolicy ) hb_parni( 7 );
-   igFindBestWindowPosForPopupEx(pOut,ref_pos,size,last_dir,r_outer,r_avoid,policy);
+   igFindBestWindowPosForPopupEx(&pOut,ref_pos,size,last_dir,r_outer,r_avoid,policy);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* ImGuiOldColumns* igFindOrCreateColumns(ImGuiWindow* window,ImGuiID id) */
@@ -2038,22 +2052,28 @@ HB_FUNC( IGGETCOLUMNSID )
 /* void igGetContentRegionAvail(ImVec2 *pOut) */
 HB_FUNC( IGGETCONTENTREGIONAVAIL )
 {
-   ImVec2* pOut;
-   igGetContentRegionAvail(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetContentRegionAvail(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igGetContentRegionMax(ImVec2 *pOut) */
 HB_FUNC( IGGETCONTENTREGIONMAX )
 {
-   ImVec2* pOut;
-   igGetContentRegionMax(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetContentRegionMax(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igGetContentRegionMaxAbs(ImVec2 *pOut) */
 HB_FUNC( IGGETCONTENTREGIONMAXABS )
 {
-   ImVec2* pOut;
-   igGetContentRegionMaxAbs(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetContentRegionMaxAbs(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* ImGuiContext* igGetCurrentContext() */
@@ -2087,8 +2107,10 @@ HB_FUNC( IGGETCURRENTWINDOWREAD )
 /* void igGetCursorPos(ImVec2 *pOut) */
 HB_FUNC( IGGETCURSORPOS )
 {
-   ImVec2* pOut;
-   igGetCursorPos(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetCursorPos(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* float igGetCursorPosX() */
@@ -2108,15 +2130,19 @@ HB_FUNC( IGGETCURSORPOSY )
 /* void igGetCursorScreenPos(ImVec2 *pOut) */
 HB_FUNC( IGGETCURSORSCREENPOS )
 {
-   ImVec2* pOut;
-   igGetCursorScreenPos(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetCursorScreenPos(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igGetCursorStartPos(ImVec2 *pOut) */
 HB_FUNC( IGGETCURSORSTARTPOS )
 {
-   ImVec2* pOut;
-   igGetCursorStartPos(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetCursorStartPos(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* ImFont* igGetDefaultFont() */
@@ -2185,8 +2211,10 @@ HB_FUNC( IGGETFONTSIZE )
 /* void igGetFontTexUvWhitePixel(ImVec2 *pOut) */
 HB_FUNC( IGGETFONTTEXUVWHITEPIXEL )
 {
-   ImVec2* pOut;
-   igGetFontTexUvWhitePixel(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetFontTexUvWhitePixel(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* ImDrawList* igGetForegroundDrawList_Nil() */
@@ -2307,22 +2335,28 @@ HB_FUNC( IGGETITEMID )
 /* void igGetItemRectMax(ImVec2 *pOut) */
 HB_FUNC( IGGETITEMRECTMAX )
 {
-   ImVec2* pOut;
-   igGetItemRectMax(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetItemRectMax(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igGetItemRectMin(ImVec2 *pOut) */
 HB_FUNC( IGGETITEMRECTMIN )
 {
-   ImVec2* pOut;
-   igGetItemRectMin(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetItemRectMin(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igGetItemRectSize(ImVec2 *pOut) */
 HB_FUNC( IGGETITEMRECTSIZE )
 {
-   ImVec2* pOut;
-   igGetItemRectSize(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetItemRectSize(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* ImGuiItemStatusFlags igGetItemStatusFlags() */
@@ -2374,24 +2408,30 @@ HB_FUNC( IGGETMOUSECURSOR )
 /* void igGetMouseDragDelta(ImVec2 *pOut,ImGuiMouseButton button,float lock_threshold) */
 HB_FUNC( IGGETMOUSEDRAGDELTA )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    ImGuiMouseButton button = ( ImGuiMouseButton ) hb_parni( 2 );
    float lock_threshold = ( float ) hb_parnd( 3 );
-   igGetMouseDragDelta(pOut,button,lock_threshold);
+   igGetMouseDragDelta(&pOut,button,lock_threshold);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igGetMousePos(ImVec2 *pOut) */
 HB_FUNC( IGGETMOUSEPOS )
 {
-   ImVec2* pOut;
-   igGetMousePos(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetMousePos(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igGetMousePosOnOpeningCurrentPopup(ImVec2 *pOut) */
 HB_FUNC( IGGETMOUSEPOSONOPENINGCURRENTPOPUP )
 {
-   ImVec2* pOut;
-   igGetMousePosOnOpeningCurrentPopup(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetMousePosOnOpeningCurrentPopup(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* float igGetNavInputAmount(ImGuiNavInput n,ImGuiInputReadMode mode) */
@@ -2406,12 +2446,14 @@ HB_FUNC( IGGETNAVINPUTAMOUNT )
 /* void igGetNavInputAmount2d(ImVec2 *pOut,ImGuiNavDirSourceFlags dir_sources,ImGuiInputReadMode mode,float slow_factor,float fast_factor) */
 HB_FUNC( IGGETNAVINPUTAMOUNT2D )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    ImGuiNavDirSourceFlags dir_sources = ( ImGuiNavDirSourceFlags ) hb_parni( 2 );
    ImGuiInputReadMode mode = ( ImGuiInputReadMode ) hb_parni( 3 );
    float slow_factor = ( float ) hb_parnd( 4 );
    float fast_factor = ( float ) hb_parnd( 5 );
-   igGetNavInputAmount2d(pOut,dir_sources,mode,slow_factor,fast_factor);
+   igGetNavInputAmount2d(&pOut,dir_sources,mode,slow_factor,fast_factor);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* ImGuiPlatformIO* igGetPlatformIO() */
@@ -2424,9 +2466,11 @@ HB_FUNC( IGGETPLATFORMIO )
 /* void igGetPopupAllowedExtentRect(ImRect *pOut,ImGuiWindow* window) */
 HB_FUNC( IGGETPOPUPALLOWEDEXTENTRECT )
 {
-   ImRect* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImRect pOut;
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 2 );
-   igGetPopupAllowedExtentRect(pOut,window);
+   igGetPopupAllowedExtentRect(&pOut,window);
+   _ImRecttoA( &pOut, pOutItem );
 }
 
 /* float igGetScrollMaxX() */
@@ -2548,15 +2592,19 @@ HB_FUNC( IGGETWINDOWALWAYSWANTOWNTABBAR )
 /* void igGetWindowContentRegionMax(ImVec2 *pOut) */
 HB_FUNC( IGGETWINDOWCONTENTREGIONMAX )
 {
-   ImVec2* pOut;
-   igGetWindowContentRegionMax(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetWindowContentRegionMax(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igGetWindowContentRegionMin(ImVec2 *pOut) */
 HB_FUNC( IGGETWINDOWCONTENTREGIONMIN )
 {
-   ImVec2* pOut;
-   igGetWindowContentRegionMin(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetWindowContentRegionMin(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* ImGuiID igGetWindowDockID() */
@@ -2597,8 +2645,10 @@ HB_FUNC( IGGETWINDOWHEIGHT )
 /* void igGetWindowPos(ImVec2 *pOut) */
 HB_FUNC( IGGETWINDOWPOS )
 {
-   ImVec2* pOut;
-   igGetWindowPos(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetWindowPos(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* ImGuiID igGetWindowResizeBorderID(ImGuiWindow* window,ImGuiDir dir) */
@@ -2631,17 +2681,21 @@ HB_FUNC( IGGETWINDOWSCROLLBARID )
 /* void igGetWindowScrollbarRect(ImRect *pOut,ImGuiWindow* window,ImGuiAxis axis) */
 HB_FUNC( IGGETWINDOWSCROLLBARRECT )
 {
-   ImRect* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImRect pOut;
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 2 );
    ImGuiAxis axis = ( ImGuiAxis ) hb_parni( 3 );
-   igGetWindowScrollbarRect(pOut,window,axis);
+   igGetWindowScrollbarRect(&pOut,window,axis);
+   _ImRecttoA( &pOut, pOutItem );
 }
 
 /* void igGetWindowSize(ImVec2 *pOut) */
 HB_FUNC( IGGETWINDOWSIZE )
 {
-   ImVec2* pOut;
-   igGetWindowSize(pOut);
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
+   igGetWindowSize(&pOut);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* ImGuiViewport* igGetWindowViewport() */
@@ -2694,7 +2748,8 @@ HB_FUNC( IGIMALPHABLENDCOLORS )
 /* void igImBezierCubicCalc(ImVec2 *pOut,const ImVec2 p1,const ImVec2 p2,const ImVec2 p3,const ImVec2 p4,float t) */
 HB_FUNC( IGIMBEZIERCUBICCALC )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pp1 = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 p1 = ImVec2{ _paf( pp1, 1 ), _paf( pp1, 2 ) };
    PHB_ITEM pp2 = hb_param( 3, HB_IT_ARRAY );
@@ -2704,13 +2759,15 @@ HB_FUNC( IGIMBEZIERCUBICCALC )
    PHB_ITEM pp4 = hb_param( 5, HB_IT_ARRAY );
    const ImVec2 p4 = ImVec2{ _paf( pp4, 1 ), _paf( pp4, 2 ) };
    float t = ( float ) hb_parnd( 6 );
-   igImBezierCubicCalc(pOut,p1,p2,p3,p4,t);
+   igImBezierCubicCalc(&pOut,p1,p2,p3,p4,t);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igImBezierCubicClosestPoint(ImVec2 *pOut,const ImVec2 p1,const ImVec2 p2,const ImVec2 p3,const ImVec2 p4,const ImVec2 p,int num_segments) */
 HB_FUNC( IGIMBEZIERCUBICCLOSESTPOINT )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pp1 = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 p1 = ImVec2{ _paf( pp1, 1 ), _paf( pp1, 2 ) };
    PHB_ITEM pp2 = hb_param( 3, HB_IT_ARRAY );
@@ -2722,13 +2779,15 @@ HB_FUNC( IGIMBEZIERCUBICCLOSESTPOINT )
    PHB_ITEM pp = hb_param( 6, HB_IT_ARRAY );
    const ImVec2 p = ImVec2{ _paf( pp, 1 ), _paf( pp, 2 ) };
    int num_segments = hb_parni( 7 );
-   igImBezierCubicClosestPoint(pOut,p1,p2,p3,p4,p,num_segments);
+   igImBezierCubicClosestPoint(&pOut,p1,p2,p3,p4,p,num_segments);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igImBezierCubicClosestPointCasteljau(ImVec2 *pOut,const ImVec2 p1,const ImVec2 p2,const ImVec2 p3,const ImVec2 p4,const ImVec2 p,float tess_tol) */
 HB_FUNC( IGIMBEZIERCUBICCLOSESTPOINTCASTELJAU )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pp1 = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 p1 = ImVec2{ _paf( pp1, 1 ), _paf( pp1, 2 ) };
    PHB_ITEM pp2 = hb_param( 3, HB_IT_ARRAY );
@@ -2740,13 +2799,15 @@ HB_FUNC( IGIMBEZIERCUBICCLOSESTPOINTCASTELJAU )
    PHB_ITEM pp = hb_param( 6, HB_IT_ARRAY );
    const ImVec2 p = ImVec2{ _paf( pp, 1 ), _paf( pp, 2 ) };
    float tess_tol = ( float ) hb_parnd( 7 );
-   igImBezierCubicClosestPointCasteljau(pOut,p1,p2,p3,p4,p,tess_tol);
+   igImBezierCubicClosestPointCasteljau(&pOut,p1,p2,p3,p4,p,tess_tol);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igImBezierQuadraticCalc(ImVec2 *pOut,const ImVec2 p1,const ImVec2 p2,const ImVec2 p3,float t) */
 HB_FUNC( IGIMBEZIERQUADRATICCALC )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pp1 = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 p1 = ImVec2{ _paf( pp1, 1 ), _paf( pp1, 2 ) };
    PHB_ITEM pp2 = hb_param( 3, HB_IT_ARRAY );
@@ -2754,7 +2815,8 @@ HB_FUNC( IGIMBEZIERQUADRATICCALC )
    PHB_ITEM pp3 = hb_param( 4, HB_IT_ARRAY );
    const ImVec2 p3 = ImVec2{ _paf( pp3, 1 ), _paf( pp3, 2 ) };
    float t = ( float ) hb_parnd( 5 );
-   igImBezierQuadraticCalc(pOut,p1,p2,p3,t);
+   igImBezierQuadraticCalc(&pOut,p1,p2,p3,t);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igImBitArrayClearBit(ImU32* arr,int n) */
@@ -2816,14 +2878,16 @@ HB_FUNC( IGIMCHARISBLANKW )
 /* void igImClamp(ImVec2 *pOut,const ImVec2 v,const ImVec2 mn,ImVec2 mx) */
 HB_FUNC( IGIMCLAMP )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pv = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 v = ImVec2{ _paf( pv, 1 ), _paf( pv, 2 ) };
    PHB_ITEM pmn = hb_param( 3, HB_IT_ARRAY );
    const ImVec2 mn = ImVec2{ _paf( pmn, 1 ), _paf( pmn, 2 ) };
    PHB_ITEM pmx = hb_param( 4, HB_IT_ARRAY );
    ImVec2 mx = ImVec2{ _paf( pmx, 1 ), _paf( pmx, 2 ) };
-   igImClamp(pOut,v,mn,mx);
+   igImClamp(&pOut,v,mn,mx);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* float igImDot(const ImVec2 a,const ImVec2 b) */
@@ -2904,10 +2968,12 @@ HB_FUNC( IGIMFLOOR_FLOAT )
 /* void igImFloor_Vec2(ImVec2 *pOut,const ImVec2 v) */
 HB_FUNC( IGIMFLOOR_VEC2 )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pv = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 v = ImVec2{ _paf( pv, 1 ), _paf( pv, 2 ) };
-   igImFloor_Vec2(pOut,v);
+   igImFloor_Vec2(&pOut,v);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* float igImFloorSigned(float f) */
@@ -3105,51 +3171,59 @@ HB_FUNC( IGIMLENGTHSQR_VEC4 )
 /* void igImLerp_Vec2Float(ImVec2 *pOut,const ImVec2 a,const ImVec2 b,float t) */
 HB_FUNC( IGIMLERP_VEC2FLOAT )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pa = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 a = ImVec2{ _paf( pa, 1 ), _paf( pa, 2 ) };
    PHB_ITEM pb = hb_param( 3, HB_IT_ARRAY );
    const ImVec2 b = ImVec2{ _paf( pb, 1 ), _paf( pb, 2 ) };
    float t = ( float ) hb_parnd( 4 );
-   igImLerp_Vec2Float(pOut,a,b,t);
+   igImLerp_Vec2Float(&pOut,a,b,t);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igImLerp_Vec2Vec2(ImVec2 *pOut,const ImVec2 a,const ImVec2 b,const ImVec2 t) */
 HB_FUNC( IGIMLERP_VEC2VEC2 )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pa = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 a = ImVec2{ _paf( pa, 1 ), _paf( pa, 2 ) };
    PHB_ITEM pb = hb_param( 3, HB_IT_ARRAY );
    const ImVec2 b = ImVec2{ _paf( pb, 1 ), _paf( pb, 2 ) };
    PHB_ITEM pt = hb_param( 4, HB_IT_ARRAY );
    const ImVec2 t = ImVec2{ _paf( pt, 1 ), _paf( pt, 2 ) };
-   igImLerp_Vec2Vec2(pOut,a,b,t);
+   igImLerp_Vec2Vec2(&pOut,a,b,t);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igImLerp_Vec4(ImVec4 *pOut,const ImVec4 a,const ImVec4 b,float t) */
 HB_FUNC( IGIMLERP_VEC4 )
 {
-   ImVec4* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec4 pOut;
    PHB_ITEM pa = hb_param( 2, HB_IT_ARRAY );
    const ImVec4 a = ImVec4{ _paf( pa, 1 ), _paf( pa, 2 ), _paf( pa, 3 ), _paf( pa, 4 ) };
    PHB_ITEM pb = hb_param( 3, HB_IT_ARRAY );
    const ImVec4 b = ImVec4{ _paf( pb, 1 ), _paf( pb, 2 ), _paf( pb, 3 ), _paf( pb, 4 ) };
    float t = ( float ) hb_parnd( 4 );
-   igImLerp_Vec4(pOut,a,b,t);
+   igImLerp_Vec4(&pOut,a,b,t);
+   _ImVec4toA( &pOut, pOutItem );
 }
 
 /* void igImLineClosestPoint(ImVec2 *pOut,const ImVec2 a,const ImVec2 b,const ImVec2 p) */
 HB_FUNC( IGIMLINECLOSESTPOINT )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pa = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 a = ImVec2{ _paf( pa, 1 ), _paf( pa, 2 ) };
    PHB_ITEM pb = hb_param( 3, HB_IT_ARRAY );
    const ImVec2 b = ImVec2{ _paf( pb, 1 ), _paf( pb, 2 ) };
    PHB_ITEM pp = hb_param( 4, HB_IT_ARRAY );
    const ImVec2 p = ImVec2{ _paf( pp, 1 ), _paf( pp, 2 ) };
-   igImLineClosestPoint(pOut,a,b,p);
+   igImLineClosestPoint(&pOut,a,b,p);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* float igImLinearSweep(float current,float target,float speed) */
@@ -3181,23 +3255,27 @@ HB_FUNC( IGIMLOG_DOUBLE )
 /* void igImMax(ImVec2 *pOut,const ImVec2 lhs,const ImVec2 rhs) */
 HB_FUNC( IGIMMAX )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM plhs = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 lhs = ImVec2{ _paf( plhs, 1 ), _paf( plhs, 2 ) };
    PHB_ITEM prhs = hb_param( 3, HB_IT_ARRAY );
    const ImVec2 rhs = ImVec2{ _paf( prhs, 1 ), _paf( prhs, 2 ) };
-   igImMax(pOut,lhs,rhs);
+   igImMax(&pOut,lhs,rhs);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igImMin(ImVec2 *pOut,const ImVec2 lhs,const ImVec2 rhs) */
 HB_FUNC( IGIMMIN )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM plhs = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 lhs = ImVec2{ _paf( plhs, 1 ), _paf( plhs, 2 ) };
    PHB_ITEM prhs = hb_param( 3, HB_IT_ARRAY );
    const ImVec2 rhs = ImVec2{ _paf( prhs, 1 ), _paf( prhs, 2 ) };
-   igImMin(pOut,lhs,rhs);
+   igImMin(&pOut,lhs,rhs);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* int igImModPositive(int a,int b) */
@@ -3212,12 +3290,14 @@ HB_FUNC( IGIMMODPOSITIVE )
 /* void igImMul(ImVec2 *pOut,const ImVec2 lhs,const ImVec2 rhs) */
 HB_FUNC( IGIMMUL )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM plhs = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 lhs = ImVec2{ _paf( plhs, 1 ), _paf( plhs, 2 ) };
    PHB_ITEM prhs = hb_param( 3, HB_IT_ARRAY );
    const ImVec2 rhs = ImVec2{ _paf( prhs, 1 ), _paf( prhs, 2 ) };
-   igImMul(pOut,lhs,rhs);
+   igImMul(&pOut,lhs,rhs);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* const char* igImParseFormatFindEnd(const char* format) */
@@ -3278,12 +3358,14 @@ HB_FUNC( IGIMPOW_DOUBLE )
 /* void igImRotate(ImVec2 *pOut,const ImVec2 v,float cos_a,float sin_a) */
 HB_FUNC( IGIMROTATE )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pv = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 v = ImVec2{ _paf( pv, 1 ), _paf( pv, 2 ) };
    float cos_a = ( float ) hb_parnd( 3 );
    float sin_a = ( float ) hb_parnd( 4 );
-   igImRotate(pOut,v,cos_a,sin_a);
+   igImRotate(&pOut,v,cos_a,sin_a);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* float igImRsqrt_Float(float x) */
@@ -3555,7 +3637,8 @@ HB_FUNC( IGIMTRIANGLEBARYCENTRICCOORDS )
 /* void igImTriangleClosestPoint(ImVec2 *pOut,const ImVec2 a,const ImVec2 b,const ImVec2 c,const ImVec2 p) */
 HB_FUNC( IGIMTRIANGLECLOSESTPOINT )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    PHB_ITEM pa = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 a = ImVec2{ _paf( pa, 1 ), _paf( pa, 2 ) };
    PHB_ITEM pb = hb_param( 3, HB_IT_ARRAY );
@@ -3564,7 +3647,8 @@ HB_FUNC( IGIMTRIANGLECLOSESTPOINT )
    const ImVec2 c = ImVec2{ _paf( pc, 1 ), _paf( pc, 2 ) };
    PHB_ITEM pp = hb_param( 5, HB_IT_ARRAY );
    const ImVec2 p = ImVec2{ _paf( pp, 1 ), _paf( pp, 2 ) };
-   igImTriangleClosestPoint(pOut,a,b,c,p);
+   igImTriangleClosestPoint(&pOut,a,b,c,p);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* bool igImTriangleContainsPoint(const ImVec2 a,const ImVec2 b,const ImVec2 c,const ImVec2 p) */
@@ -5361,12 +5445,14 @@ HB_FUNC( IGSCROLLTORECT )
 /* void igScrollToRectEx(ImVec2 *pOut,ImGuiWindow* window,const ImRect rect,ImGuiScrollFlags flags) */
 HB_FUNC( IGSCROLLTORECTEX )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 2 );
    PHB_ITEM prect = hb_param( 3, HB_IT_ARRAY );
    const ImRect rect = ImRect{ ImVec2{ _paf( prect, 1 ), _paf( prect, 2 ) }, ImVec2{ _paf( prect, 3 ), _paf( prect, 4 ) } };
    ImGuiScrollFlags flags = ( ImGuiScrollFlags ) hb_parni( 4 );
-   igScrollToRectEx(pOut,window,rect,flags);
+   igScrollToRectEx(&pOut,window,rect,flags);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* void igScrollbar(ImGuiAxis axis) */
@@ -6417,10 +6503,12 @@ HB_FUNC( IGTABITEMBUTTON )
 /* void igTabItemCalcSize(ImVec2 *pOut,const char* label,bool has_close_button) */
 HB_FUNC( IGTABITEMCALCSIZE )
 {
-   ImVec2* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImVec2 pOut;
    const char* label = hb_parcx( 2 );
    bool has_close_button = hb_parl( 3 );
-   igTabItemCalcSize(pOut,label,has_close_button);
+   igTabItemCalcSize(&pOut,label,has_close_button);
+   _ImVec2toA( &pOut, pOutItem );
 }
 
 /* bool igTabItemEx(ImGuiTabBar* tab_bar,const char* label,bool* p_open,ImGuiTabItemFlags flags,ImGuiWindow* docked_window) */
@@ -6564,10 +6652,12 @@ HB_FUNC( IGTABLEGETBOUNDSETTINGS )
 /* void igTableGetCellBgRect(ImRect *pOut,const ImGuiTable* table,int column_n) */
 HB_FUNC( IGTABLEGETCELLBGRECT )
 {
-   ImRect* pOut;
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImRect pOut;
    const ImGuiTable* table = ( const ImGuiTable* ) hb_parptr( 2 );
    int column_n = hb_parni( 3 );
-   igTableGetCellBgRect(pOut,table,column_n);
+   igTableGetCellBgRect(&pOut,table,column_n);
+   _ImRecttoA( &pOut, pOutItem );
 }
 
 /* int igTableGetColumnCount() */

@@ -3,6 +3,33 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-12-01 15:12 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-docking/hbimgui.cpp
+    ! fix path to included hbhlp.c that is common
+      between branches
+
+  * cimgui-docking/hbimgui.cpp
+  * cimgui/hbimgui.cpp
+    * regenerated using updated version of generator.prg,
+      now values of ImRect, ImVec2, ImVec4 types are
+      returned into an array. Or to be precise, it goes
+      into first parameter passed as reference, so actually
+      the same Harbour item can be reused between rendering
+      frames.
+
+      Example usage:
+      igGetWindowPos( @a, c )
+      igText( "window pos " + HB_ValToExp( a ) ) // -> { 10.00, 10.00 }
+
+    ; depending on POV, all this may be suboptimal, but right
+      now just sailing with simplicity in mind.
+      Alternatives could be: keep structs in garbage collected
+      pointers (and use dedicated funcs to manipulate them),
+      extend Harbour type system (preferably even strict).
+
+  * cimgui/hbhlp.c
+    + added ImRect, ImVec2, ImVec4 struct to array conversion helpers
+
 2021-11-30 16:22 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui/hbfunc_.c
     + added functions:
@@ -10,7 +37,7 @@
       - sets additional bits in ImGui's io->ConfigFlags
       hb_igConfigFlagsDel( <nFlags> ) -> <nOldFlags>
       - unsets bits passed in integer parameter
-      These are may be not in final form.
+      These may not be in final form.
 
   * examples/loadfont.prg
     * detect if the sample was linked with dear ImGui docking branch,

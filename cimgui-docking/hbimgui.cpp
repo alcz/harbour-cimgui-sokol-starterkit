@@ -528,9 +528,9 @@ HB_FUNC( IGCALCTEXTSIZE )
    PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
    ImVec2 pOut;
    const char* text = hb_parcx( 2 );
-   const char* text_end = hb_parcx( 3 );
-   bool hide_text_after_double_hash = hb_parldef( 4, 0 );
-   float wrap_width = ( float ) hb_parnd( 5 );
+   const char* text_end = NULL;
+   bool hide_text_after_double_hash = hb_parldef( 3, 0 );
+   float wrap_width = ( float ) hb_parnd( 4 );
    igCalcTextSize(&pOut,text,text_end,hide_text_after_double_hash,wrap_width);
    _ImVec2toA( &pOut, pOutItem );
 }
@@ -1840,7 +1840,7 @@ HB_FUNC( IGFINDORCREATEWINDOWSETTINGS )
 HB_FUNC( IGFINDRENDEREDTEXTEND )
 {
    const char* text = hb_parcx( 1 );
-   const char* text_end = hb_parcx( 2 );
+   const char* text_end = NULL;
    const char* ret = igFindRenderedTextEnd(text,text_end);
    hb_retptr( ( void * ) ret );
 }
@@ -4555,7 +4555,7 @@ HB_FUNC( IGLOGRENDEREDTEXT )
 {
    const ImVec2* ref_pos = ( const ImVec2* ) hb_parptr( 1 );
    const char* text = hb_parcx( 2 );
-   const char* text_end = hb_parcx( 3 );
+   const char* text_end = NULL;
    igLogRenderedText(ref_pos,text,text_end);
 }
 
@@ -5311,8 +5311,8 @@ HB_FUNC( IGRENDERTEXT )
    PHB_ITEM ppos = hb_param( 1, HB_IT_ARRAY );
    ImVec2 pos = ImVec2{ _paf( ppos, 1 ), _paf( ppos, 2 ) };
    const char* text = hb_parcx( 2 );
-   const char* text_end = hb_parcx( 3 );
-   bool hide_text_after_hash = hb_parldef( 4, 1 );
+   const char* text_end = NULL;
+   bool hide_text_after_hash = hb_parldef( 3, 1 );
    igRenderText(pos,text,text_end,hide_text_after_hash);
 }
 
@@ -5324,11 +5324,11 @@ HB_FUNC( IGRENDERTEXTCLIPPED )
    PHB_ITEM ppos_max = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 pos_max = ImVec2{ _paf( ppos_max, 1 ), _paf( ppos_max, 2 ) };
    const char* text = hb_parcx( 3 );
-   const char* text_end = hb_parcx( 4 );
-   const ImVec2* text_size_if_known = ( const ImVec2* ) hb_parptr( 5 );
-   PHB_ITEM palign = hb_param( 6, HB_IT_ARRAY );
+   const char* text_end = NULL;
+   const ImVec2* text_size_if_known = ( const ImVec2* ) hb_parptr( 4 );
+   PHB_ITEM palign = hb_param( 5, HB_IT_ARRAY );
    const ImVec2 align = ImVec2{ _paf( palign, 1 ), _paf( palign, 2 ) };
-   const ImRect* clip_rect = ( const ImRect* ) hb_parptr( 7 );
+   const ImRect* clip_rect = ( const ImRect* ) hb_parptr( 6 );
    igRenderTextClipped(pos_min,pos_max,text,text_end,text_size_if_known,align,clip_rect);
 }
 
@@ -5341,11 +5341,11 @@ HB_FUNC( IGRENDERTEXTCLIPPEDEX )
    PHB_ITEM ppos_max = hb_param( 3, HB_IT_ARRAY );
    const ImVec2 pos_max = ImVec2{ _paf( ppos_max, 1 ), _paf( ppos_max, 2 ) };
    const char* text = hb_parcx( 4 );
-   const char* text_end = hb_parcx( 5 );
-   const ImVec2* text_size_if_known = ( const ImVec2* ) hb_parptr( 6 );
-   PHB_ITEM palign = hb_param( 7, HB_IT_ARRAY );
+   const char* text_end = NULL;
+   const ImVec2* text_size_if_known = ( const ImVec2* ) hb_parptr( 5 );
+   PHB_ITEM palign = hb_param( 6, HB_IT_ARRAY );
    const ImVec2 align = ImVec2{ _paf( palign, 1 ), _paf( palign, 2 ) };
-   const ImRect* clip_rect = ( const ImRect* ) hb_parptr( 8 );
+   const ImRect* clip_rect = ( const ImRect* ) hb_parptr( 7 );
    igRenderTextClippedEx(draw_list,pos_min,pos_max,text,text_end,text_size_if_known,align,clip_rect);
 }
 
@@ -5360,8 +5360,8 @@ HB_FUNC( IGRENDERTEXTELLIPSIS )
    float clip_max_x = ( float ) hb_parnd( 4 );
    float ellipsis_max_x = ( float ) hb_parnd( 5 );
    const char* text = hb_parcx( 6 );
-   const char* text_end = hb_parcx( 7 );
-   const ImVec2* text_size_if_known = ( const ImVec2* ) hb_parptr( 8 );
+   const char* text_end = NULL;
+   const ImVec2* text_size_if_known = ( const ImVec2* ) hb_parptr( 7 );
    igRenderTextEllipsis(draw_list,pos_min,pos_max,clip_max_x,ellipsis_max_x,text,text_end,text_size_if_known);
 }
 
@@ -5371,8 +5371,8 @@ HB_FUNC( IGRENDERTEXTWRAPPED )
    PHB_ITEM ppos = hb_param( 1, HB_IT_ARRAY );
    ImVec2 pos = ImVec2{ _paf( ppos, 1 ), _paf( ppos, 2 ) };
    const char* text = hb_parcx( 2 );
-   const char* text_end = hb_parcx( 3 );
-   float wrap_width = ( float ) hb_parnd( 4 );
+   const char* text_end = NULL;
+   float wrap_width = ( float ) hb_parnd( 3 );
    igRenderTextWrapped(pos,text,text_end,wrap_width);
 }
 
@@ -7072,8 +7072,8 @@ HB_FUNC( IGTEXTDISABLEDV )
 HB_FUNC( IGTEXTEX )
 {
    const char* text = hb_parcx( 1 );
-   const char* text_end = hb_parcx( 2 );
-   ImGuiTextFlags flags = ( ImGuiTextFlags ) hb_parni( 3 );
+   const char* text_end = NULL;
+   ImGuiTextFlags flags = ( ImGuiTextFlags ) hb_parni( 2 );
    igTextEx(text,text_end,flags);
 }
 
@@ -7081,7 +7081,7 @@ HB_FUNC( IGTEXTEX )
 HB_FUNC( IGTEXTUNFORMATTED )
 {
    const char* text = hb_parcx( 1 );
-   const char* text_end = hb_parcx( 2 );
+   const char* text_end = NULL;
    igTextUnformatted(text,text_end);
 }
 

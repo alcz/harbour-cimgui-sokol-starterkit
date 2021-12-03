@@ -3,6 +3,19 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-12-03 10:21 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui/hbimgui.cpp
+    * regenerated using updated version of generator.prg
+
+    ! always set text_end variable to NULL, text_end argument
+      will be skipped from Harbour wrapper function.
+      Also fixes igCalcTextSize( @a, "text" ) and maybe others
+      too.
+
+  + examples/treetable.prg
+    + ported Dear ImGui's demo Tables & Columns -> Tree view sample
+      from C to Harbour
+
 2021-12-01 15:12 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui-docking/hbimgui.cpp
     ! fix path to included hbhlp.c that is common

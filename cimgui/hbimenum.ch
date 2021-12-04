@@ -2,6 +2,9 @@
    https://github.com/alcz/harbour-cimgui-sokol-starterkit
    based on output/definitions.json from cimgui https://github.com/cimgui/cimgui which is
    based on imgui.h file version "1.80" from Dear ImGui https://github.com/ocornut/imgui */
+
+#xtranslate ImGui:: => ig
+
 #define ImDrawCornerFlags_None                                          0 /* 0 */
 #define ImDrawCornerFlags_TopLeft                                       1 /* 1 << 0 */
 #define ImDrawCornerFlags_TopRight                                      2 /* 1 << 1 */

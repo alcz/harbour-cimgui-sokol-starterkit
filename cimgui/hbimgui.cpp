@@ -711,8 +711,14 @@ HB_FUNC( IGCOLORCONVERTU32TOFLOAT4 )
 HB_FUNC( IGCOLOREDIT3 )
 {
    const char* label = hb_parcx( 1 );
-   float col[3];
+   float * col;
+   PHB_IG_FLOATS _col = hb_ig_floats_par( 2 );
    ImGuiColorEditFlags flags = ( ImGuiColorEditFlags ) hb_parni( 3 );
+   static float s_col[3] = { 0,0,0 };
+   if( _col && _col->nSize >= 3 )
+      col = _col->pBuf;
+   else
+      col = &s_col[0];
    bool ret = igColorEdit3(label,col,flags);
    hb_retl( ret );
 }
@@ -721,8 +727,14 @@ HB_FUNC( IGCOLOREDIT3 )
 HB_FUNC( IGCOLOREDIT4 )
 {
    const char* label = hb_parcx( 1 );
-   float col[4];
+   float * col;
+   PHB_IG_FLOATS _col = hb_ig_floats_par( 2 );
    ImGuiColorEditFlags flags = ( ImGuiColorEditFlags ) hb_parni( 3 );
+   static float s_col[4] = { 0,0,0,0 };
+   if( _col && _col->nSize >= 4 )
+      col = _col->pBuf;
+   else
+      col = &s_col[0];
    bool ret = igColorEdit4(label,col,flags);
    hb_retl( ret );
 }
@@ -739,8 +751,14 @@ HB_FUNC( IGCOLOREDITOPTIONSPOPUP )
 HB_FUNC( IGCOLORPICKER3 )
 {
    const char* label = hb_parcx( 1 );
-   float col[3];
+   float * col;
+   PHB_IG_FLOATS _col = hb_ig_floats_par( 2 );
    ImGuiColorEditFlags flags = ( ImGuiColorEditFlags ) hb_parni( 3 );
+   static float s_col[3] = { 0,0,0 };
+   if( _col && _col->nSize >= 3 )
+      col = _col->pBuf;
+   else
+      col = &s_col[0];
    bool ret = igColorPicker3(label,col,flags);
    hb_retl( ret );
 }
@@ -749,9 +767,15 @@ HB_FUNC( IGCOLORPICKER3 )
 HB_FUNC( IGCOLORPICKER4 )
 {
    const char* label = hb_parcx( 1 );
-   float col[4];
+   float * col;
+   PHB_IG_FLOATS _col = hb_ig_floats_par( 2 );
    ImGuiColorEditFlags flags = ( ImGuiColorEditFlags ) hb_parni( 3 );
    const float* ref_col = ( const float* ) hb_parptr( 4 );
+   static float s_col[4] = { 0,0,0,0 };
+   if( _col && _col->nSize >= 4 )
+      col = _col->pBuf;
+   else
+      col = &s_col[0];
    bool ret = igColorPicker4(label,col,flags,ref_col);
    hb_retl( ret );
 }
@@ -1054,12 +1078,18 @@ HB_FUNC( IGDRAGFLOAT )
 HB_FUNC( IGDRAGFLOAT2 )
 {
    const char* label = hb_parcx( 1 );
-   float v[2];
+   float * v;
+   PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
    float v_speed = ( float ) hb_parnd( 3 );
    float v_min = ( float ) hb_parnd( 4 );
    float v_max = ( float ) hb_parnd( 5 );
    const char* format = hb_parcx( 6 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 7 );
+   static float s_v[2] = { 0,0 };
+   if( _v && _v->nSize >= 2 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igDragFloat2(label,v,v_speed,v_min,v_max,format,flags);
    hb_retl( ret );
 }
@@ -1068,12 +1098,18 @@ HB_FUNC( IGDRAGFLOAT2 )
 HB_FUNC( IGDRAGFLOAT3 )
 {
    const char* label = hb_parcx( 1 );
-   float v[3];
+   float * v;
+   PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
    float v_speed = ( float ) hb_parnd( 3 );
    float v_min = ( float ) hb_parnd( 4 );
    float v_max = ( float ) hb_parnd( 5 );
    const char* format = hb_parcx( 6 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 7 );
+   static float s_v[3] = { 0,0,0 };
+   if( _v && _v->nSize >= 3 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igDragFloat3(label,v,v_speed,v_min,v_max,format,flags);
    hb_retl( ret );
 }
@@ -1082,12 +1118,18 @@ HB_FUNC( IGDRAGFLOAT3 )
 HB_FUNC( IGDRAGFLOAT4 )
 {
    const char* label = hb_parcx( 1 );
-   float v[4];
+   float * v;
+   PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
    float v_speed = ( float ) hb_parnd( 3 );
    float v_min = ( float ) hb_parnd( 4 );
    float v_max = ( float ) hb_parnd( 5 );
    const char* format = hb_parcx( 6 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 7 );
+   static float s_v[4] = { 0,0,0,0 };
+   if( _v && _v->nSize >= 4 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igDragFloat4(label,v,v_speed,v_min,v_max,format,flags);
    hb_retl( ret );
 }
@@ -1132,12 +1174,18 @@ HB_FUNC( IGDRAGINT )
 HB_FUNC( IGDRAGINT2 )
 {
    const char* label = hb_parcx( 1 );
-   int v[2];
+   int * v;
+   PHB_IG_INTS _v = hb_ig_ints_par( 2 );
    float v_speed = ( float ) hb_parnd( 3 );
    int v_min = hb_parni( 4 );
    int v_max = hb_parni( 5 );
    const char* format = hb_parcx( 6 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 7 );
+   static int s_v[2] = { 0,0 };
+   if( _v && _v->nSize >= 2 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igDragInt2(label,v,v_speed,v_min,v_max,format,flags);
    hb_retl( ret );
 }
@@ -1146,12 +1194,18 @@ HB_FUNC( IGDRAGINT2 )
 HB_FUNC( IGDRAGINT3 )
 {
    const char* label = hb_parcx( 1 );
-   int v[3];
+   int * v;
+   PHB_IG_INTS _v = hb_ig_ints_par( 2 );
    float v_speed = ( float ) hb_parnd( 3 );
    int v_min = hb_parni( 4 );
    int v_max = hb_parni( 5 );
    const char* format = hb_parcx( 6 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 7 );
+   static int s_v[3] = { 0,0,0 };
+   if( _v && _v->nSize >= 3 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igDragInt3(label,v,v_speed,v_min,v_max,format,flags);
    hb_retl( ret );
 }
@@ -1160,12 +1214,18 @@ HB_FUNC( IGDRAGINT3 )
 HB_FUNC( IGDRAGINT4 )
 {
    const char* label = hb_parcx( 1 );
-   int v[4];
+   int * v;
+   PHB_IG_INTS _v = hb_ig_ints_par( 2 );
    float v_speed = ( float ) hb_parnd( 3 );
    int v_min = hb_parni( 4 );
    int v_max = hb_parni( 5 );
    const char* format = hb_parcx( 6 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 7 );
+   static int s_v[4] = { 0,0,0,0 };
+   if( _v && _v->nSize >= 4 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igDragInt4(label,v,v_speed,v_min,v_max,format,flags);
    hb_retl( ret );
 }
@@ -3180,9 +3240,15 @@ HB_FUNC( IGINPUTFLOAT )
 HB_FUNC( IGINPUTFLOAT2 )
 {
    const char* label = hb_parcx( 1 );
-   float v[2];
+   float * v;
+   PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
    const char* format = hb_parcx( 3 );
    ImGuiInputTextFlags flags = ( ImGuiInputTextFlags ) hb_parni( 4 );
+   static float s_v[2] = { 0,0 };
+   if( _v && _v->nSize >= 2 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igInputFloat2(label,v,format,flags);
    hb_retl( ret );
 }
@@ -3191,9 +3257,15 @@ HB_FUNC( IGINPUTFLOAT2 )
 HB_FUNC( IGINPUTFLOAT3 )
 {
    const char* label = hb_parcx( 1 );
-   float v[3];
+   float * v;
+   PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
    const char* format = hb_parcx( 3 );
    ImGuiInputTextFlags flags = ( ImGuiInputTextFlags ) hb_parni( 4 );
+   static float s_v[3] = { 0,0,0 };
+   if( _v && _v->nSize >= 3 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igInputFloat3(label,v,format,flags);
    hb_retl( ret );
 }
@@ -3202,9 +3274,15 @@ HB_FUNC( IGINPUTFLOAT3 )
 HB_FUNC( IGINPUTFLOAT4 )
 {
    const char* label = hb_parcx( 1 );
-   float v[4];
+   float * v;
+   PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
    const char* format = hb_parcx( 3 );
    ImGuiInputTextFlags flags = ( ImGuiInputTextFlags ) hb_parni( 4 );
+   static float s_v[4] = { 0,0,0,0 };
+   if( _v && _v->nSize >= 4 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igInputFloat4(label,v,format,flags);
    hb_retl( ret );
 }
@@ -3227,8 +3305,14 @@ HB_FUNC( IGINPUTINT )
 HB_FUNC( IGINPUTINT2 )
 {
    const char* label = hb_parcx( 1 );
-   int v[2];
+   int * v;
+   PHB_IG_INTS _v = hb_ig_ints_par( 2 );
    ImGuiInputTextFlags flags = ( ImGuiInputTextFlags ) hb_parni( 3 );
+   static int s_v[2] = { 0,0 };
+   if( _v && _v->nSize >= 2 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igInputInt2(label,v,flags);
    hb_retl( ret );
 }
@@ -3237,8 +3321,14 @@ HB_FUNC( IGINPUTINT2 )
 HB_FUNC( IGINPUTINT3 )
 {
    const char* label = hb_parcx( 1 );
-   int v[3];
+   int * v;
+   PHB_IG_INTS _v = hb_ig_ints_par( 2 );
    ImGuiInputTextFlags flags = ( ImGuiInputTextFlags ) hb_parni( 3 );
+   static int s_v[3] = { 0,0,0 };
+   if( _v && _v->nSize >= 3 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igInputInt3(label,v,flags);
    hb_retl( ret );
 }
@@ -3247,8 +3337,14 @@ HB_FUNC( IGINPUTINT3 )
 HB_FUNC( IGINPUTINT4 )
 {
    const char* label = hb_parcx( 1 );
-   int v[4];
+   int * v;
+   PHB_IG_INTS _v = hb_ig_ints_par( 2 );
    ImGuiInputTextFlags flags = ( ImGuiInputTextFlags ) hb_parni( 3 );
+   static int s_v[4] = { 0,0,0,0 };
+   if( _v && _v->nSize >= 4 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igInputInt4(label,v,flags);
    hb_retl( ret );
 }
@@ -5453,11 +5549,17 @@ HB_FUNC( IGSLIDERFLOAT )
 HB_FUNC( IGSLIDERFLOAT2 )
 {
    const char* label = hb_parcx( 1 );
-   float v[2];
+   float * v;
+   PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
    float v_min = ( float ) hb_parnd( 3 );
    float v_max = ( float ) hb_parnd( 4 );
    const char* format = hb_parcx( 5 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 6 );
+   static float s_v[2] = { 0,0 };
+   if( _v && _v->nSize >= 2 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igSliderFloat2(label,v,v_min,v_max,format,flags);
    hb_retl( ret );
 }
@@ -5466,11 +5568,17 @@ HB_FUNC( IGSLIDERFLOAT2 )
 HB_FUNC( IGSLIDERFLOAT3 )
 {
    const char* label = hb_parcx( 1 );
-   float v[3];
+   float * v;
+   PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
    float v_min = ( float ) hb_parnd( 3 );
    float v_max = ( float ) hb_parnd( 4 );
    const char* format = hb_parcx( 5 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 6 );
+   static float s_v[3] = { 0,0,0 };
+   if( _v && _v->nSize >= 3 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igSliderFloat3(label,v,v_min,v_max,format,flags);
    hb_retl( ret );
 }
@@ -5479,11 +5587,17 @@ HB_FUNC( IGSLIDERFLOAT3 )
 HB_FUNC( IGSLIDERFLOAT4 )
 {
    const char* label = hb_parcx( 1 );
-   float v[4];
+   float * v;
+   PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
    float v_min = ( float ) hb_parnd( 3 );
    float v_max = ( float ) hb_parnd( 4 );
    const char* format = hb_parcx( 5 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 6 );
+   static float s_v[4] = { 0,0,0,0 };
+   if( _v && _v->nSize >= 4 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igSliderFloat4(label,v,v_min,v_max,format,flags);
    hb_retl( ret );
 }
@@ -5507,11 +5621,17 @@ HB_FUNC( IGSLIDERINT )
 HB_FUNC( IGSLIDERINT2 )
 {
    const char* label = hb_parcx( 1 );
-   int v[2];
+   int * v;
+   PHB_IG_INTS _v = hb_ig_ints_par( 2 );
    int v_min = hb_parni( 3 );
    int v_max = hb_parni( 4 );
    const char* format = hb_parcx( 5 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 6 );
+   static int s_v[2] = { 0,0 };
+   if( _v && _v->nSize >= 2 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igSliderInt2(label,v,v_min,v_max,format,flags);
    hb_retl( ret );
 }
@@ -5520,11 +5640,17 @@ HB_FUNC( IGSLIDERINT2 )
 HB_FUNC( IGSLIDERINT3 )
 {
    const char* label = hb_parcx( 1 );
-   int v[3];
+   int * v;
+   PHB_IG_INTS _v = hb_ig_ints_par( 2 );
    int v_min = hb_parni( 3 );
    int v_max = hb_parni( 4 );
    const char* format = hb_parcx( 5 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 6 );
+   static int s_v[3] = { 0,0,0 };
+   if( _v && _v->nSize >= 3 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igSliderInt3(label,v,v_min,v_max,format,flags);
    hb_retl( ret );
 }
@@ -5533,11 +5659,17 @@ HB_FUNC( IGSLIDERINT3 )
 HB_FUNC( IGSLIDERINT4 )
 {
    const char* label = hb_parcx( 1 );
-   int v[4];
+   int * v;
+   PHB_IG_INTS _v = hb_ig_ints_par( 2 );
    int v_min = hb_parni( 3 );
    int v_max = hb_parni( 4 );
    const char* format = hb_parcx( 5 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 6 );
+   static int s_v[4] = { 0,0,0,0 };
+   if( _v && _v->nSize >= 4 )
+      v = _v->pBuf;
+   else
+      v = &s_v[0];
    bool ret = igSliderInt4(label,v,v_min,v_max,format,flags);
    hb_retl( ret );
 }

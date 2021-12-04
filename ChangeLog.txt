@@ -3,6 +3,52 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-12-04 17:57 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui/cimgui.hbp
+  + cimgui/hbimgui.h
+  + cimgui/hbarrays.cpp
+    + added garbage collected sets (C arrays) of floats and int
+      They are initialized using following functions:
+      - hb_igFloats( <aFloats> [, <nTotalSize> ] ) -> <pFloats>
+      - hb_igInts( <aInts> [, <nTotalSize> ] ) -> <pInts>
+
+      <nTotalSize> is optional, but may be specified as larger
+      than the initializing array - preparing the structure for
+      plotting graphs with specific resolution.
+
+    + added functions push new value to the set and remove the
+      oldest
+      - hb_igFloatsPush( <pFloats>, <nFloat>, <lUseCursor> )
+      - hb_igIntsPush( <pFloats>, <nInt>, <lUseCursor> )
+      If the set is not fully populated <lUseCursor> = .T.
+      may be used to start from the beginning of empty space.
+
+  + cimgui/plots.cpp
+    + hb_igPlotLinesFloat( <cLabel>, <pFloats>, [<nCount>], [<nOffset>],
+                           [<cOverlay>], [<nScaleMin>], [<nScaleMax>],
+                           [<aGraphSize>] )
+    + hb_igPlotHistogramFloat( <cLabel>, <pFloats>, [<nCount>], [<nOffset>],
+                               [<cOverlay>], [<nScaleMin>], [<nScaleMax>],
+                               [<aGraphSize>] )
+
+  * cimgui/hbhlp.c
+    * return processed item in ImRect, ImVec2, ImVec4
+      conversion helpers
+
+  * cimgui/hbimenum.ch
+  * cimgui-docking/hbimenum.ch
+    + added translation rule for ImGui:: namespace
+      so that ImGui::Text() will end up calling igText()
+      if someone would like to use C++ like names
+
+  * cimgui-docking/hbimgui.cpp
+  * cimgui/hbimgui.cpp
+    * regenerated, passing float and int C arrays is now
+      supported
+
+  + examples/plotfloat.prg
+    + added examples of bulitin Dear ImGui's plotting features
+
 2021-12-03 10:21 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui/hbimgui.cpp
     * regenerated using updated version of generator.prg

@@ -5,6 +5,8 @@ hbimgui.cpp
 hbfunc.prg
 hbfunc_.c
 exstyles.cpp
+hbarrays.cpp
+plots.cpp
 
 imgui/imgui.cpp
 imgui/imgui_widgets.cpp

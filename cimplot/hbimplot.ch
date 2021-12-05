@@ -2,6 +2,9 @@
    https://github.com/alcz/harbour-cimgui-sokol-starterkit
    based on output/definitions.json from cimgui https://github.com/cimgui/cimplot which is
    based on implot.h file version "0.12" from ImPlot https://github.com/epezent/implot/ */
+
+#xtranslate ImPlot:: => ImPlot_
+
 #define ImPlotAxisFlags_None                                            0 /* 0 */
 #define ImPlotAxisFlags_NoLabel                                         1 /* 1 << 0 */
 #define ImPlotAxisFlags_NoGridLines                                     2 /* 1 << 1 */

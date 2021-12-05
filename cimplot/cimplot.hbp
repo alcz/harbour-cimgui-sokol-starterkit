@@ -8,6 +8,7 @@
 cimplot.cpp
 {cflag}-I./implot/
 hbimplot.cpp
+implots.cpp
 
 implot/implot.cpp
 implot/implot_items.cpp

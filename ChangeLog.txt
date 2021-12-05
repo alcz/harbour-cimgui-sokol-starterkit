@@ -3,6 +3,66 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-12-05 19:03 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimplot/implot.ch
+    + added translation rule for ImPlot:: namespace
+
+  + cimplot/implots.cpp
+    + added ImPlot graphing wrappers: their variants expecting float
+      arrays. Sorry for excessively long lines, enjoy plotting.
+
+      hb_imPlotBarsFloat  ( <cLabelID>, <pFloats>[, <nCount>, <nWidth>, <nShift>, <nOffset> ] )
+      hb_imPlotBarsFloat2 ( <cLabelID>, <pXs>, <pYs>[, <nCount>, <nWidth>, <nOffset> ] )
+      hb_imPlotBarsHFloat ( <cLabelID>, <pFloats>[, <nCount>, <nWidth>, <nShift>, <nOffset> ] )
+      hb_imPlotBarsHFloat2( <cLabelID>, <pXs>, <pYs>[, <nCount>, <nWidth>, <nOffset> ] )
+
+      hb_imPlotDigitalFloat( <cLabelID>, <pXs>, <pYs>[, <nCount>, <nOffset> ] )
+
+      hb_imPlotErrorBarsFloat3( <cLabelID>, <pXs>, <pYs>, <pErrs>[, <nCount>, <nWidth>, <nOffset> ] )
+      hb_imPlotErrorBarsFloat4( <cLabelID>, <pXs>, <pYs>, <pNeg>, <pPos>[, <nCount>, <nWidth>, <nOffset> ] )
+
+      hb_imPlotErrorBarsHFloat3( <cLabelID>, <pXs>, <pYs>, <pErrs>[, <nCount>, <nWidth>, <nOffset> ] )
+      hb_imPlotErrorBarsHFloat4( <cLabelID>, <pXs>, <pYs>, <pNeg>, <pPos>[, <nCount>, <nWidth>, <nOffset> ] )
+
+      hb_imPlotHLinesFloat( <cLabelID>, <pYs>[, <nCount>, <nOffset> ] )
+
+      hb_imPlotHeatMapFloat( <cLabelID>, <pFloats>[, <nRows>, <nCols>, <nScaleMin>, <nScaleMax>, <cLabelFmt>, <aBoundsMin>, <aBoundsMax> ] )
+
+      hb_imPlotHistogramFloat  ( <cLabelID>, <pFloats>[, <nCount>, <nBins>, <lCumulative>, <lDensity>, <aRange>, <lOutliers>, <nBarScale> ] )
+      hb_imPlotHistogram2DFloat( <cLabelID>, <pXs>, <pYs>[, <nCount>, <nXbins>, <nYbins>, <lDensity>, <aRange>, <lOutliers> ] )
+
+      hb_imPlotLineFloat ( <cLabelID>, <pFloats>[, <nCount>, <nXscale>, <nX0>, <nOffset> ] )
+      hb_imPlotLineFloat2( <cLabelID>, <pXs>, <pYs>[, <nCount>, <nOffset> ] )
+
+      hb_imPlotPieChartFloat( <cLabelIDs>, <pFloats>[, <nCount>, <nX>, <nY>, <nRadius>, <lNormalize>, <cLabelFmt>, <nAngle0> ] )
+
+      hb_imPlotScatterFloat ( <cLabelID>, <pFloats>[, <nCount>, <nXscale>, <nX0>, <nOffset> ] )
+      hb_imPlotScatterFloat2( <cLabelID>, <pXs>, <pYs>[, <nCount>, <nOffset> ] )
+
+      hb_imPlotShadedFloat ( <cLabelID>, <pFloats>[, <nCount>, <nYref>, <nXScale>, <nX0>, <nOffset> ] )
+      hb_imPlotShadedFloat2( <clabelID>, <pXs>, <pYs>[, <nCount>, <nYref>, <nOffset> ] )
+      hb_imPlotShadedFloat3( <cLabelID>, <pXs>, <pYs1>, <pYs2>[, <nCount>, <nOffset> ] )
+
+      hb_imPlotStairsFloat ( <cLabelID>, <pFloats>[, <nCount>, <nXScale>, <nX0>, <nOffset> ] )
+      hb_imPlotStairsFloat2( <cLabelID>, <pXs>, <pYs>[, <nCount>, <nOffset> ] )
+
+      hb_imPlotStemsFloat ( <cLabelID>, <pFloats>[, <nCount>, <nYref>, <nXscale>, <nX0>, <nOffset> ] )
+      hb_imPlotStemsFloat2( <cLabelID>, <pXs>, <pYs>[, <nCount>, <nYref>, <nOffset> ] )
+
+      hb_imPlotVLinesFloat( <cLabelID>, <pXs>[, <nCount>, <nOffset> ] )
+
+      hb_imPlotCalculateBinsFloat( <pFloats>[, <nCount>, <nMeth>, <aRange>, <nBinsOut>, <nWidthOut> ] )
+      hb_imPlotImMaxArrayFloat( <pFloats>[, nCount>] )
+      hb_imPlotImMeanFloat( <pFloats>[, <nCount>] )
+      hb_imPlotImMinArrayFloat( <pFloats>[, <nCount>] )
+      hb_imPlotImMinMaxArrayFloat( <pFloats>[, <nCount>] )
+      hb_imPlotImStdDevFloat( <pFloats>[, <nCount>] )
+      hb_imPlotImSumFloat( <pFloats>[, <nCount>] )
+
+  + examples/implot/line.prg
+  + examples/implot/hbmk.hbm
+    + first line plotted with Harbour + Dear ImGui + ImPlot
+
 2021-12-04 17:57 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui/cimgui.hbp
   + cimgui/hbimgui.h

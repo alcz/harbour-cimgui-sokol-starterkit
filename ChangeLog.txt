@@ -3,6 +3,26 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-12-06 12:58 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + meta-rebuild.hbp
+  + meta-rebuild-docking.hbp
+  * cimgui-docking/cimgui.hbp
+  * cimgui/cimgui.hbp
+  * cimplot/cimplot.hbp
+  * sokol/sokol.hbp
+    + updated project files, to be able to build or switch
+      to docking/other branch, just by doing either:
+      hbmk2 meta-rebuild.hbp
+      or
+      hbmk2 meta-rebuild-docking.hbp
+
+  * cimplot/hbimplot.cpp
+    * handle ImPlotTime struct using non-garbage-collected
+      pointer (unsafe!) 
+
+  + examples/implot/wmake.sh
+    + emscripten helper build script
+
 2021-12-05 19:03 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimplot/implot.ch
     + added translation rule for ImPlot:: namespace

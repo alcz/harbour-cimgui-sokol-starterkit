@@ -906,14 +906,14 @@ HB_FUNC( IMPLOTTICK_DESTROY )
 /* void ImPlotTime_FromDouble(ImPlotTime *pOut,double t) */
 HB_FUNC( IMPLOTTIME_FROMDOUBLE )
 {
-   ImPlotTime* pOut;
+   ImPlotTime* pOut = ( ImPlotTime* ) hb_parptr( 1 );
    double t = hb_parnd( 2 );
    ImPlotTime_FromDouble(pOut,t);
 }
 
 HB_FUNC( IMPLOTTIME_IMPLOTTIME_NIL )
 {
-   ImPlotTime_ImPlotTime_Nil();
+   hb_retptr( ImPlotTime_ImPlotTime_Nil() );
 }
 
 HB_FUNC( IMPLOTTIME_IMPLOTTIME_TIME_T )
@@ -1036,7 +1036,7 @@ HB_FUNC( IMPLOT_ADDTICKSTIME )
 /* void ImPlot_AddTime(ImPlotTime *pOut,const ImPlotTime t,ImPlotTimeUnit unit,int count) */
 HB_FUNC( IMPLOT_ADDTIME )
 {
-   ImPlotTime* pOut;
+   ImPlotTime* pOut = ( ImPlotTime* ) hb_parptr( 1 );
    const ImPlotTime t;
    ImPlotTimeUnit unit = ( ImPlotTimeUnit ) hb_parni( 3 );
    int count = hb_parni( 4 );
@@ -1476,7 +1476,7 @@ HB_FUNC( IMPLOT_CALCULATEBINS_U64PTR )
 /* void ImPlot_CeilTime(ImPlotTime *pOut,const ImPlotTime t,ImPlotTimeUnit unit) */
 HB_FUNC( IMPLOT_CEILTIME )
 {
-   ImPlotTime* pOut;
+   ImPlotTime* pOut = ( ImPlotTime* ) hb_parptr( 1 );
    const ImPlotTime t;
    ImPlotTimeUnit unit = ( ImPlotTimeUnit ) hb_parni( 3 );
    ImPlot_CeilTime(pOut,t,unit);
@@ -1545,7 +1545,7 @@ HB_FUNC( IMPLOT_COLORMAPSLIDER )
 /* void ImPlot_CombineDateTime(ImPlotTime *pOut,const ImPlotTime date_part,const ImPlotTime time_part) */
 HB_FUNC( IMPLOT_COMBINEDATETIME )
 {
-   ImPlotTime* pOut;
+   ImPlotTime* pOut = ( ImPlotTime* ) hb_parptr( 1 );
    const ImPlotTime date_part;
    const ImPlotTime time_part;
    ImPlot_CombineDateTime(pOut,date_part,time_part);
@@ -1816,7 +1816,7 @@ HB_FUNC( IMPLOT_FITTHISFRAME )
 /* void ImPlot_FloorTime(ImPlotTime *pOut,const ImPlotTime t,ImPlotTimeUnit unit) */
 HB_FUNC( IMPLOT_FLOORTIME )
 {
-   ImPlotTime* pOut;
+   ImPlotTime* pOut = ( ImPlotTime* ) hb_parptr( 1 );
    const ImPlotTime t;
    ImPlotTimeUnit unit = ( ImPlotTimeUnit ) hb_parni( 3 );
    ImPlot_FloorTime(pOut,t,unit);
@@ -3181,7 +3181,7 @@ HB_FUNC( IMPLOT_LINKNEXTPLOTLIMITS )
 /* void ImPlot_MakeTime(ImPlotTime *pOut,int year,int month,int day,int hour,int min,int sec,int us) */
 HB_FUNC( IMPLOT_MAKETIME )
 {
-   ImPlotTime* pOut;
+   ImPlotTime* pOut = ( ImPlotTime* ) hb_parptr( 1 );
    int year = hb_parni( 2 );
    int month = hb_parni( 3 );
    int day = hb_parni( 4 );
@@ -3195,7 +3195,7 @@ HB_FUNC( IMPLOT_MAKETIME )
 /* void ImPlot_MkGmtTime(ImPlotTime *pOut,struct tm* ptm) */
 HB_FUNC( IMPLOT_MKGMTTIME )
 {
-   ImPlotTime* pOut;
+   ImPlotTime* pOut = ( ImPlotTime* ) hb_parptr( 1 );
    struct tm* ptm = ( struct tm* ) hb_parptr( 2 );
    ImPlot_MkGmtTime(pOut,ptm);
 }
@@ -3203,7 +3203,7 @@ HB_FUNC( IMPLOT_MKGMTTIME )
 /* void ImPlot_MkLocTime(ImPlotTime *pOut,struct tm* ptm) */
 HB_FUNC( IMPLOT_MKLOCTIME )
 {
-   ImPlotTime* pOut;
+   ImPlotTime* pOut = ( ImPlotTime* ) hb_parptr( 1 );
    struct tm* ptm = ( struct tm* ) hb_parptr( 2 );
    ImPlot_MkLocTime(pOut,ptm);
 }
@@ -6997,7 +6997,7 @@ HB_FUNC( IMPLOT_RESETCTXFORNEXTSUBPLOT )
 /* void ImPlot_RoundTime(ImPlotTime *pOut,const ImPlotTime t,ImPlotTimeUnit unit) */
 HB_FUNC( IMPLOT_ROUNDTIME )
 {
-   ImPlotTime* pOut;
+   ImPlotTime* pOut = ( ImPlotTime* ) hb_parptr( 1 );
    const ImPlotTime t;
    ImPlotTimeUnit unit = ( ImPlotTimeUnit ) hb_parni( 3 );
    ImPlot_RoundTime(pOut,t,unit);

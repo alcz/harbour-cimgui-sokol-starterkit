@@ -1,4 +1,7 @@
 -hblib
+
+-o${hb_name}
+
 cimgui.cpp
 {cflag}-I./imgui/
 hbimgui.cpp

@@ -1,5 +1,7 @@
 -hblib
 
+-o${hb_name}
+
 -depkeyhead=cimgui:cimgui.h
 -depincpathlocal=cimgui:../cimgui
 -cflag=-DSOKOL_NO_ENTRY

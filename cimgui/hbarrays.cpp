@@ -205,7 +205,7 @@ HB_FUNC( HB_IGINTSPUSH )
 {
    PHB_IG_INTS pInts = hb_ig_ints_par( 1 );
    int * values = ( pInts ? pInts->pBuf : NULL );
-   int value = ( float ) hb_parni( 2 );
+   int value = hb_parni( 2 );
 
    if( values )
    {

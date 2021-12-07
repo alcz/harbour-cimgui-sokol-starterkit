@@ -3,6 +3,30 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-12-07 08:57 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui/hbarrays.cpp
+  * ChangeLog.txt
+    ! correct hb_igIntsPush() c&p typos
+
+  * sokol/hbsokol.c
+    + expose sapp_quit(), sapp_request_quit(), sapp_cancel_quit()
+      to .prg code
+
+    * handle SAPP_EVENTTYPE_QUIT_REQUESTED event, add ImQuit()
+      procedure to your .prg code to get notified about it
+      On desktop platform you can call sapp_cancel_quit() from
+      the ImQuit() to prevent exiting. For example if
+      [x] close button was clicked and you wan to display
+      some confirmation popup. This can be also used to hide
+      ImGui window instead of closing if your application is
+      multithreaded, where another window can be Harbour GT too.
+
+   + examples/procdbf.prg
+   + examples/test.dbf
+     + added multi-threading example of DO WHILE ! EoF() ; DBSkip()
+       file processing using codeblock and statics to interact
+       with the display
+
 2021-12-06 12:58 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + meta-rebuild.hbp
   + meta-rebuild-docking.hbp
@@ -99,7 +123,7 @@
     + added functions push new value to the set and remove the
       oldest
       - hb_igFloatsPush( <pFloats>, <nFloat>, <lUseCursor> )
-      - hb_igIntsPush( <pFloats>, <nInt>, <lUseCursor> )
+      - hb_igIntsPush( <pInts>, <nInt>, <lUseCursor> )
       If the set is not fully populated <lUseCursor> = .T.
       may be used to start from the beginning of empty space.
 

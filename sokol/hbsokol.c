@@ -79,6 +79,16 @@ static void cleanup(void) {
 }
 
 static void event(const sapp_event* ev) {
+    if( ev->type == SAPP_EVENTTYPE_QUIT_REQUESTED )
+    {
+       PHB_DYNS pDynSym = NULL;
+       if( ( pDynSym = hb_dynsymFindName( "IMQUIT" ) ) )
+       {
+          hb_vmPushDynSym( pDynSym );
+          hb_vmPushNil();
+          hb_vmProc( 0 );
+       }
+    }
     simgui_handle_event(ev);
 }
 
@@ -100,6 +110,26 @@ HB_FUNC( HB_SOKOL_IMGUINODEFAULTFONT )
 
    s_bNoDefaultFont = hb_parl( 1 );
    hb_retl( bRet );
+}
+
+HB_FUNC( HB_SOKOL_HWND )
+{
+   hb_retptr( HB_UNCONST( sapp_win32_get_hwnd() ) );
+}
+
+HB_FUNC( SAPP_QUIT )
+{
+   sapp_quit();
+}
+
+HB_FUNC( SAPP_REQUEST_QUIT )
+{
+   sapp_request_quit();
+}
+
+HB_FUNC( SAPP_CANCEL_QUIT )
+{
+   sapp_cancel_quit();
 }
 
 HB_FUNC( SAPP_RUN_DEFAULT )

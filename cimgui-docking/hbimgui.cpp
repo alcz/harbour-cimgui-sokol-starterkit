@@ -3981,6 +3981,7 @@ HB_FUNC( IGINPUTSCALARN )
 HB_FUNC( IGINPUTTEXT )
 {
    const char* label = hb_parcx( 1 );
+   HB_SIZE item_size = hb_parclen( 2 );
    char* buf = hb_itemGetC( hb_paramError( 2 ) );
    size_t buf_size = ( size_t ) hb_parnl( 3 );
    ImGuiInputTextFlags flags = ( ImGuiInputTextFlags ) hb_parni( 4 );
@@ -3988,10 +3989,10 @@ HB_FUNC( IGINPUTTEXT )
    void* user_data = ( void* ) hb_parptr( 6 );
    HB_BOOL bResizable = ( flags & ImGuiInputTextFlags_CallbackResize ) != 0;
    HB_IG_TEXT_DATA text_data;
-   if( hb_parclen( 2 ) < buf_size )
+   if( item_size < buf_size )
       buf = ( char * ) hb_xrealloc( buf, buf_size + 1 );
    else if( buf_size <= 0 )
-      buf_size = hb_parclen( 2 );
+      buf_size = item_size;
    buf_size++;
    if( bResizable )
    {
@@ -4018,6 +4019,7 @@ HB_FUNC( IGINPUTTEXTEX )
 {
    const char* label = hb_parcx( 1 );
    const char* hint = hb_parcx( 2 );
+   HB_SIZE item_size = hb_parclen( 3 );
    char* buf = hb_itemGetC( hb_paramError( 3 ) );
    int buf_size = hb_parni( 4 );
    PHB_ITEM psize_arg = hb_param( 5, HB_IT_ARRAY );
@@ -4027,10 +4029,10 @@ HB_FUNC( IGINPUTTEXTEX )
    void* user_data = ( void* ) hb_parptr( 8 );
    HB_BOOL bResizable = ( flags & ImGuiInputTextFlags_CallbackResize ) != 0;
    HB_IG_TEXT_DATA text_data;
-   if( hb_parclen( 3 ) < buf_size )
+   if( item_size < buf_size )
       buf = ( char * ) hb_xrealloc( buf, buf_size + 1 );
    else if( buf_size <= 0 )
-      buf_size = hb_parclen( 3 );
+      buf_size = item_size;
    buf_size++;
    if( bResizable )
    {
@@ -4056,6 +4058,7 @@ HB_FUNC( IGINPUTTEXTEX )
 HB_FUNC( IGINPUTTEXTMULTILINE )
 {
    const char* label = hb_parcx( 1 );
+   HB_SIZE item_size = hb_parclen( 2 );
    char* buf = hb_itemGetC( hb_paramError( 2 ) );
    size_t buf_size = ( size_t ) hb_parnl( 3 );
    PHB_ITEM psize = hb_param( 4, HB_IT_ARRAY );
@@ -4065,10 +4068,10 @@ HB_FUNC( IGINPUTTEXTMULTILINE )
    void* user_data = ( void* ) hb_parptr( 7 );
    HB_BOOL bResizable = ( flags & ImGuiInputTextFlags_CallbackResize ) != 0;
    HB_IG_TEXT_DATA text_data;
-   if( hb_parclen( 2 ) < buf_size )
+   if( item_size < buf_size )
       buf = ( char * ) hb_xrealloc( buf, buf_size + 1 );
    else if( buf_size <= 0 )
-      buf_size = hb_parclen( 2 );
+      buf_size = item_size;
    buf_size++;
    if( bResizable )
    {
@@ -4095,6 +4098,7 @@ HB_FUNC( IGINPUTTEXTWITHHINT )
 {
    const char* label = hb_parcx( 1 );
    const char* hint = hb_parcx( 2 );
+   HB_SIZE item_size = hb_parclen( 3 );
    char* buf = hb_itemGetC( hb_paramError( 3 ) );
    size_t buf_size = ( size_t ) hb_parnl( 4 );
    ImGuiInputTextFlags flags = ( ImGuiInputTextFlags ) hb_parni( 5 );
@@ -4102,10 +4106,10 @@ HB_FUNC( IGINPUTTEXTWITHHINT )
    void* user_data = ( void* ) hb_parptr( 7 );
    HB_BOOL bResizable = ( flags & ImGuiInputTextFlags_CallbackResize ) != 0;
    HB_IG_TEXT_DATA text_data;
-   if( hb_parclen( 3 ) < buf_size )
+   if( item_size < buf_size )
       buf = ( char * ) hb_xrealloc( buf, buf_size + 1 );
    else if( buf_size <= 0 )
-      buf_size = hb_parclen( 3 );
+      buf_size = item_size;
    buf_size++;
    if( bResizable )
    {

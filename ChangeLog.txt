@@ -3,6 +3,15 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-12-08 01:10 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * imgui/hbimgui.cpp
+  * cimgui/hbimgui-docking.cpp
+    ! fix MT race condition with referring to the item length
+      returned by hb_parclen() after copying it. It's obvious
+      if you actually think about it: hb_parclen() unreferences
+      for reading so it should be okay to do it before
+      hb_itemGetC() instead. Also fixed in the generator.prg 
+
 2021-12-07 08:57 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui/hbarrays.cpp
   * ChangeLog.txt
@@ -16,7 +25,7 @@
       procedure to your .prg code to get notified about it
       On desktop platform you can call sapp_cancel_quit() from
       the ImQuit() to prevent exiting. For example if
-      [x] close button was clicked and you wan to display
+      [x] close button was clicked and you want to display
       some confirmation popup. This can be also used to hide
       ImGui window instead of closing if your application is
       multithreaded, where another window can be Harbour GT too.

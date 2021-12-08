@@ -4001,6 +4001,14 @@ HB_FUNC( IGINPUTTEXT )
       user_data = &text_data;
       callback = &hb_ig_text_cb;
    }
+   else
+   {
+      /* make this behaviour a flag(?), don't remove spaces on PICTURE-d inputs */
+      HB_SIZE n = buf_size - 1;
+      while( n >= 1 && buf[ n - 1 ] == ' ' )
+         n--;
+      buf[ n ] = '\0';
+   }
    bool ret = igInputText(label,buf,buf_size,flags,callback,user_data);
    if( bResizable && text_data.pNewBuf )
    {
@@ -4009,7 +4017,16 @@ HB_FUNC( IGINPUTTEXT )
          hb_itemPutNI( hb_param( 3, HB_IT_ANY ), text_data.nBufSize - 1 );
    }
    if( igIsItemEdited() )
+   {
+      if( ! bResizable )
+      {
+         HB_SIZE n = strlen( buf );
+         while( n < buf_size - 1 )
+            buf[ n++ ] = ' ';
+         buf[ n ] = '\0';
+      }
       hb_itemPutC( hb_paramError( 2 ), buf );
+   }
    hb_xfree( buf );
    hb_retl( ret );
 }
@@ -4041,6 +4058,14 @@ HB_FUNC( IGINPUTTEXTEX )
       user_data = &text_data;
       callback = &hb_ig_text_cb;
    }
+   else
+   {
+      /* make this behaviour a flag(?), don't remove spaces on PICTURE-d inputs */
+      HB_SIZE n = buf_size - 1;
+      while( n >= 1 && buf[ n - 1 ] == ' ' )
+         n--;
+      buf[ n ] = '\0';
+   }
    bool ret = igInputTextEx(label,hint,buf,buf_size,size_arg,flags,callback,user_data);
    if( bResizable && text_data.pNewBuf )
    {
@@ -4049,7 +4074,16 @@ HB_FUNC( IGINPUTTEXTEX )
          hb_itemPutNI( hb_param( 4, HB_IT_ANY ), text_data.nBufSize - 1 );
    }
    if( igIsItemEdited() )
+   {
+      if( ! bResizable )
+      {
+         HB_SIZE n = strlen( buf );
+         while( n < buf_size - 1 )
+            buf[ n++ ] = ' ';
+         buf[ n ] = '\0';
+      }
       hb_itemPutC( hb_paramError( 3 ), buf );
+   }
    hb_xfree( buf );
    hb_retl( ret );
 }
@@ -4080,6 +4114,14 @@ HB_FUNC( IGINPUTTEXTMULTILINE )
       user_data = &text_data;
       callback = &hb_ig_text_cb;
    }
+   else
+   {
+      /* make this behaviour a flag(?), don't remove spaces on PICTURE-d inputs */
+      HB_SIZE n = buf_size - 1;
+      while( n >= 1 && buf[ n - 1 ] == ' ' )
+         n--;
+      buf[ n ] = '\0';
+   }
    bool ret = igInputTextMultiline(label,buf,buf_size,size,flags,callback,user_data);
    if( bResizable && text_data.pNewBuf )
    {
@@ -4088,7 +4130,16 @@ HB_FUNC( IGINPUTTEXTMULTILINE )
          hb_itemPutNI( hb_param( 3, HB_IT_ANY ), text_data.nBufSize - 1 );
    }
    if( igIsItemEdited() )
+   {
+      if( ! bResizable )
+      {
+         HB_SIZE n = strlen( buf );
+         while( n < buf_size - 1 )
+            buf[ n++ ] = ' ';
+         buf[ n ] = '\0';
+      }
       hb_itemPutC( hb_paramError( 2 ), buf );
+   }
    hb_xfree( buf );
    hb_retl( ret );
 }
@@ -4118,6 +4169,14 @@ HB_FUNC( IGINPUTTEXTWITHHINT )
       user_data = &text_data;
       callback = &hb_ig_text_cb;
    }
+   else
+   {
+      /* make this behaviour a flag(?), don't remove spaces on PICTURE-d inputs */
+      HB_SIZE n = buf_size - 1;
+      while( n >= 1 && buf[ n - 1 ] == ' ' )
+         n--;
+      buf[ n ] = '\0';
+   }
    bool ret = igInputTextWithHint(label,hint,buf,buf_size,flags,callback,user_data);
    if( bResizable && text_data.pNewBuf )
    {
@@ -4126,7 +4185,16 @@ HB_FUNC( IGINPUTTEXTWITHHINT )
          hb_itemPutNI( hb_param( 4, HB_IT_ANY ), text_data.nBufSize - 1 );
    }
    if( igIsItemEdited() )
+   {
+      if( ! bResizable )
+      {
+         HB_SIZE n = strlen( buf );
+         while( n < buf_size - 1 )
+            buf[ n++ ] = ' ';
+         buf[ n ] = '\0';
+      }
       hb_itemPutC( hb_paramError( 3 ), buf );
+   }
    hb_xfree( buf );
    hb_retl( ret );
 }

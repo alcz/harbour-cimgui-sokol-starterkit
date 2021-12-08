@@ -61,9 +61,9 @@ STATIC FUNCTION GoingOn()
                hb_igFloatsPush( pPlotAge, TEST->AGE, .T. )
                /* pretend our database is two oceans away */
                hb_idleSleep( 0.1 / IIF( lTurbo, 10, 1 ) )
-               cFirst := RTrim( TEST->FIRST )
-               cLast  := RTrim( TEST->LAST )
-               cZip   := RTrim( TEST->ZIP )
+               cFirst := TEST->FIRST
+               cLast  := TEST->LAST
+               cZip   := TEST->ZIP
                DBSkip()
             ENDDO
             CLOSE

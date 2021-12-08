@@ -9,6 +9,12 @@
 
 #include "hbimgui.h"
 
+/* don't use ever misleading "AlwaysInsertMode", also it will be removed
+   from future versions of Dear imgui */
+#ifndef ImGuiInputTextFlags_AlwaysOverwrite
+#define ImGuiInputTextFlags_AlwaysOverwrite ImGuiInputTextFlags_AlwaysInsertMode
+#endif
+
 typedef struct _HB_IG_TEXT_DATA
 {
     char * pNewBuf;

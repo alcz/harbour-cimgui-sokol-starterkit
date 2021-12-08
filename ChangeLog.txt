@@ -3,6 +3,22 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-12-08 13:37 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * imgui/hbimgui.cpp
+  * cimgui/hbimgui-docking.cpp
+    * implement decent igInputText() behaviour for non resizable
+      input boxes, so they feel nice by default, even without
+      emulating Clipper GET system
+
+  * examples/procdbf.prg
+    * don't RTrim() fields coming from the database, they
+      now play nicely with default igInputText() widget
+
+  * cimgui/hbhlp.c
+    + added a note and compatibility define for Overwrite
+      igInputText flag (somewhat misleading in older versions
+      of Dear imgui)
+
 2021-12-08 01:10 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * imgui/hbimgui.cpp
   * cimgui/hbimgui-docking.cpp

@@ -11,6 +11,42 @@
 
 #include "../cimgui/hbhlp.c"
 
+/* void ImGuiListClipper_Begin(ImGuiListClipper* self,int items_count,float items_height) */
+HB_FUNC( IMGUILISTCLIPPER_BEGIN )
+{
+   ImGuiListClipper* pOut = ( ImGuiListClipper* ) hb_parptr( 1 );
+   int items_count = hb_parni( 2 );
+   float items_height = ( float ) hb_parnd( 3 );
+   ImGuiListClipper_Begin(pOut,items_count,items_height);
+}
+
+/* void ImGuiListClipper_End(ImGuiListClipper* self) */
+HB_FUNC( IMGUILISTCLIPPER_END )
+{
+   ImGuiListClipper* pOut = ( ImGuiListClipper* ) hb_parptr( 1 );
+   ImGuiListClipper_End(pOut);
+}
+
+HB_FUNC( IMGUILISTCLIPPER_IMGUILISTCLIPPER )
+{
+   hb_retptr( ImGuiListClipper_ImGuiListClipper() );
+}
+
+/* bool ImGuiListClipper_Step(ImGuiListClipper* self) */
+HB_FUNC( IMGUILISTCLIPPER_STEP )
+{
+   ImGuiListClipper* pOut = ( ImGuiListClipper* ) hb_parptr( 1 );
+   bool ret = ImGuiListClipper_Step(pOut);
+   hb_retl( ret );
+}
+
+/* void ImGuiListClipper_destroy(ImGuiListClipper* self) */
+HB_FUNC( IMGUILISTCLIPPER_DESTROY )
+{
+   ImGuiListClipper* pOut = ( ImGuiListClipper* ) hb_parptr( 1 );
+   ImGuiListClipper_destroy(pOut);
+}
+
 /* const ImGuiPayload* igAcceptDragDropPayload(const char* type,ImGuiDragDropFlags flags) */
 HB_FUNC( IGACCEPTDRAGDROPPAYLOAD )
 {
@@ -7566,5 +7602,57 @@ HB_FUNC( IGVALUE_FLOAT )
    float v = ( float ) hb_parnd( 2 );
    const char* float_format = hb_parcx( 3 );
    igValue_Float(prefix,v,float_format);
+}
+
+static void s_ImGuiListClipper_getDisplayStart( ImGuiListClipper * p )
+{
+   int ret = p->DisplayStart;
+   hb_retni( ret );
+}
+
+static void s_ImGuiListClipper_getDisplayEnd( ImGuiListClipper * p )
+{
+   int ret = p->DisplayEnd;
+   hb_retni( ret );
+}
+
+static void s_ImGuiListClipper_getItemsCount( ImGuiListClipper * p )
+{
+   int ret = p->ItemsCount;
+   hb_retni( ret );
+}
+
+static void s_ImGuiListClipper_getStepNo( ImGuiListClipper * p )
+{
+   int ret = p->StepNo;
+   hb_retni( ret );
+}
+
+static void s_ImGuiListClipper_getItemsFrozen( ImGuiListClipper * p )
+{
+   int ret = p->ItemsFrozen;
+   hb_retni( ret );
+}
+
+static void s_ImGuiListClipper_getItemsHeight( ImGuiListClipper * p )
+{
+   float ret = p->ItemsHeight;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiListClipper_getStartPosY( ImGuiListClipper * p )
+{
+   float ret = p->StartPosY;
+   hb_retnd( ( double ) ret );
+}
+
+static void(*s_ImGuiListClipper_fields[])( ImGuiListClipper * ) = { s_ImGuiListClipper_getDisplayStart, s_ImGuiListClipper_getDisplayEnd, s_ImGuiListClipper_getItemsCount, s_ImGuiListClipper_getStepNo, s_ImGuiListClipper_getItemsFrozen, s_ImGuiListClipper_getItemsHeight, s_ImGuiListClipper_getStartPosY };
+
+HB_FUNC( IMGUILISTCLIPPER_GET )
+{
+   ImGuiListClipper * p = ( ImGuiListClipper * ) hb_parptr( 1 );
+   int n = hb_parni( 2 ) - 1;
+   if( p && n >= 0 && n < 7 )
+      s_ImGuiListClipper_fields[ n ]( p );
 }
 

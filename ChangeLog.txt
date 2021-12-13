@@ -3,6 +3,11 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-12-13 15:51 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * examples/browse1.prg
+  * examples/plotfloat.prg
+    ! modified or fixed for emscripten/WASM builds
+
 2021-12-13 11:55 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + cimgui/hbimstru.ch
   * cimgui/hbimgui.cpp

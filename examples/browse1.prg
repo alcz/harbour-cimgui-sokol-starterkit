@@ -14,16 +14,25 @@ REQUEST HB_MEMIO
 
 PROCEDURE MAIN
 
-   hb_cdpSelect("UTF8EX")
-
+#ifdef __PLATFORM__WEB
+   LOCAL cDBF
+#pragma __binarystreaminclude "test.dbf"|cDBF := %s
+   hb_memoWrit( "mem:test.dbf", cDBF )
+#else
    hb_vfCopyFile( "test.dbf", "mem:test.dbf" )
    USE test ALIAS test SHARED
+#endif
+
    USE mem:test ALIAS testmem EXCLUSIVE NEW
+
+   hb_cdpSelect("UTF8EX")
 
    sapp_run_default( "Simple databrowser", 800, 600 )
 
 #ifdef __PLATFORM__WEB
-   ImFrame()
+   ImFrame()  /* dummy calls for emscripten, to be removed when those */
+   HB_MEMIO() /* functions are properly requested from .c code        */
+   DBFNTX()
 #endif
    RETURN
 
@@ -34,6 +43,7 @@ PROCEDURE ImFrame
    ImGui::SetNextWindowSize( {650, 350}, ImGuiCond_Once )
    ImGui::Begin( ".dbf browse", 0, ImGuiWindowFlags_None )
 
+#ifndef __PLATFORM__WEB
    IF ImGui::CheckBox("use in-memory .dbf", @lMem )
       IF lMem
          DBSelectArea("TESTMEM")
@@ -41,6 +51,7 @@ PROCEDURE ImFrame
          DBSelectArea("TEST")
       ENDIF
    ENDIF
+#endif
 
    ImGui::CheckBox("fit rows to window", @lFit )
 

@@ -1,0 +1,12 @@
+../../cimgui/cimgui.hbc
+../../sokol/sokol.hbc
+../../sokol/sokolimg.hbc
+
+{win}-gtgui
+{abstr}-gtnul
+
+-gui
+
+{win|abstr}-fullstatic
+
+{gcc|mingw|mingw64}-lstdc++

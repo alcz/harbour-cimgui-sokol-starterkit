@@ -1,0 +1,10 @@
+-hblib
+
+-o${hb_name}
+
+-depkeyhead=cimgui:cimgui.h
+-depincpathlocal=cimgui:../cimgui
+
+hbimg.c
+hbimgwrap.cpp
+stb/stb_image.c

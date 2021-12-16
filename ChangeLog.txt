@@ -3,6 +3,42 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-12-16 11:22 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + sokol/hbimg.c
+  + sokol/hbimgwrap.cpp
+  + sokol/sokolimg.hbc
+  + sokol/sokolimg.hbp
+  + sokol/stb/stb_image.c
+  + sokol/stb/stb_image.h
+  * meta-rebuild-docking.hbp
+  * meta-rebuild.hbp
+    + added image/texture functionality based on
+      sokol and stb_image structures. If you would like
+      to use this self-contained functionality, reference
+      sokolimg.hbc in your project.
+
+      Texture creation goes like this:
+      nHandle := hb_sokol_img2TextureRGBA32( <cImageBuf>,
+                                             @<nWidth>,
+                                             @<nHeight> )
+
+      Added ig* function variants:
+      hb_sokol_igImage( <nHandle>, ... )
+      hb_sokol_igImageButton( <nHandle>, ... )
+      hb_sokol_igImageButtonEx( <nId>, <nHandle> )
+
+      Destroy a texture you're not using anymore:
+      hb_sokol_imgDestroy( <nHandle> )
+
+      Currently these are not garbage-collected.
+      GC related thoughts are commented in sokol/hbimg.c
+
+  + examples/images/hello.prg
+  + examples/images/hbmk.hbm
+  + examples/images/harbour-2016-64x64.png
+  + examples/images/harbour-button.png
+    + example showing some Harbour logos
+
 2021-12-13 15:51 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * examples/browse1.prg
   * examples/plotfloat.prg

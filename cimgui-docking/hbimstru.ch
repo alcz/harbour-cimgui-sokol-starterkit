@@ -17,3 +17,7 @@
 #xtranslate ImGuiListClipper( <p> ):ItemsFrozen => ImGuiListClipper_Get( <p>, 5 )
 #xtranslate ImGuiListClipper( <p> ):ItemsHeight => ImGuiListClipper_Get( <p>, 6 )
 #xtranslate ImGuiListClipper( <p> ):StartPosY => ImGuiListClipper_Get( <p>, 7 )
+#xtranslate ImGuiListClipper( <p> ):Begin( [ <args,...> ] ) => ImGuiListClipper_Begin( <p>[, <args> ] )
+#xtranslate ImGuiListClipper( <p> ):End( [ <args,...> ] ) => ImGuiListClipper_End( <p>[, <args> ] )
+#xtranslate ImGuiListClipper( <p> ):Step( [ <args,...> ] ) => ImGuiListClipper_Step( <p>[, <args> ] )
+#xtranslate ImGuiListClipper( <p> ):destroy( [ <args,...> ] ) => ImGuiListClipper_destroy( <p>[, <args> ] )

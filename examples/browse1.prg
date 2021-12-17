@@ -101,9 +101,9 @@ STATIC PROCEDURE Browser( lFit )
       ImGui::TableSetupScrollFreeze( 3, 1 /* "regular" header row needs a freeze! */ )
       ImGui::TableHeadersRow()
 
-      ImGuiListClipper_Begin( pClip, RecCount() )
+      ImGuiListClipper( pClip ):Begin( RecCount() )
 
-      DO WHILE ImGuiListClipper_Step( pClip )
+      DO WHILE ImGuiListClipper( pClip ):Step()
 
          FOR i := ImGuiListClipper( pClip ):DisplayStart + 1 ;
                TO ImGuiListClipper( pClip ):DisplayEnd
@@ -142,7 +142,7 @@ STATIC PROCEDURE Browser( lFit )
          NEXT
       ENDDO
 
-      ImGuiListClipper_destroy( pClip ) /* TODO: GC collectible pointer */
+      ImGuiListClipper( pClip ):destroy() /* TODO: GC collectible pointer */
 
       ImGui::EndTable()
 

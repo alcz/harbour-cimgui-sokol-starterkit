@@ -3,6 +3,14 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2021-12-17 22:15 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-docking/hbimstru.ch
+  * cimgui/hbimstru.ch
+  * examples/browse1.prg
+    * settle on executing Dear imgui struct "methods"
+      using similar syntax that was commited for field
+      access
+
 2021-12-16 11:22 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + sokol/hbimg.c
   + sokol/hbimgwrap.cpp

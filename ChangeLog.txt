@@ -3,6 +3,28 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2022-06-17 14:12 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  + cimgui/hbctcalw.prg
+    + added initial version of date picker: hb_igDatePicker()
+
+  * examples/loadfont.prg
+    + added example use of hb_igDatePicker() here
+
+  * cimgui/cimgui.hbp
+  * cimgui-docking/cimgui.hbp
+  * examples/hbmk.hbm
+    * project files updated, reference hbct.hbc for calendar routines
+
+  * cimgui/hbhlp.c
+  + cimgui/hbhlpinl.c
+    + moved static inline helper functions to separate file
+
+  * cimgui/hbfunc_.c
+    + added hb_igGetStyleColorVec4( <aRet>, <nStyleCol> )
+      helper which returns into passed array instead
+      of pointer to a struct like
+      igGetStyleColorVec4( <nStyleCol> ) -> <p>
+
 2021-12-17 22:15 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui-docking/hbimstru.ch
   * cimgui/hbimstru.ch

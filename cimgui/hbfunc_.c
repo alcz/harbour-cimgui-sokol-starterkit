@@ -99,3 +99,16 @@ HB_FUNC( HB_IGCONFIGFLAGSDEL )
    hb_retni( io->ConfigFlags );
    io->ConfigFlags &= iFlags;
 }
+
+#include "hbhlpinl.c"
+
+/* returns to array that is passed by reference as 1st param
+   unlike igGetStyleColorVec4 which returns a pointer to a struct
+ */
+HB_FUNC( HB_IGGETSTYLECOLORVEC4 )
+{
+   PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
+   ImGuiCol idx = ( ImGuiCol ) hb_parni( 2 );
+   const ImVec4* ret = igGetStyleColorVec4(idx);
+   _ImVec4toA( ret, pOutItem );
+}

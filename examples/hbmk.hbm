@@ -1,6 +1,7 @@
 ../cimgui/cimgui.hbc
 ../sokol/sokol.hbc
 hbmemio.hbc
+hbct.hbc
 
 {win}-gtgui
 {abstr}-gtnul

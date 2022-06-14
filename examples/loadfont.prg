@@ -47,7 +47,7 @@ PROCEDURE ImInit
    RETURN
 
 PROCEDURE ImFrame
-   STATIC counter := 0, s, c
+   STATIC counter := 0, s, c, d
 
 #ifdef ImGuiConfigFlags_DockingEnable
    igDockSpaceOverViewPort()
@@ -76,6 +76,13 @@ PROCEDURE ImFrame
    igInputTextWithHint("input text (w/ hint)", "enter text here", @c, 200 );
 
    igText("UPPER() by Harbour -> " + Upper( c ) )
+
+   IF d == NIL
+      d := Date()
+   ENDIF
+
+   hb_igDatePicker( "Pick a date", @d )
+   hb_igDatePicker( "or if Monday starts your week", @d,, 2 )
 
    igEnd()
 

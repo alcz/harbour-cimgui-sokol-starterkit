@@ -5,6 +5,7 @@
 cimgui.cpp
 {cflag}-I./imgui/
 hbimgui.cpp
+../cimgui/hbctcalw.prg
 ../cimgui/hbfunc.prg
 ../cimgui/hbfunc_.c
 ../cimgui/exstyles.cpp

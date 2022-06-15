@@ -3,7 +3,24 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
-2022-06-17 14:12 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+2022-06-17 20:46 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * sokol/sokol.hbc
+    ! fix Linux builds, typoed libm: lm -> m
+
+    ! on Linux explicitly add pthread to lib list, lack of it
+      specified led to very odd runtime behaviour - in my case
+      a deadlock - application window was never shown.
+
+      strace -k ./testapp output was something along querying
+      libGL X extensions:
+      > /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0(glXQueryExtensionsString+0x12) [0x]
+      > testapp(_sapp_linux_run+0x8c0) [0xda510]
+      > testapp(HB_FUN_SAPP_RUN_DEFAULT+0xa7) [0xd3747]
+      [...]
+      > testapp(_start+0x2a) [0x1509a]
+      futex(0x557645087e10, FUTEX_WAIT_PRIVATE, 2, NULL
+
+2022-06-14 14:12 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   + cimgui/hbctcalw.prg
     + added initial version of date picker: hb_igDatePicker()
 

@@ -13,7 +13,8 @@ libpaths=./
 {linux}libs=Xcursor
 {linux}libs=GL
 {linux}libs=dl
-{linux}libs=lm
+{linux}libs=m
+{linux}libs=pthread
 
 {win}libs=dxgi
 {win}libs=d3d11

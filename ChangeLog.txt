@@ -3,6 +3,19 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2022-10-02 01:28 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * cimgui/hbimgui.cpp
+    * make p_open parameter NIL-able. Now when functions like
+      igBegin( "New window", NIL ) are called, instead of
+      igBegin( "New window", @lOpened ), this will make the [x]
+      closing button disappear. Previously it was always visible.
+
+  * cimgui-docking/hbimgui.cpp
+    * newer cimgui releases changed overloaded function names
+      by adding an underscore. For example igComboStr() would be now
+      igCombo_Str(). I don't like that. Generator will now prevent
+      that on .prg level, so igComboStr() is back.
+
 2022-10-01 10:54 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   + cimgui-docking/hbimgui.h
     + added file that just includes ../cimgui/hbimgui.h,

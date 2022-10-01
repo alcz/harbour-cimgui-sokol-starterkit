@@ -104,7 +104,7 @@ HB_FUNC( IGBEGIN )
 {
    const char* name = hb_parcx( 1 );
    bool /* @ */ _p_open = hb_parl( 2 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 2 ) ? NULL : &_p_open );
    ImGuiWindowFlags flags = ( ImGuiWindowFlags ) hb_parni( 3 );
    bool ret = igBegin(name,p_open,flags);
    hb_itemPutL( hb_paramError( 2 ), _p_open );
@@ -112,7 +112,7 @@ HB_FUNC( IGBEGIN )
 }
 
 /* bool igBeginChild_Str(const char* str_id,const ImVec2 size,bool border,ImGuiWindowFlags flags) */
-HB_FUNC( IGBEGINCHILD_STR )
+HB_FUNC( IGBEGINCHILDSTR )
 {
    const char* str_id = hb_parcx( 1 );
    PHB_ITEM psize = hb_param( 2, HB_IT_ARRAY );
@@ -124,7 +124,7 @@ HB_FUNC( IGBEGINCHILD_STR )
 }
 
 /* bool igBeginChild_ID(ImGuiID id,const ImVec2 size,bool border,ImGuiWindowFlags flags) */
-HB_FUNC( IGBEGINCHILD_ID )
+HB_FUNC( IGBEGINCHILDID )
 {
    ImGuiID id = ( ImGuiID ) hb_parni( 1 );
    PHB_ITEM psize = hb_param( 2, HB_IT_ARRAY );
@@ -222,7 +222,7 @@ HB_FUNC( IGBEGINDOCKED )
 {
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 1 );
    bool /* @ */ _p_open = hb_parl( 2 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 2 ) ? NULL : &_p_open );
    igBeginDocked(window,p_open);
    hb_itemPutL( hb_paramError( 2 ), _p_open );
 }
@@ -351,7 +351,7 @@ HB_FUNC( IGBEGINPOPUPMODAL )
 {
    const char* name = hb_parcx( 1 );
    bool /* @ */ _p_open = hb_parl( 2 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 2 ) ? NULL : &_p_open );
    ImGuiWindowFlags flags = ( ImGuiWindowFlags ) hb_parni( 3 );
    bool ret = igBeginPopupModal(name,p_open,flags);
    hb_itemPutL( hb_paramError( 2 ), _p_open );
@@ -384,7 +384,7 @@ HB_FUNC( IGBEGINTABITEM )
 {
    const char* label = hb_parcx( 1 );
    bool /* @ */ _p_open = hb_parl( 2 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 2 ) ? NULL : &_p_open );
    ImGuiTabItemFlags flags = ( ImGuiTabItemFlags ) hb_parni( 3 );
    bool ret = igBeginTabItem(label,p_open,flags);
    hb_itemPutL( hb_paramError( 2 ), _p_open );
@@ -636,7 +636,7 @@ HB_FUNC( IGCHECKBOX )
 }
 
 /* bool igCheckboxFlags_IntPtr(const char* label,int* flags,int flags_value) */
-HB_FUNC( IGCHECKBOXFLAGS_INTPTR )
+HB_FUNC( IGCHECKBOXFLAGSINTPTR )
 {
    const char* label = hb_parcx( 1 );
    int /* @ */ _flags = hb_parni( 2 );
@@ -648,7 +648,7 @@ HB_FUNC( IGCHECKBOXFLAGS_INTPTR )
 }
 
 /* bool igCheckboxFlags_UintPtr(const char* label,unsigned int* flags,unsigned int flags_value) */
-HB_FUNC( IGCHECKBOXFLAGS_UINTPTR )
+HB_FUNC( IGCHECKBOXFLAGSUINTPTR )
 {
    const char* label = hb_parcx( 1 );
    unsigned int* flags = ( unsigned int* ) hb_parptr( 2 );
@@ -658,7 +658,7 @@ HB_FUNC( IGCHECKBOXFLAGS_UINTPTR )
 }
 
 /* bool igCheckboxFlags_S64Ptr(const char* label,ImS64* flags,ImS64 flags_value) */
-HB_FUNC( IGCHECKBOXFLAGS_S64PTR )
+HB_FUNC( IGCHECKBOXFLAGSS64PTR )
 {
    const char* label = hb_parcx( 1 );
    ImS64* flags = ( ImS64* ) hb_parptr( 2 );
@@ -668,7 +668,7 @@ HB_FUNC( IGCHECKBOXFLAGS_S64PTR )
 }
 
 /* bool igCheckboxFlags_U64Ptr(const char* label,ImU64* flags,ImU64 flags_value) */
-HB_FUNC( IGCHECKBOXFLAGS_U64PTR )
+HB_FUNC( IGCHECKBOXFLAGSU64PTR )
 {
    const char* label = hb_parcx( 1 );
    ImU64* flags = ( ImU64* ) hb_parptr( 2 );
@@ -745,7 +745,7 @@ HB_FUNC( IGCOLLAPSEBUTTON )
 }
 
 /* bool igCollapsingHeader_TreeNodeFlags(const char* label,ImGuiTreeNodeFlags flags) */
-HB_FUNC( IGCOLLAPSINGHEADER_TREENODEFLAGS )
+HB_FUNC( IGCOLLAPSINGHEADERTREENODEFLAGS )
 {
    const char* label = hb_parcx( 1 );
    ImGuiTreeNodeFlags flags = ( ImGuiTreeNodeFlags ) hb_parni( 2 );
@@ -754,7 +754,7 @@ HB_FUNC( IGCOLLAPSINGHEADER_TREENODEFLAGS )
 }
 
 /* bool igCollapsingHeader_BoolPtr(const char* label,bool* p_visible,ImGuiTreeNodeFlags flags) */
-HB_FUNC( IGCOLLAPSINGHEADER_BOOLPTR )
+HB_FUNC( IGCOLLAPSINGHEADERBOOLPTR )
 {
    const char* label = hb_parcx( 1 );
    bool /* @ */ _p_visible = hb_parl( 2 );
@@ -933,7 +933,7 @@ HB_FUNC( IGCOLUMNS )
 }
 
 /* bool igCombo_Str_arr(const char* label,int* current_item,const char* const items[],int items_count,int popup_max_height_in_items) */
-HB_FUNC( IGCOMBO_STR_ARR )
+HB_FUNC( IGCOMBO_STRARR )
 {
    const char* label = hb_parcx( 1 );
    int /* @ */ _current_item = hb_parni( 2 );
@@ -947,7 +947,7 @@ HB_FUNC( IGCOMBO_STR_ARR )
 }
 
 /* bool igCombo_Str(const char* label,int* current_item,const char* items_separated_by_zeros,int popup_max_height_in_items) */
-HB_FUNC( IGCOMBO_STR )
+HB_FUNC( IGCOMBOSTR )
 {
    const char* label = hb_parcx( 1 );
    int /* @ */ _current_item = hb_parni( 2 );
@@ -960,7 +960,7 @@ HB_FUNC( IGCOMBO_STR )
 }
 
 /* bool igCombo_FnBoolPtr(const char* label,int* current_item,bool(*items_getter)(void* data,int idx,const char** out_text),void* data,int items_count,int popup_max_height_in_items) */
-HB_FUNC( IGCOMBO_FNBOOLPTR )
+HB_FUNC( IGCOMBOFNBOOLPTR )
 {
    const char* label = hb_parcx( 1 );
    int /* @ */ _current_item = hb_parni( 2 );
@@ -2041,14 +2041,14 @@ HB_FUNC( IGGETALLOCATORFUNCTIONS )
 }
 
 /* ImDrawList* igGetBackgroundDrawList_Nil() */
-HB_FUNC( IGGETBACKGROUNDDRAWLIST_NIL )
+HB_FUNC( IGGETBACKGROUNDDRAWLISTNIL )
 {
    ImDrawList* ret = igGetBackgroundDrawList_Nil();
    hb_retptr( ( void * ) ret );
 }
 
 /* ImDrawList* igGetBackgroundDrawList_ViewportPtr(ImGuiViewport* viewport) */
-HB_FUNC( IGGETBACKGROUNDDRAWLIST_VIEWPORTPTR )
+HB_FUNC( IGGETBACKGROUNDDRAWLISTVIEWPORTPTR )
 {
    ImGuiViewport* viewport = ( ImGuiViewport* ) hb_parptr( 1 );
    ImDrawList* ret = igGetBackgroundDrawList_ViewportPtr(viewport);
@@ -2063,7 +2063,7 @@ HB_FUNC( IGGETCLIPBOARDTEXT )
 }
 
 /* ImU32 igGetColorU32_Col(ImGuiCol idx,float alpha_mul) */
-HB_FUNC( IGGETCOLORU32_COL )
+HB_FUNC( IGGETCOLORU32COL )
 {
    ImGuiCol idx = ( ImGuiCol ) hb_parni( 1 );
    float alpha_mul = ( float ) hb_parnd( 2 );
@@ -2072,7 +2072,7 @@ HB_FUNC( IGGETCOLORU32_COL )
 }
 
 /* ImU32 igGetColorU32_Vec4(const ImVec4 col) */
-HB_FUNC( IGGETCOLORU32_VEC4 )
+HB_FUNC( IGGETCOLORU32VEC4 )
 {
    PHB_ITEM pcol = hb_param( 1, HB_IT_ARRAY );
    const ImVec4 col = ImVec4{ _paf( pcol, 1 ), _paf( pcol, 2 ), _paf( pcol, 3 ), _paf( pcol, 4 ) };
@@ -2081,7 +2081,7 @@ HB_FUNC( IGGETCOLORU32_VEC4 )
 }
 
 /* ImU32 igGetColorU32_U32(ImU32 col) */
-HB_FUNC( IGGETCOLORU32_U32 )
+HB_FUNC( IGGETCOLORU32U32 )
 {
    ImU32 col = ( HB_U32 ) hb_parnl( 1 );
    ImU32 ret = igGetColorU32_U32(col);
@@ -2314,14 +2314,14 @@ HB_FUNC( IGGETFONTTEXUVWHITEPIXEL )
 }
 
 /* ImDrawList* igGetForegroundDrawList_Nil() */
-HB_FUNC( IGGETFOREGROUNDDRAWLIST_NIL )
+HB_FUNC( IGGETFOREGROUNDDRAWLISTNIL )
 {
    ImDrawList* ret = igGetForegroundDrawList_Nil();
    hb_retptr( ( void * ) ret );
 }
 
 /* ImDrawList* igGetForegroundDrawList_ViewportPtr(ImGuiViewport* viewport) */
-HB_FUNC( IGGETFOREGROUNDDRAWLIST_VIEWPORTPTR )
+HB_FUNC( IGGETFOREGROUNDDRAWLISTVIEWPORTPTR )
 {
    ImGuiViewport* viewport = ( ImGuiViewport* ) hb_parptr( 1 );
    ImDrawList* ret = igGetForegroundDrawList_ViewportPtr(viewport);
@@ -2329,7 +2329,7 @@ HB_FUNC( IGGETFOREGROUNDDRAWLIST_VIEWPORTPTR )
 }
 
 /* ImDrawList* igGetForegroundDrawList_WindowPtr(ImGuiWindow* window) */
-HB_FUNC( IGGETFOREGROUNDDRAWLIST_WINDOWPTR )
+HB_FUNC( IGGETFOREGROUNDDRAWLISTWINDOWPTR )
 {
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 1 );
    ImDrawList* ret = igGetForegroundDrawList_WindowPtr(window);
@@ -2365,7 +2365,7 @@ HB_FUNC( IGGETHOVEREDID )
 }
 
 /* ImGuiID igGetID_Str(const char* str_id) */
-HB_FUNC( IGGETID_STR )
+HB_FUNC( IGGETIDSTR )
 {
    const char* str_id = hb_parcx( 1 );
    ImGuiID ret = igGetID_Str(str_id);
@@ -2373,7 +2373,7 @@ HB_FUNC( IGGETID_STR )
 }
 
 /* ImGuiID igGetID_StrStr(const char* str_id_begin,const char* str_id_end) */
-HB_FUNC( IGGETID_STRSTR )
+HB_FUNC( IGGETIDSTRSTR )
 {
    const char* str_id_begin = hb_parcx( 1 );
    const char* str_id_end = hb_parcx( 2 );
@@ -2382,7 +2382,7 @@ HB_FUNC( IGGETID_STRSTR )
 }
 
 /* ImGuiID igGetID_Ptr(const void* ptr_id) */
-HB_FUNC( IGGETID_PTR )
+HB_FUNC( IGGETIDPTR )
 {
    const void* ptr_id = ( const void* ) hb_parptr( 1 );
    ImGuiID ret = igGetID_Ptr(ptr_id);
@@ -2809,7 +2809,7 @@ HB_FUNC( IGGETWINDOWWIDTH )
 }
 
 /* int igImAbs_Int(int x) */
-HB_FUNC( IGIMABS_INT )
+HB_FUNC( IGIMABSINT )
 {
    int x = hb_parni( 1 );
    int ret = igImAbs_Int(x);
@@ -2817,7 +2817,7 @@ HB_FUNC( IGIMABS_INT )
 }
 
 /* float igImAbs_Float(float x) */
-HB_FUNC( IGIMABS_FLOAT )
+HB_FUNC( IGIMABSFLOAT )
 {
    float x = ( float ) hb_parnd( 1 );
    float ret = igImAbs_Float(x);
@@ -2825,7 +2825,7 @@ HB_FUNC( IGIMABS_FLOAT )
 }
 
 /* double igImAbs_double(double x) */
-HB_FUNC( IGIMABS_DOUBLE )
+HB_FUNC( IGIMABSDOUBLE )
 {
    double x = hb_parnd( 1 );
    double ret = igImAbs_double(x);
@@ -3054,7 +3054,7 @@ HB_FUNC( IGIMFILEWRITE )
 }
 
 /* float igImFloor_Float(float f) */
-HB_FUNC( IGIMFLOOR_FLOAT )
+HB_FUNC( IGIMFLOORFLOAT )
 {
    float f = ( float ) hb_parnd( 1 );
    float ret = igImFloor_Float(f);
@@ -3062,7 +3062,7 @@ HB_FUNC( IGIMFLOOR_FLOAT )
 }
 
 /* void igImFloor_Vec2(ImVec2 *pOut,const ImVec2 v) */
-HB_FUNC( IGIMFLOOR_VEC2 )
+HB_FUNC( IGIMFLOORVEC2 )
 {
    PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
    ImVec2 pOut;
@@ -3231,7 +3231,7 @@ HB_FUNC( IGIMINVLENGTH )
 }
 
 /* bool igImIsPowerOfTwo_Int(int v) */
-HB_FUNC( IGIMISPOWEROFTWO_INT )
+HB_FUNC( IGIMISPOWEROFTWOINT )
 {
    int v = hb_parni( 1 );
    bool ret = igImIsPowerOfTwo_Int(v);
@@ -3239,7 +3239,7 @@ HB_FUNC( IGIMISPOWEROFTWO_INT )
 }
 
 /* bool igImIsPowerOfTwo_U64(ImU64 v) */
-HB_FUNC( IGIMISPOWEROFTWO_U64 )
+HB_FUNC( IGIMISPOWEROFTWOU64 )
 {
    ImU64 v;
    bool ret = igImIsPowerOfTwo_U64(v);
@@ -3247,7 +3247,7 @@ HB_FUNC( IGIMISPOWEROFTWO_U64 )
 }
 
 /* float igImLengthSqr_Vec2(const ImVec2 lhs) */
-HB_FUNC( IGIMLENGTHSQR_VEC2 )
+HB_FUNC( IGIMLENGTHSQRVEC2 )
 {
    PHB_ITEM plhs = hb_param( 1, HB_IT_ARRAY );
    const ImVec2 lhs = ImVec2{ _paf( plhs, 1 ), _paf( plhs, 2 ) };
@@ -3256,7 +3256,7 @@ HB_FUNC( IGIMLENGTHSQR_VEC2 )
 }
 
 /* float igImLengthSqr_Vec4(const ImVec4 lhs) */
-HB_FUNC( IGIMLENGTHSQR_VEC4 )
+HB_FUNC( IGIMLENGTHSQRVEC4 )
 {
    PHB_ITEM plhs = hb_param( 1, HB_IT_ARRAY );
    const ImVec4 lhs = ImVec4{ _paf( plhs, 1 ), _paf( plhs, 2 ), _paf( plhs, 3 ), _paf( plhs, 4 ) };
@@ -3265,7 +3265,7 @@ HB_FUNC( IGIMLENGTHSQR_VEC4 )
 }
 
 /* void igImLerp_Vec2Float(ImVec2 *pOut,const ImVec2 a,const ImVec2 b,float t) */
-HB_FUNC( IGIMLERP_VEC2FLOAT )
+HB_FUNC( IGIMLERPVEC2FLOAT )
 {
    PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
    ImVec2 pOut;
@@ -3279,7 +3279,7 @@ HB_FUNC( IGIMLERP_VEC2FLOAT )
 }
 
 /* void igImLerp_Vec2Vec2(ImVec2 *pOut,const ImVec2 a,const ImVec2 b,const ImVec2 t) */
-HB_FUNC( IGIMLERP_VEC2VEC2 )
+HB_FUNC( IGIMLERPVEC2VEC2 )
 {
    PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
    ImVec2 pOut;
@@ -3294,7 +3294,7 @@ HB_FUNC( IGIMLERP_VEC2VEC2 )
 }
 
 /* void igImLerp_Vec4(ImVec4 *pOut,const ImVec4 a,const ImVec4 b,float t) */
-HB_FUNC( IGIMLERP_VEC4 )
+HB_FUNC( IGIMLERPVEC4 )
 {
    PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
    ImVec4 pOut;
@@ -3333,7 +3333,7 @@ HB_FUNC( IGIMLINEARSWEEP )
 }
 
 /* float igImLog_Float(float x) */
-HB_FUNC( IGIMLOG_FLOAT )
+HB_FUNC( IGIMLOGFLOAT )
 {
    float x = ( float ) hb_parnd( 1 );
    float ret = igImLog_Float(x);
@@ -3341,7 +3341,7 @@ HB_FUNC( IGIMLOG_FLOAT )
 }
 
 /* double igImLog_double(double x) */
-HB_FUNC( IGIMLOG_DOUBLE )
+HB_FUNC( IGIMLOGDOUBLE )
 {
    double x = hb_parnd( 1 );
    double ret = igImLog_double(x);
@@ -3434,7 +3434,7 @@ HB_FUNC( IGIMPARSEFORMATTRIMDECORATIONS )
 }
 
 /* float igImPow_Float(float x,float y) */
-HB_FUNC( IGIMPOW_FLOAT )
+HB_FUNC( IGIMPOWFLOAT )
 {
    float x = ( float ) hb_parnd( 1 );
    float y = ( float ) hb_parnd( 2 );
@@ -3443,7 +3443,7 @@ HB_FUNC( IGIMPOW_FLOAT )
 }
 
 /* double igImPow_double(double x,double y) */
-HB_FUNC( IGIMPOW_DOUBLE )
+HB_FUNC( IGIMPOWDOUBLE )
 {
    double x = hb_parnd( 1 );
    double y = hb_parnd( 2 );
@@ -3465,7 +3465,7 @@ HB_FUNC( IGIMROTATE )
 }
 
 /* float igImRsqrt_Float(float x) */
-HB_FUNC( IGIMRSQRT_FLOAT )
+HB_FUNC( IGIMRSQRTFLOAT )
 {
    float x = ( float ) hb_parnd( 1 );
    float ret = igImRsqrt_Float(x);
@@ -3473,7 +3473,7 @@ HB_FUNC( IGIMRSQRT_FLOAT )
 }
 
 /* double igImRsqrt_double(double x) */
-HB_FUNC( IGIMRSQRT_DOUBLE )
+HB_FUNC( IGIMRSQRTDOUBLE )
 {
    double x = hb_parnd( 1 );
    double ret = igImRsqrt_double(x);
@@ -3489,7 +3489,7 @@ HB_FUNC( IGIMSATURATE )
 }
 
 /* float igImSign_Float(float x) */
-HB_FUNC( IGIMSIGN_FLOAT )
+HB_FUNC( IGIMSIGNFLOAT )
 {
    float x = ( float ) hb_parnd( 1 );
    float ret = igImSign_Float(x);
@@ -3497,7 +3497,7 @@ HB_FUNC( IGIMSIGN_FLOAT )
 }
 
 /* double igImSign_double(double x) */
-HB_FUNC( IGIMSIGN_DOUBLE )
+HB_FUNC( IGIMSIGNDOUBLE )
 {
    double x = hb_parnd( 1 );
    double ret = igImSign_double(x);
@@ -4517,7 +4517,7 @@ HB_FUNC( IGISNAVINPUTTEST )
 }
 
 /* bool igIsPopupOpen_Str(const char* str_id,ImGuiPopupFlags flags) */
-HB_FUNC( IGISPOPUPOPEN_STR )
+HB_FUNC( IGISPOPUPOPENSTR )
 {
    const char* str_id = hb_parcx( 1 );
    ImGuiPopupFlags flags = ( ImGuiPopupFlags ) hb_parni( 2 );
@@ -4526,7 +4526,7 @@ HB_FUNC( IGISPOPUPOPEN_STR )
 }
 
 /* bool igIsPopupOpen_ID(ImGuiID id,ImGuiPopupFlags popup_flags) */
-HB_FUNC( IGISPOPUPOPEN_ID )
+HB_FUNC( IGISPOPUPOPENID )
 {
    ImGuiID id = ( ImGuiID ) hb_parni( 1 );
    ImGuiPopupFlags popup_flags = ( ImGuiPopupFlags ) hb_parni( 2 );
@@ -4535,7 +4535,7 @@ HB_FUNC( IGISPOPUPOPEN_ID )
 }
 
 /* bool igIsRectVisible_Nil(const ImVec2 size) */
-HB_FUNC( IGISRECTVISIBLE_NIL )
+HB_FUNC( IGISRECTVISIBLENIL )
 {
    PHB_ITEM psize = hb_param( 1, HB_IT_ARRAY );
    const ImVec2 size = ImVec2{ _paf( psize, 1 ), _paf( psize, 2 ) };
@@ -4544,7 +4544,7 @@ HB_FUNC( IGISRECTVISIBLE_NIL )
 }
 
 /* bool igIsRectVisible_Vec2(const ImVec2 rect_min,const ImVec2 rect_max) */
-HB_FUNC( IGISRECTVISIBLE_VEC2 )
+HB_FUNC( IGISRECTVISIBLEVEC2 )
 {
    PHB_ITEM prect_min = hb_param( 1, HB_IT_ARRAY );
    const ImVec2 rect_min = ImVec2{ _paf( prect_min, 1 ), _paf( prect_min, 2 ) };
@@ -4650,7 +4650,7 @@ HB_FUNC( IGITEMINPUTABLE )
 }
 
 /* void igItemSize_Vec2(const ImVec2 size,float text_baseline_y) */
-HB_FUNC( IGITEMSIZE_VEC2 )
+HB_FUNC( IGITEMSIZEVEC2 )
 {
    PHB_ITEM psize = hb_param( 1, HB_IT_ARRAY );
    const ImVec2 size = ImVec2{ _paf( psize, 1 ), _paf( psize, 2 ) };
@@ -4659,7 +4659,7 @@ HB_FUNC( IGITEMSIZE_VEC2 )
 }
 
 /* void igItemSize_Rect(const ImRect bb,float text_baseline_y) */
-HB_FUNC( IGITEMSIZE_RECT )
+HB_FUNC( IGITEMSIZERECT )
 {
    PHB_ITEM pbb = hb_param( 1, HB_IT_ARRAY );
    const ImRect bb = ImRect{ ImVec2{ _paf( pbb, 1 ), _paf( pbb, 2 ) }, ImVec2{ _paf( pbb, 3 ), _paf( pbb, 4 ) } };
@@ -4692,7 +4692,7 @@ HB_FUNC( IGLABELTEXTV )
 }
 
 /* bool igListBox_Str_arr(const char* label,int* current_item,const char* const items[],int items_count,int height_in_items) */
-HB_FUNC( IGLISTBOX_STR_ARR )
+HB_FUNC( IGLISTBOX_STRARR )
 {
    const char* label = hb_parcx( 1 );
    int /* @ */ _current_item = hb_parni( 2 );
@@ -4706,7 +4706,7 @@ HB_FUNC( IGLISTBOX_STR_ARR )
 }
 
 /* bool igListBox_FnBoolPtr(const char* label,int* current_item,bool(*items_getter)(void* data,int idx,const char** out_text),void* data,int items_count,int height_in_items) */
-HB_FUNC( IGLISTBOX_FNBOOLPTR )
+HB_FUNC( IGLISTBOXFNBOOLPTR )
 {
    const char* label = hb_parcx( 1 );
    int /* @ */ _current_item = hb_parni( 2 );
@@ -4816,13 +4816,13 @@ HB_FUNC( IGLOGTOTTY )
 }
 
 /* void igMarkIniSettingsDirty_Nil() */
-HB_FUNC( IGMARKINISETTINGSDIRTY_NIL )
+HB_FUNC( IGMARKINISETTINGSDIRTYNIL )
 {
    igMarkIniSettingsDirty_Nil();
 }
 
 /* void igMarkIniSettingsDirty_WindowPtr(ImGuiWindow* window) */
-HB_FUNC( IGMARKINISETTINGSDIRTY_WINDOWPTR )
+HB_FUNC( IGMARKINISETTINGSDIRTYWINDOWPTR )
 {
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 1 );
    igMarkIniSettingsDirty_WindowPtr(window);
@@ -4851,7 +4851,7 @@ HB_FUNC( IGMEMFREE )
 }
 
 /* bool igMenuItem_Bool(const char* label,const char* shortcut,bool selected,bool enabled) */
-HB_FUNC( IGMENUITEM_BOOL )
+HB_FUNC( IGMENUITEMBOOL )
 {
    const char* label = hb_parcx( 1 );
    const char* shortcut = hb_parcx( 2 );
@@ -4862,7 +4862,7 @@ HB_FUNC( IGMENUITEM_BOOL )
 }
 
 /* bool igMenuItem_BoolPtr(const char* label,const char* shortcut,bool* p_selected,bool enabled) */
-HB_FUNC( IGMENUITEM_BOOLPTR )
+HB_FUNC( IGMENUITEMBOOLPTR )
 {
    const char* label = hb_parcx( 1 );
    const char* shortcut = hb_parcx( 2 );
@@ -4972,7 +4972,7 @@ HB_FUNC( IGNEXTCOLUMN )
 }
 
 /* void igOpenPopup_Str(const char* str_id,ImGuiPopupFlags popup_flags) */
-HB_FUNC( IGOPENPOPUP_STR )
+HB_FUNC( IGOPENPOPUPSTR )
 {
    const char* str_id = hb_parcx( 1 );
    ImGuiPopupFlags popup_flags = ( ImGuiPopupFlags ) hb_parni( 2 );
@@ -4980,7 +4980,7 @@ HB_FUNC( IGOPENPOPUP_STR )
 }
 
 /* void igOpenPopup_ID(ImGuiID id,ImGuiPopupFlags popup_flags) */
-HB_FUNC( IGOPENPOPUP_ID )
+HB_FUNC( IGOPENPOPUPID )
 {
    ImGuiID id = ( ImGuiID ) hb_parni( 1 );
    ImGuiPopupFlags popup_flags = ( ImGuiPopupFlags ) hb_parni( 2 );
@@ -5021,7 +5021,7 @@ HB_FUNC( IGPLOTEX )
 }
 
 /* void igPlotHistogram_FloatPtr(const char* label,const float* values,int values_count,int values_offset,const char* overlay_text,float scale_min,float scale_max,ImVec2 graph_size,int stride) */
-HB_FUNC( IGPLOTHISTOGRAM_FLOATPTR )
+HB_FUNC( IGPLOTHISTOGRAMFLOATPTR )
 {
    const char* label = hb_parcx( 1 );
    const float* values = ( const float* ) hb_parptr( 2 );
@@ -5037,7 +5037,7 @@ HB_FUNC( IGPLOTHISTOGRAM_FLOATPTR )
 }
 
 /* void igPlotHistogram_FnFloatPtr(const char* label,float(*values_getter)(void* data,int idx),void* data,int values_count,int values_offset,const char* overlay_text,float scale_min,float scale_max,ImVec2 graph_size) */
-HB_FUNC( IGPLOTHISTOGRAM_FNFLOATPTR )
+HB_FUNC( IGPLOTHISTOGRAMFNFLOATPTR )
 {
    const char* label = hb_parcx( 1 );
    void* data = ( void* ) hb_parptr( 3 );
@@ -5052,7 +5052,7 @@ HB_FUNC( IGPLOTHISTOGRAM_FNFLOATPTR )
 }
 
 /* void igPlotLines_FloatPtr(const char* label,const float* values,int values_count,int values_offset,const char* overlay_text,float scale_min,float scale_max,ImVec2 graph_size,int stride) */
-HB_FUNC( IGPLOTLINES_FLOATPTR )
+HB_FUNC( IGPLOTLINESFLOATPTR )
 {
    const char* label = hb_parcx( 1 );
    const float* values = ( const float* ) hb_parptr( 2 );
@@ -5068,7 +5068,7 @@ HB_FUNC( IGPLOTLINES_FLOATPTR )
 }
 
 /* void igPlotLines_FnFloatPtr(const char* label,float(*values_getter)(void* data,int idx),void* data,int values_count,int values_offset,const char* overlay_text,float scale_min,float scale_max,ImVec2 graph_size) */
-HB_FUNC( IGPLOTLINES_FNFLOATPTR )
+HB_FUNC( IGPLOTLINESFNFLOATPTR )
 {
    const char* label = hb_parcx( 1 );
    void* data = ( void* ) hb_parptr( 3 );
@@ -5219,14 +5219,14 @@ HB_FUNC( IGPUSHFONT )
 }
 
 /* void igPushID_Str(const char* str_id) */
-HB_FUNC( IGPUSHID_STR )
+HB_FUNC( IGPUSHIDSTR )
 {
    const char* str_id = hb_parcx( 1 );
    igPushID_Str(str_id);
 }
 
 /* void igPushID_StrStr(const char* str_id_begin,const char* str_id_end) */
-HB_FUNC( IGPUSHID_STRSTR )
+HB_FUNC( IGPUSHIDSTRSTR )
 {
    const char* str_id_begin = hb_parcx( 1 );
    const char* str_id_end = hb_parcx( 2 );
@@ -5234,14 +5234,14 @@ HB_FUNC( IGPUSHID_STRSTR )
 }
 
 /* void igPushID_Ptr(const void* ptr_id) */
-HB_FUNC( IGPUSHID_PTR )
+HB_FUNC( IGPUSHIDPTR )
 {
    const void* ptr_id = ( const void* ) hb_parptr( 1 );
    igPushID_Ptr(ptr_id);
 }
 
 /* void igPushID_Int(int int_id) */
-HB_FUNC( IGPUSHID_INT )
+HB_FUNC( IGPUSHIDINT )
 {
    int int_id = hb_parni( 1 );
    igPushID_Int(int_id);
@@ -5278,7 +5278,7 @@ HB_FUNC( IGPUSHOVERRIDEID )
 }
 
 /* void igPushStyleColor_U32(ImGuiCol idx,ImU32 col) */
-HB_FUNC( IGPUSHSTYLECOLOR_U32 )
+HB_FUNC( IGPUSHSTYLECOLORU32 )
 {
    ImGuiCol idx = ( ImGuiCol ) hb_parni( 1 );
    ImU32 col = ( HB_U32 ) hb_parnl( 2 );
@@ -5286,7 +5286,7 @@ HB_FUNC( IGPUSHSTYLECOLOR_U32 )
 }
 
 /* void igPushStyleColor_Vec4(ImGuiCol idx,const ImVec4 col) */
-HB_FUNC( IGPUSHSTYLECOLOR_VEC4 )
+HB_FUNC( IGPUSHSTYLECOLORVEC4 )
 {
    ImGuiCol idx = ( ImGuiCol ) hb_parni( 1 );
    PHB_ITEM pcol = hb_param( 2, HB_IT_ARRAY );
@@ -5295,7 +5295,7 @@ HB_FUNC( IGPUSHSTYLECOLOR_VEC4 )
 }
 
 /* void igPushStyleVar_Float(ImGuiStyleVar idx,float val) */
-HB_FUNC( IGPUSHSTYLEVAR_FLOAT )
+HB_FUNC( IGPUSHSTYLEVARFLOAT )
 {
    ImGuiStyleVar idx = ( ImGuiStyleVar ) hb_parni( 1 );
    float val = ( float ) hb_parnd( 2 );
@@ -5303,7 +5303,7 @@ HB_FUNC( IGPUSHSTYLEVAR_FLOAT )
 }
 
 /* void igPushStyleVar_Vec2(ImGuiStyleVar idx,const ImVec2 val) */
-HB_FUNC( IGPUSHSTYLEVAR_VEC2 )
+HB_FUNC( IGPUSHSTYLEVARVEC2 )
 {
    ImGuiStyleVar idx = ( ImGuiStyleVar ) hb_parni( 1 );
    PHB_ITEM pval = hb_param( 2, HB_IT_ARRAY );
@@ -5319,7 +5319,7 @@ HB_FUNC( IGPUSHTEXTWRAPPOS )
 }
 
 /* bool igRadioButton_Bool(const char* label,bool active) */
-HB_FUNC( IGRADIOBUTTON_BOOL )
+HB_FUNC( IGRADIOBUTTONBOOL )
 {
    const char* label = hb_parcx( 1 );
    bool active = hb_parl( 2 );
@@ -5328,7 +5328,7 @@ HB_FUNC( IGRADIOBUTTON_BOOL )
 }
 
 /* bool igRadioButton_IntPtr(const char* label,int* v,int v_button) */
-HB_FUNC( IGRADIOBUTTON_INTPTR )
+HB_FUNC( IGRADIOBUTTONINTPTR )
 {
    const char* label = hb_parcx( 1 );
    int /* @ */ _v = hb_parni( 2 );
@@ -5684,7 +5684,7 @@ HB_FUNC( IGSCROLLBAREX )
 }
 
 /* bool igSelectable_Bool(const char* label,bool selected,ImGuiSelectableFlags flags,const ImVec2 size) */
-HB_FUNC( IGSELECTABLE_BOOL )
+HB_FUNC( IGSELECTABLEBOOL )
 {
    const char* label = hb_parcx( 1 );
    bool selected = hb_parldef( 2, 0 );
@@ -5696,7 +5696,7 @@ HB_FUNC( IGSELECTABLE_BOOL )
 }
 
 /* bool igSelectable_BoolPtr(const char* label,bool* p_selected,ImGuiSelectableFlags flags,const ImVec2 size) */
-HB_FUNC( IGSELECTABLE_BOOLPTR )
+HB_FUNC( IGSELECTABLEBOOLPTR )
 {
    const char* label = hb_parcx( 1 );
    bool /* @ */ _p_selected = hb_parl( 2 );
@@ -6014,7 +6014,7 @@ HB_FUNC( IGSETNEXTWINDOWVIEWPORT )
 }
 
 /* void igSetScrollFromPosX_Float(float local_x,float center_x_ratio) */
-HB_FUNC( IGSETSCROLLFROMPOSX_FLOAT )
+HB_FUNC( IGSETSCROLLFROMPOSXFLOAT )
 {
    float local_x = ( float ) hb_parnd( 1 );
    float center_x_ratio = ( float ) hb_parnd( 2 );
@@ -6022,7 +6022,7 @@ HB_FUNC( IGSETSCROLLFROMPOSX_FLOAT )
 }
 
 /* void igSetScrollFromPosX_WindowPtr(ImGuiWindow* window,float local_x,float center_x_ratio) */
-HB_FUNC( IGSETSCROLLFROMPOSX_WINDOWPTR )
+HB_FUNC( IGSETSCROLLFROMPOSXWINDOWPTR )
 {
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 1 );
    float local_x = ( float ) hb_parnd( 2 );
@@ -6031,7 +6031,7 @@ HB_FUNC( IGSETSCROLLFROMPOSX_WINDOWPTR )
 }
 
 /* void igSetScrollFromPosY_Float(float local_y,float center_y_ratio) */
-HB_FUNC( IGSETSCROLLFROMPOSY_FLOAT )
+HB_FUNC( IGSETSCROLLFROMPOSYFLOAT )
 {
    float local_y = ( float ) hb_parnd( 1 );
    float center_y_ratio = ( float ) hb_parnd( 2 );
@@ -6039,7 +6039,7 @@ HB_FUNC( IGSETSCROLLFROMPOSY_FLOAT )
 }
 
 /* void igSetScrollFromPosY_WindowPtr(ImGuiWindow* window,float local_y,float center_y_ratio) */
-HB_FUNC( IGSETSCROLLFROMPOSY_WINDOWPTR )
+HB_FUNC( IGSETSCROLLFROMPOSYWINDOWPTR )
 {
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 1 );
    float local_y = ( float ) hb_parnd( 2 );
@@ -6062,14 +6062,14 @@ HB_FUNC( IGSETSCROLLHEREY )
 }
 
 /* void igSetScrollX_Float(float scroll_x) */
-HB_FUNC( IGSETSCROLLX_FLOAT )
+HB_FUNC( IGSETSCROLLXFLOAT )
 {
    float scroll_x = ( float ) hb_parnd( 1 );
    igSetScrollX_Float(scroll_x);
 }
 
 /* void igSetScrollX_WindowPtr(ImGuiWindow* window,float scroll_x) */
-HB_FUNC( IGSETSCROLLX_WINDOWPTR )
+HB_FUNC( IGSETSCROLLXWINDOWPTR )
 {
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 1 );
    float scroll_x = ( float ) hb_parnd( 2 );
@@ -6077,14 +6077,14 @@ HB_FUNC( IGSETSCROLLX_WINDOWPTR )
 }
 
 /* void igSetScrollY_Float(float scroll_y) */
-HB_FUNC( IGSETSCROLLY_FLOAT )
+HB_FUNC( IGSETSCROLLYFLOAT )
 {
    float scroll_y = ( float ) hb_parnd( 1 );
    igSetScrollY_Float(scroll_y);
 }
 
 /* void igSetScrollY_WindowPtr(ImGuiWindow* window,float scroll_y) */
-HB_FUNC( IGSETSCROLLY_WINDOWPTR )
+HB_FUNC( IGSETSCROLLYWINDOWPTR )
 {
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 1 );
    float scroll_y = ( float ) hb_parnd( 2 );
@@ -6130,7 +6130,7 @@ HB_FUNC( IGSETWINDOWCLIPRECTBEFORESETCHANNEL )
 }
 
 /* void igSetWindowCollapsed_Bool(bool collapsed,ImGuiCond cond) */
-HB_FUNC( IGSETWINDOWCOLLAPSED_BOOL )
+HB_FUNC( IGSETWINDOWCOLLAPSEDBOOL )
 {
    bool collapsed = hb_parl( 1 );
    ImGuiCond cond = ( ImGuiCond ) hb_parni( 2 );
@@ -6138,7 +6138,7 @@ HB_FUNC( IGSETWINDOWCOLLAPSED_BOOL )
 }
 
 /* void igSetWindowCollapsed_Str(const char* name,bool collapsed,ImGuiCond cond) */
-HB_FUNC( IGSETWINDOWCOLLAPSED_STR )
+HB_FUNC( IGSETWINDOWCOLLAPSEDSTR )
 {
    const char* name = hb_parcx( 1 );
    bool collapsed = hb_parl( 2 );
@@ -6147,7 +6147,7 @@ HB_FUNC( IGSETWINDOWCOLLAPSED_STR )
 }
 
 /* void igSetWindowCollapsed_WindowPtr(ImGuiWindow* window,bool collapsed,ImGuiCond cond) */
-HB_FUNC( IGSETWINDOWCOLLAPSED_WINDOWPTR )
+HB_FUNC( IGSETWINDOWCOLLAPSEDWINDOWPTR )
 {
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 1 );
    bool collapsed = hb_parl( 2 );
@@ -6165,13 +6165,13 @@ HB_FUNC( IGSETWINDOWDOCK )
 }
 
 /* void igSetWindowFocus_Nil() */
-HB_FUNC( IGSETWINDOWFOCUS_NIL )
+HB_FUNC( IGSETWINDOWFOCUSNIL )
 {
    igSetWindowFocus_Nil();
 }
 
 /* void igSetWindowFocus_Str(const char* name) */
-HB_FUNC( IGSETWINDOWFOCUS_STR )
+HB_FUNC( IGSETWINDOWFOCUSSTR )
 {
    const char* name = hb_parcx( 1 );
    igSetWindowFocus_Str(name);
@@ -6196,7 +6196,7 @@ HB_FUNC( IGSETWINDOWHITTESTHOLE )
 }
 
 /* void igSetWindowPos_Vec2(const ImVec2 pos,ImGuiCond cond) */
-HB_FUNC( IGSETWINDOWPOS_VEC2 )
+HB_FUNC( IGSETWINDOWPOSVEC2 )
 {
    PHB_ITEM ppos = hb_param( 1, HB_IT_ARRAY );
    const ImVec2 pos = ImVec2{ _paf( ppos, 1 ), _paf( ppos, 2 ) };
@@ -6205,7 +6205,7 @@ HB_FUNC( IGSETWINDOWPOS_VEC2 )
 }
 
 /* void igSetWindowPos_Str(const char* name,const ImVec2 pos,ImGuiCond cond) */
-HB_FUNC( IGSETWINDOWPOS_STR )
+HB_FUNC( IGSETWINDOWPOSSTR )
 {
    const char* name = hb_parcx( 1 );
    PHB_ITEM ppos = hb_param( 2, HB_IT_ARRAY );
@@ -6215,7 +6215,7 @@ HB_FUNC( IGSETWINDOWPOS_STR )
 }
 
 /* void igSetWindowPos_WindowPtr(ImGuiWindow* window,const ImVec2 pos,ImGuiCond cond) */
-HB_FUNC( IGSETWINDOWPOS_WINDOWPTR )
+HB_FUNC( IGSETWINDOWPOSWINDOWPTR )
 {
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 1 );
    PHB_ITEM ppos = hb_param( 2, HB_IT_ARRAY );
@@ -6225,7 +6225,7 @@ HB_FUNC( IGSETWINDOWPOS_WINDOWPTR )
 }
 
 /* void igSetWindowSize_Vec2(const ImVec2 size,ImGuiCond cond) */
-HB_FUNC( IGSETWINDOWSIZE_VEC2 )
+HB_FUNC( IGSETWINDOWSIZEVEC2 )
 {
    PHB_ITEM psize = hb_param( 1, HB_IT_ARRAY );
    const ImVec2 size = ImVec2{ _paf( psize, 1 ), _paf( psize, 2 ) };
@@ -6234,7 +6234,7 @@ HB_FUNC( IGSETWINDOWSIZE_VEC2 )
 }
 
 /* void igSetWindowSize_Str(const char* name,const ImVec2 size,ImGuiCond cond) */
-HB_FUNC( IGSETWINDOWSIZE_STR )
+HB_FUNC( IGSETWINDOWSIZESTR )
 {
    const char* name = hb_parcx( 1 );
    PHB_ITEM psize = hb_param( 2, HB_IT_ARRAY );
@@ -6244,7 +6244,7 @@ HB_FUNC( IGSETWINDOWSIZE_STR )
 }
 
 /* void igSetWindowSize_WindowPtr(ImGuiWindow* window,const ImVec2 size,ImGuiCond cond) */
-HB_FUNC( IGSETWINDOWSIZE_WINDOWPTR )
+HB_FUNC( IGSETWINDOWSIZEWINDOWPTR )
 {
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 1 );
    PHB_ITEM psize = hb_param( 2, HB_IT_ARRAY );
@@ -6290,7 +6290,7 @@ HB_FUNC( IGSHADEVERTSLINEARUV )
 HB_FUNC( IGSHOWABOUTWINDOW )
 {
    bool /* @ */ _p_open = hb_parl( 1 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 1 ) ? NULL : &_p_open );
    igShowAboutWindow(p_open);
    hb_itemPutL( hb_paramError( 1 ), _p_open );
 }
@@ -6299,7 +6299,7 @@ HB_FUNC( IGSHOWABOUTWINDOW )
 HB_FUNC( IGSHOWDEMOWINDOW )
 {
    bool /* @ */ _p_open = hb_parl( 1 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 1 ) ? NULL : &_p_open );
    igShowDemoWindow(p_open);
    hb_itemPutL( hb_paramError( 1 ), _p_open );
 }
@@ -6322,7 +6322,7 @@ HB_FUNC( IGSHOWFONTSELECTOR )
 HB_FUNC( IGSHOWMETRICSWINDOW )
 {
    bool /* @ */ _p_open = hb_parl( 1 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 1 ) ? NULL : &_p_open );
    igShowMetricsWindow(p_open);
    hb_itemPutL( hb_paramError( 1 ), _p_open );
 }
@@ -6331,7 +6331,7 @@ HB_FUNC( IGSHOWMETRICSWINDOW )
 HB_FUNC( IGSHOWSTACKTOOLWINDOW )
 {
    bool /* @ */ _p_open = hb_parl( 1 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 1 ) ? NULL : &_p_open );
    igShowStackToolWindow(p_open);
    hb_itemPutL( hb_paramError( 1 ), _p_open );
 }
@@ -6757,7 +6757,7 @@ HB_FUNC( IGTABITEMEX )
    ImGuiTabBar* tab_bar = ( ImGuiTabBar* ) hb_parptr( 1 );
    const char* label = hb_parcx( 2 );
    bool /* @ */ _p_open = hb_parl( 3 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 3 ) ? NULL : &_p_open );
    ImGuiTabItemFlags flags = ( ImGuiTabItemFlags ) hb_parni( 4 );
    ImGuiWindow* docked_window = ( ImGuiWindow* ) hb_parptr( 5 );
    bool ret = igTabItemEx(tab_bar,label,p_open,flags,docked_window);
@@ -6868,14 +6868,14 @@ HB_FUNC( IGTABLEGCCOMPACTSETTINGS )
 }
 
 /* void igTableGcCompactTransientBuffers_TablePtr(ImGuiTable* table) */
-HB_FUNC( IGTABLEGCCOMPACTTRANSIENTBUFFERS_TABLEPTR )
+HB_FUNC( IGTABLEGCCOMPACTTRANSIENTBUFFERSTABLEPTR )
 {
    ImGuiTable* table = ( ImGuiTable* ) hb_parptr( 1 );
    igTableGcCompactTransientBuffers_TablePtr(table);
 }
 
 /* void igTableGcCompactTransientBuffers_TableTempDataPtr(ImGuiTableTempData* table) */
-HB_FUNC( IGTABLEGCCOMPACTTRANSIENTBUFFERS_TABLETEMPDATAPTR )
+HB_FUNC( IGTABLEGCCOMPACTTRANSIENTBUFFERSTABLETEMPDATAPTR )
 {
    ImGuiTableTempData* table = ( ImGuiTableTempData* ) hb_parptr( 1 );
    igTableGcCompactTransientBuffers_TableTempDataPtr(table);
@@ -6923,7 +6923,7 @@ HB_FUNC( IGTABLEGETCOLUMNINDEX )
 }
 
 /* const char* igTableGetColumnName_Int(int column_n) */
-HB_FUNC( IGTABLEGETCOLUMNNAME_INT )
+HB_FUNC( IGTABLEGETCOLUMNNAMEINT )
 {
    int column_n = hb_parni( 1 );
    const char* ret = igTableGetColumnName_Int(column_n);
@@ -6931,7 +6931,7 @@ HB_FUNC( IGTABLEGETCOLUMNNAME_INT )
 }
 
 /* const char* igTableGetColumnName_TablePtr(const ImGuiTable* table,int column_n) */
-HB_FUNC( IGTABLEGETCOLUMNNAME_TABLEPTR )
+HB_FUNC( IGTABLEGETCOLUMNNAMETABLEPTR )
 {
    const ImGuiTable* table = ( const ImGuiTable* ) hb_parptr( 1 );
    int column_n = hb_parni( 2 );
@@ -7359,7 +7359,7 @@ HB_FUNC( IGTRANSLATEWINDOWSINVIEWPORT )
 }
 
 /* bool igTreeNode_Str(const char* label) */
-HB_FUNC( IGTREENODE_STR )
+HB_FUNC( IGTREENODESTR )
 {
    const char* label = hb_parcx( 1 );
    bool ret = igTreeNode_Str(label);
@@ -7367,7 +7367,7 @@ HB_FUNC( IGTREENODE_STR )
 }
 
 /* bool igTreeNode_StrStr(const char* str_id,const char* fmt,...) */
-HB_FUNC( IGTREENODE_STRSTR )
+HB_FUNC( IGTREENODESTRSTR )
 {
    const char* str_id = hb_parcx( 1 );
    const char* fmt = hb_parcx( 2 );
@@ -7377,7 +7377,7 @@ HB_FUNC( IGTREENODE_STRSTR )
 }
 
 /* bool igTreeNode_Ptr(const void* ptr_id,const char* fmt,...) */
-HB_FUNC( IGTREENODE_PTR )
+HB_FUNC( IGTREENODEPTR )
 {
    const void* ptr_id = ( const void* ) hb_parptr( 1 );
    const char* fmt = hb_parcx( 2 );
@@ -7407,7 +7407,7 @@ HB_FUNC( IGTREENODEBEHAVIORISOPEN )
 }
 
 /* bool igTreeNodeEx_Str(const char* label,ImGuiTreeNodeFlags flags) */
-HB_FUNC( IGTREENODEEX_STR )
+HB_FUNC( IGTREENODEEXSTR )
 {
    const char* label = hb_parcx( 1 );
    ImGuiTreeNodeFlags flags = ( ImGuiTreeNodeFlags ) hb_parni( 2 );
@@ -7416,7 +7416,7 @@ HB_FUNC( IGTREENODEEX_STR )
 }
 
 /* bool igTreeNodeEx_StrStr(const char* str_id,ImGuiTreeNodeFlags flags,const char* fmt,...) */
-HB_FUNC( IGTREENODEEX_STRSTR )
+HB_FUNC( IGTREENODEEXSTRSTR )
 {
    const char* str_id = hb_parcx( 1 );
    ImGuiTreeNodeFlags flags = ( ImGuiTreeNodeFlags ) hb_parni( 2 );
@@ -7427,7 +7427,7 @@ HB_FUNC( IGTREENODEEX_STRSTR )
 }
 
 /* bool igTreeNodeEx_Ptr(const void* ptr_id,ImGuiTreeNodeFlags flags,const char* fmt,...) */
-HB_FUNC( IGTREENODEEX_PTR )
+HB_FUNC( IGTREENODEEXPTR )
 {
    const void* ptr_id = ( const void* ) hb_parptr( 1 );
    ImGuiTreeNodeFlags flags = ( ImGuiTreeNodeFlags ) hb_parni( 2 );
@@ -7438,7 +7438,7 @@ HB_FUNC( IGTREENODEEX_PTR )
 }
 
 /* bool igTreeNodeExV_Str(const char* str_id,ImGuiTreeNodeFlags flags,const char* fmt,va_list args) */
-HB_FUNC( IGTREENODEEXV_STR )
+HB_FUNC( IGTREENODEEXVSTR )
 {
    const char* str_id = hb_parcx( 1 );
    ImGuiTreeNodeFlags flags = ( ImGuiTreeNodeFlags ) hb_parni( 2 );
@@ -7447,7 +7447,7 @@ HB_FUNC( IGTREENODEEXV_STR )
 }
 
 /* bool igTreeNodeV_Str(const char* str_id,const char* fmt,va_list args) */
-HB_FUNC( IGTREENODEV_STR )
+HB_FUNC( IGTREENODEVSTR )
 {
    const char* str_id = hb_parcx( 1 );
    const char* fmt = hb_parcx( 2 );
@@ -7461,14 +7461,14 @@ HB_FUNC( IGTREEPOP )
 }
 
 /* void igTreePush_Str(const char* str_id) */
-HB_FUNC( IGTREEPUSH_STR )
+HB_FUNC( IGTREEPUSHSTR )
 {
    const char* str_id = hb_parcx( 1 );
    igTreePush_Str(str_id);
 }
 
 /* void igTreePush_Ptr(const void* ptr_id) */
-HB_FUNC( IGTREEPUSH_PTR )
+HB_FUNC( IGTREEPUSHPTR )
 {
    const void* ptr_id = ( const void* ) hb_parptr( 1 );
    igTreePush_Ptr(ptr_id);
@@ -7572,7 +7572,7 @@ HB_FUNC( IGVSLIDERSCALAR )
 }
 
 /* void igValue_Bool(const char* prefix,bool b) */
-HB_FUNC( IGVALUE_BOOL )
+HB_FUNC( IGVALUEBOOL )
 {
    const char* prefix = hb_parcx( 1 );
    bool b = hb_parl( 2 );
@@ -7580,7 +7580,7 @@ HB_FUNC( IGVALUE_BOOL )
 }
 
 /* void igValue_Int(const char* prefix,int v) */
-HB_FUNC( IGVALUE_INT )
+HB_FUNC( IGVALUEINT )
 {
    const char* prefix = hb_parcx( 1 );
    int v = hb_parni( 2 );
@@ -7588,7 +7588,7 @@ HB_FUNC( IGVALUE_INT )
 }
 
 /* void igValue_Uint(const char* prefix,unsigned int v) */
-HB_FUNC( IGVALUE_UINT )
+HB_FUNC( IGVALUEUINT )
 {
    const char* prefix = hb_parcx( 1 );
    unsigned int v;
@@ -7596,13 +7596,15 @@ HB_FUNC( IGVALUE_UINT )
 }
 
 /* void igValue_Float(const char* prefix,float v,const char* float_format) */
-HB_FUNC( IGVALUE_FLOAT )
+HB_FUNC( IGVALUEFLOAT )
 {
    const char* prefix = hb_parcx( 1 );
    float v = ( float ) hb_parnd( 2 );
    const char* float_format = hb_parcx( 3 );
    igValue_Float(prefix,v,float_format);
 }
+
+HB_FUNC_TRANSLATE( IGOPENPOPUP, IGOPENPOPUPSTR )
 
 static void s_ImGuiListClipper_getDisplayStart( ImGuiListClipper * p )
 {

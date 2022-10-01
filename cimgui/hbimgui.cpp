@@ -103,7 +103,7 @@ HB_FUNC( IGBEGIN )
 {
    const char* name = hb_parcx( 1 );
    bool /* @ */ _p_open = hb_parl( 2 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 2 ) ? NULL : &_p_open );
    ImGuiWindowFlags flags = ( ImGuiWindowFlags ) hb_parni( 3 );
    bool ret = igBegin(name,p_open,flags);
    hb_itemPutL( hb_paramError( 2 ), _p_open );
@@ -281,7 +281,7 @@ HB_FUNC( IGBEGINPOPUPMODAL )
 {
    const char* name = hb_parcx( 1 );
    bool /* @ */ _p_open = hb_parl( 2 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 2 ) ? NULL : &_p_open );
    ImGuiWindowFlags flags = ( ImGuiWindowFlags ) hb_parni( 3 );
    bool ret = igBeginPopupModal(name,p_open,flags);
    hb_itemPutL( hb_paramError( 2 ), _p_open );
@@ -313,7 +313,7 @@ HB_FUNC( IGBEGINTABITEM )
 {
    const char* label = hb_parcx( 1 );
    bool /* @ */ _p_open = hb_parl( 2 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 2 ) ? NULL : &_p_open );
    ImGuiTabItemFlags flags = ( ImGuiTabItemFlags ) hb_parni( 3 );
    bool ret = igBeginTabItem(label,p_open,flags);
    hb_itemPutL( hb_paramError( 2 ), _p_open );
@@ -843,7 +843,7 @@ HB_FUNC( IGCOLUMNS )
 }
 
 /* bool igComboStr_arr(const char* label,int* current_item,const char* const items[],int items_count,int popup_max_height_in_items) */
-HB_FUNC( IGCOMBOSTR_ARR )
+HB_FUNC( IGCOMBOSTRARR )
 {
    const char* label = hb_parcx( 1 );
    int /* @ */ _current_item = hb_parni( 2 );
@@ -2117,7 +2117,8 @@ HB_FUNC( IGGETSTYLECOLORVEC4 )
 {
    ImGuiCol idx = ( ImGuiCol ) hb_parni( 1 );
    const ImVec4* ret = igGetStyleColorVec4(idx);
-   hb_retptr( ( void * ) ret );
+   PHB_ITEM pret = hb_retam( ret, HB_IT_ARRAY );
+   ImVec4*{ _paf( pret, 1 ), _paf( pret, 2 ), _paf( pret, 3 ), _paf( pret, 4 ) };
 }
 
 /* float igGetTextLineHeight() */
@@ -4076,7 +4077,7 @@ HB_FUNC( IGLABELTEXTV )
 }
 
 /* bool igListBoxStr_arr(const char* label,int* current_item,const char* const items[],int items_count,int height_in_items) */
-HB_FUNC( IGLISTBOXSTR_ARR )
+HB_FUNC( IGLISTBOXSTRARR )
 {
    const char* label = hb_parcx( 1 );
    int /* @ */ _current_item = hb_parni( 2 );
@@ -5538,7 +5539,7 @@ HB_FUNC( IGSHADEVERTSLINEARUV )
 HB_FUNC( IGSHOWABOUTWINDOW )
 {
    bool /* @ */ _p_open = hb_parl( 1 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 1 ) ? NULL : &_p_open );
    igShowAboutWindow(p_open);
    hb_itemPutL( hb_paramError( 1 ), _p_open );
 }
@@ -5547,7 +5548,7 @@ HB_FUNC( IGSHOWABOUTWINDOW )
 HB_FUNC( IGSHOWDEMOWINDOW )
 {
    bool /* @ */ _p_open = hb_parl( 1 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 1 ) ? NULL : &_p_open );
    igShowDemoWindow(p_open);
    hb_itemPutL( hb_paramError( 1 ), _p_open );
 }
@@ -5563,7 +5564,7 @@ HB_FUNC( IGSHOWFONTSELECTOR )
 HB_FUNC( IGSHOWMETRICSWINDOW )
 {
    bool /* @ */ _p_open = hb_parl( 1 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 1 ) ? NULL : &_p_open );
    igShowMetricsWindow(p_open);
    hb_itemPutL( hb_paramError( 1 ), _p_open );
 }
@@ -5953,7 +5954,7 @@ HB_FUNC( IGTABITEMEX )
    ImGuiTabBar* tab_bar = ( ImGuiTabBar* ) hb_parptr( 1 );
    const char* label = hb_parcx( 2 );
    bool /* @ */ _p_open = hb_parl( 3 );
-   bool * p_open = &_p_open;
+   bool * p_open = ( HB_ISNIL( 3 ) ? NULL : &_p_open );
    ImGuiTabItemFlags flags = ( ImGuiTabItemFlags ) hb_parni( 4 );
    bool ret = igTabItemEx(tab_bar,label,p_open,flags);
    hb_itemPutL( hb_paramError( 3 ), _p_open );

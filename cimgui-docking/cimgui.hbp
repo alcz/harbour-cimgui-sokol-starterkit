@@ -2,6 +2,10 @@
 
 -o${hb_name}
 
+-env:IMGUI_DOCKING=yes
+-env:IMGUI_CUSTOM-
+-env:IMGUI_TUI-
+
 cimgui.cpp
 {cflag}-I./imgui/
 hbimgui.cpp
@@ -9,6 +13,8 @@ hbimgui.cpp
 ../cimgui/hbfunc.prg
 ../cimgui/hbfunc_.c
 ../cimgui/exstyles.cpp
+../cimgui/hbarrays.cpp
+../cimgui/plots.cpp
 
 imgui/imgui.cpp
 imgui/imgui_widgets.cpp

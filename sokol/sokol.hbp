@@ -3,6 +3,8 @@
 -o${hb_name}
 
 -depkeyhead=cimgui:cimgui.h
+{IMGUI_DOCKING}-depincpathlocal=cimgui:../cimgui-docking
+{IMGUI_CUSTOM}-depincpathlocal=cimgui:../cimgui-custom
 -depincpathlocal=cimgui:../cimgui
 -cflag=-DSOKOL_NO_ENTRY
 

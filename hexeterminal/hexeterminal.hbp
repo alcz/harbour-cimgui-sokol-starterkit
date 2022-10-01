@@ -3,9 +3,15 @@
 -ohexeterminal
 
 -depkeyhead=cimgui:cimgui.h
+{IMGUI_DOCKING}-depincpathlocal=cimgui:../cimgui-docking
+{IMGUI_CUSTOM}-depincpathlocal=cimgui:../cimgui-custom
+{IMGUI_TUI}-depincpathlocal=cimgui:../cimgui-tui
 -depincpathlocal=cimgui:../cimgui
 
 -depkeyhead=imgui:imgui.h
+{IMGUI_DOCKING}-depincpathlocal=imgui:../cimgui-docking/imgui
+{IMGUI_CUSTOM}-depincpathlocal=imgui:../cimgui-custom/imgui
+{IMGUI_TUI}-depincpathlocal=imgui:../cimgui-tui/imgui
 -depincpathlocal=imgui:../cimgui/imgui
 
 -depkeyhead=sokol:sokol_imgui.h

@@ -3,6 +3,33 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2022-10-01 10:54 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  + cimgui-docking/hbimgui.h
+    + added file that just includes ../cimgui/hbimgui.h,
+      most of the time it's not needed, but ImPlot seem
+      to look for it right now.
+
+      Maybe our cimgui supplements should go into separate, let's
+      say "../cimgui-common" so this folder would be common for
+      base imgui and -docking, -custom, -tui flavour builds.
+
+   * cimgui-docking/cimgui.hbp
+   * cimgui-docking/cimgui.hbp
+   * cimgui-docking/hbimgui.cpp
+   * cimgui/cimgui.hbp
+   * cimplot/cimplot.hbp
+   * examples/hbmk.hbm
+   * hexeterminal/hexeterminal.hbp
+   * hexeterminal/tdemo.hbp
+   * meta-rebuild-docking.hbp
+   * sokol/sokol.hbp
+   * sokol/sokolimg.hbp
+     + added possibility to rebuild checked out directory tree
+       with subprojects for specific Dear ImGui flavour. This is now
+       based on envvars, one of IMGUI_DOCKING, IMGUI_CUSTOM, IMGUI_TUI
+       can be declared. If any of it is not declared, the default build
+       based on cimgui/* will be done.
+
 2022-06-17 20:46 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * sokol/sokol.hbc
     ! fix Linux builds, typoed libm: lm -> m

@@ -2,6 +2,10 @@
 
 -o${hb_name}
 
+-env:IMGUI_DOCKING-
+-env:IMGUI_CUSTOM-
+-env:IMGUI_TUI-
+
 cimgui.cpp
 {cflag}-I./imgui/
 hbimgui.cpp

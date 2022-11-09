@@ -1102,10 +1102,10 @@ HB_FUNC( IGDEBUGNODEDOCKNODE )
 }
 
 /* void igDebugNodeDrawCmdShowMeshAndBoundingBox(ImDrawList* out_draw_list,const ImDrawList* draw_list,const ImDrawCmd* draw_cmd,bool show_mesh,bool show_aabb) */
-/*
+/* TOFIX _out_draw_list invalid (not a struct)
 HB_FUNC( IGDEBUGNODEDRAWCMDSHOWMESHANDBOUNDINGBOX )
 {
-   ImDrawList _out_draw_list; // <- TOFIX invalid (not a struct)
+   ImDrawList _out_draw_list;
    ImDrawList* out_draw_list = &_out_draw_list;
    const ImDrawList* draw_list = ( const ImDrawList* ) hb_parptr( 2 );
    const ImDrawCmd* draw_cmd = ( const ImDrawCmd* ) hb_parptr( 3 );
@@ -1938,7 +1938,7 @@ HB_FUNC( IGFINDRENDEREDTEXTEND )
    const char* text = hb_parcx( 1 );
    const char* text_end = NULL;
    const char* ret = igFindRenderedTextEnd(text,text_end);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* ImGuiSettingsHandler* igFindSettingsHandler(const char* type_name) */
@@ -2059,7 +2059,7 @@ HB_FUNC( IGGETBACKGROUNDDRAWLISTVIEWPORTPTR )
 HB_FUNC( IGGETCLIPBOARDTEXT )
 {
    const char* ret = igGetClipboardText();
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* ImU32 igGetColorU32_Col(ImGuiCol idx,float alpha_mul) */
@@ -2616,7 +2616,7 @@ HB_FUNC( IGGETSTYLECOLORNAME )
 {
    ImGuiCol idx = ( ImGuiCol ) hb_parni( 1 );
    const char* ret = igGetStyleColorName(idx);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* const ImVec4* igGetStyleColorVec4(ImGuiCol idx) */
@@ -2666,7 +2666,7 @@ HB_FUNC( IGGETTREENODETOLABELSPACING )
 HB_FUNC( IGGETVERSION )
 {
    const char* ret = igGetVersion();
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* const ImGuiPlatformMonitor* igGetViewportPlatformMonitor(ImGuiViewport* viewport) */
@@ -3401,7 +3401,7 @@ HB_FUNC( IGIMPARSEFORMATFINDEND )
 {
    const char* format = hb_parcx( 1 );
    const char* ret = igImParseFormatFindEnd(format);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* const char* igImParseFormatFindStart(const char* format) */
@@ -3409,7 +3409,7 @@ HB_FUNC( IGIMPARSEFORMATFINDSTART )
 {
    const char* format = hb_parcx( 1 );
    const char* ret = igImParseFormatFindStart(format);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* int igImParseFormatPrecision(const char* format,int default_value) */
@@ -3430,7 +3430,7 @@ HB_FUNC( IGIMPARSEFORMATTRIMDECORATIONS )
    const char* ret = igImParseFormatTrimDecorations(format,buf,buf_size);
    hb_itemPutC( hb_paramError( 2 ), buf );
    hb_xfree( buf );
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* float igImPow_Float(float x,float y) */
@@ -3509,7 +3509,7 @@ HB_FUNC( IGIMSTRSKIPBLANK )
 {
    const char* str = hb_parcx( 1 );
    const char* ret = igImStrSkipBlank(str);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* void igImStrTrimBlanks(char* str) */
@@ -3537,7 +3537,7 @@ HB_FUNC( IGIMSTRCHRRANGE )
    const char* str_end = hb_parcx( 2 );
    char c;
    const char* ret = igImStrchrRange(str_begin,str_end,c);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* char* igImStrdup(const char* str) */
@@ -3568,7 +3568,7 @@ HB_FUNC( IGIMSTREOLRANGE )
    const char* str = hb_parcx( 1 );
    const char* str_end = hb_parcx( 2 );
    const char* ret = igImStreolRange(str,str_end);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* int igImStricmp(const char* str1,const char* str2) */
@@ -3588,7 +3588,7 @@ HB_FUNC( IGIMSTRISTR )
    const char* needle = hb_parcx( 3 );
    const char* needle_end = hb_parcx( 4 );
    const char* ret = igImStristr(haystack,haystack_end,needle,needle_end);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* int igImStrlenW(const ImWchar* str) */
@@ -3637,7 +3637,7 @@ HB_FUNC( IGIMTEXTCHARTOUTF8 )
    char out_buf[5] = { 0 };
    unsigned int c;
    const char* ret = igImTextCharToUtf8(out_buf,c);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* int igImTextCountCharsFromUtf8(const char* in_text,const char* in_text_end) */
@@ -5609,7 +5609,7 @@ HB_FUNC( IGSAVEINISETTINGSTOMEMORY )
    size_t* out_ini_size = &_out_ini_size;
    const char* ret = igSaveIniSettingsToMemory(out_ini_size);
    hb_itemPutNL( hb_paramError( 1 ), _out_ini_size );
-   hb_retptr( ( void * ) ret );
+   hb_retclen( ret, _out_ini_size );
 }
 
 /* void igScaleWindowsInViewport(ImGuiViewportP* viewport,float scale) */
@@ -6927,7 +6927,7 @@ HB_FUNC( IGTABLEGETCOLUMNNAMEINT )
 {
    int column_n = hb_parni( 1 );
    const char* ret = igTableGetColumnName_Int(column_n);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* const char* igTableGetColumnName_TablePtr(const ImGuiTable* table,int column_n) */
@@ -6936,7 +6936,7 @@ HB_FUNC( IGTABLEGETCOLUMNNAMETABLEPTR )
    const ImGuiTable* table = ( const ImGuiTable* ) hb_parptr( 1 );
    int column_n = hb_parni( 2 );
    const char* ret = igTableGetColumnName_TablePtr(table,column_n);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* ImGuiSortDirection igTableGetColumnNextSortDirection(ImGuiTableColumn* column) */

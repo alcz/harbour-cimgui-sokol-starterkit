@@ -994,6 +994,7 @@ HB_FUNC( IGDEBUGNODECOLUMNS )
 }
 
 /* void igDebugNodeDrawCmdShowMeshAndBoundingBox(ImGuiWindow* window,const ImDrawList* draw_list,const ImDrawCmd* draw_cmd,bool show_mesh,bool show_aabb) */
+/* TOFIX _out_draw_list invalid (not a struct)
 HB_FUNC( IGDEBUGNODEDRAWCMDSHOWMESHANDBOUNDINGBOX )
 {
    ImGuiWindow* window = ( ImGuiWindow* ) hb_parptr( 1 );
@@ -1003,6 +1004,7 @@ HB_FUNC( IGDEBUGNODEDRAWCMDSHOWMESHANDBOUNDINGBOX )
    bool show_aabb = hb_parl( 5 );
    igDebugNodeDrawCmdShowMeshAndBoundingBox(window,draw_list,draw_cmd,show_mesh,show_aabb);
 }
+*/
 
 /* void igDebugNodeDrawList(ImGuiWindow* window,const ImDrawList* draw_list,const char* label) */
 HB_FUNC( IGDEBUGNODEDRAWLIST )
@@ -1487,7 +1489,7 @@ HB_FUNC( IGFINDRENDEREDTEXTEND )
    const char* text = hb_parcx( 1 );
    const char* text_end = NULL;
    const char* ret = igFindRenderedTextEnd(text,text_end);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* ImGuiSettingsHandler* igFindSettingsHandler(const char* type_name) */
@@ -1591,7 +1593,7 @@ HB_FUNC( IGGETBACKGROUNDDRAWLIST )
 HB_FUNC( IGGETCLIPBOARDTEXT )
 {
    const char* ret = igGetClipboardText();
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* ImU32 igGetColorU32Col(ImGuiCol idx,float alpha_mul) */
@@ -2109,7 +2111,7 @@ HB_FUNC( IGGETSTYLECOLORNAME )
 {
    ImGuiCol idx = ( ImGuiCol ) hb_parni( 1 );
    const char* ret = igGetStyleColorName(idx);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* const ImVec4* igGetStyleColorVec4(ImGuiCol idx) */
@@ -2160,7 +2162,7 @@ HB_FUNC( IGGETTREENODETOLABELSPACING )
 HB_FUNC( IGGETVERSION )
 {
    const char* ret = igGetVersion();
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* void igGetWindowAllowedExtentRect(ImRect *pOut,ImGuiWindow* window) */
@@ -2830,7 +2832,7 @@ HB_FUNC( IGIMPARSEFORMATFINDEND )
 {
    const char* format = hb_parcx( 1 );
    const char* ret = igImParseFormatFindEnd(format);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* const char* igImParseFormatFindStart(const char* format) */
@@ -2838,7 +2840,7 @@ HB_FUNC( IGIMPARSEFORMATFINDSTART )
 {
    const char* format = hb_parcx( 1 );
    const char* ret = igImParseFormatFindStart(format);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* int igImParseFormatPrecision(const char* format,int default_value) */
@@ -2859,7 +2861,7 @@ HB_FUNC( IGIMPARSEFORMATTRIMDECORATIONS )
    const char* ret = igImParseFormatTrimDecorations(format,buf,buf_size);
    hb_itemPutC( hb_paramError( 2 ), buf );
    hb_xfree( buf );
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* float igImPowFloat(float x,float y) */
@@ -2922,7 +2924,7 @@ HB_FUNC( IGIMSTRSKIPBLANK )
 {
    const char* str = hb_parcx( 1 );
    const char* ret = igImStrSkipBlank(str);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* void igImStrTrimBlanks(char* str) */
@@ -2950,7 +2952,7 @@ HB_FUNC( IGIMSTRCHRRANGE )
    const char* str_end = hb_parcx( 2 );
    char c;
    const char* ret = igImStrchrRange(str_begin,str_end,c);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* char* igImStrdup(const char* str) */
@@ -2981,7 +2983,7 @@ HB_FUNC( IGIMSTREOLRANGE )
    const char* str = hb_parcx( 1 );
    const char* str_end = hb_parcx( 2 );
    const char* ret = igImStreolRange(str,str_end);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* int igImStricmp(const char* str1,const char* str2) */
@@ -3001,7 +3003,7 @@ HB_FUNC( IGIMSTRISTR )
    const char* needle = hb_parcx( 3 );
    const char* needle_end = hb_parcx( 4 );
    const char* ret = igImStristr(haystack,haystack_end,needle,needle_end);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* int igImStrlenW(const ImWchar* str) */
@@ -4931,7 +4933,7 @@ HB_FUNC( IGSAVEINISETTINGSTOMEMORY )
    size_t* out_ini_size = &_out_ini_size;
    const char* ret = igSaveIniSettingsToMemory(out_ini_size);
    hb_itemPutNL( hb_paramError( 1 ), _out_ini_size );
-   hb_retptr( ( void * ) ret );
+   hb_retclen( ret, _out_ini_size );
 }
 
 /* void igScrollToBringRectIntoView(ImVec2 *pOut,ImGuiWindow* window,const ImRect item_rect) */
@@ -6116,7 +6118,7 @@ HB_FUNC( IGTABLEGETCOLUMNNAMEINT )
 {
    int column_n = hb_parni( 1 );
    const char* ret = igTableGetColumnNameInt(column_n);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* const char* igTableGetColumnNameTablePtr(const ImGuiTable* table,int column_n) */
@@ -6125,7 +6127,7 @@ HB_FUNC( IGTABLEGETCOLUMNNAMETABLEPTR )
    const ImGuiTable* table = ( const ImGuiTable* ) hb_parptr( 1 );
    int column_n = hb_parni( 2 );
    const char* ret = igTableGetColumnNameTablePtr(table,column_n);
-   hb_retptr( ( void * ) ret );
+   hb_retc( ret );
 }
 
 /* ImGuiSortDirection igTableGetColumnNextSortDirection(ImGuiTableColumn* column) */

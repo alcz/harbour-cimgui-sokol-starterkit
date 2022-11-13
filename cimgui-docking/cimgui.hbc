@@ -1,6 +1,7 @@
 description=C Dear Imgui wrapper
 
 incpaths=.
+incpaths=../cimgui-common
 
 #headers=${hb_name}.ch
 

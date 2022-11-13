@@ -7,11 +7,15 @@
     Copyright (c) 2021-2022 Aleksander Czajczynski
 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* hbhlp.c - the following used in array to ImVec* conversions */
 float _paf( PHB_ITEM p, HB_SIZE nIndex );
 
 /* hbfunc_.c - font tools, etc. */
-ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx, PHB_ITEM pChars, HB_BOOL bDefRange, HB_BOOL bMergeMode );
+ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx, PHB_ITEM pChars, HB_BOOL bDefRange, HB_BOOL bMergeMode, ImFontConfig * pCfg );
 
 /* hbarrays.cpp - special kind of arrays/sets used with plotting */
 
@@ -34,3 +38,7 @@ PHB_IG_FLOATS hb_ig_floats_par( int iParam );
 
 void hb_ig_ints_ret( PHB_IG_INTS p );
 PHB_IG_INTS hb_ig_ints_par( int iParam );
+
+#ifdef __cplusplus
+}
+#endif

@@ -17,11 +17,10 @@
 #include "hbvm.h"
 #include "exstyles.h"
 
-ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx, PHB_ITEM pChars, HB_BOOL bDefRange, HB_BOOL bMergeMode )
+ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx, PHB_ITEM pChars, HB_BOOL bDefRange, HB_BOOL bMergeMode, ImFontConfig * pCfg )
 {
    ImGuiIO * io = igGetIO();
 
-   ImFontConfig * cfg = ImFontConfig_ImFontConfig();
    ImFontGlyphRangesBuilder * builder = ImFontGlyphRangesBuilder_ImFontGlyphRangesBuilder();
    ImVector_ImWchar * ranges = ImVector_ImWchar_create();
 
@@ -41,20 +40,24 @@ ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx, PHB_ITE
 
    ImFontGlyphRangesBuilder_BuildRanges( builder, ranges );
 
-   cfg->SizePixels = fSizePx; /* ( for HiDPI x-multiply ?) * SCALE; */
+   if( ! pCfg )
+   {
+      pCfg = ImFontConfig_ImFontConfig();
+      pCfg->SizePixels = fSizePx; /* ( for HiDPI x-multiply ?) * SCALE; */
+   }
 
    if( bMem )
    {
       char * szFontBuf = ( char * ) hb_xmemdup( ( void * ) szFont, hb_parclen( 2 ) );
-      cfg->FontDataOwnedByAtlas = false; /* mark ownership - when added from memory, region shouldn't be ever freed by imgui! */
+      pCfg->FontDataOwnedByAtlas = false; /* mark ownership - when added from memory, region shouldn't be ever freed by imgui! */
 
-      if( ! ( pRet = ImFontAtlas_AddFontFromMemoryTTF( io->Fonts, szFontBuf, hb_parclen( 2 ), fSizePx, cfg, ranges->Data ) ) )
+      if( ! ( pRet = ImFontAtlas_AddFontFromMemoryTTF( io->Fonts, szFontBuf, hb_parclen( 2 ), fSizePx, pCfg, ranges->Data ) ) )
          hb_xfree( szFontBuf );
    }
    else
-      pRet = ImFontAtlas_AddFontFromFileTTF( io->Fonts, szFont, fSizePx, cfg, ranges->Data );
+      pRet = ImFontAtlas_AddFontFromFileTTF( io->Fonts, szFont, fSizePx, pCfg, ranges->Data );
 
-   /* TODO: return font handle as GC-item */
+   /* TODO: return font handle as GC-item, destroy own ImFontConfig, *Builder, they're not on stack */
 
    return pRet;
 }
@@ -70,7 +73,7 @@ HB_FUNC( __IGADDFONT )
    ImGuiIO * io        = igGetIO();
    ImFont * pRet;
 
-   pRet = hb_igFontAdd( bMem, szFont, fSizePx, pChars, bDefRange, bMergeMode );
+   pRet = hb_igFontAdd( bMem, szFont, fSizePx, pChars, bDefRange, bMergeMode, NULL );
 
    ImFontAtlas_Build( io->Fonts );
 

@@ -3,6 +3,19 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2022-11-13 12:05 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+   * cimgui-docking/cimgui.hbc
+   * cimgui/cimgui.hbc
+     + add ../cimgui-common to include paths
+
+   * cimgui/hbimgui.h
+   * cimgui/hbfunc.c
+     * make the __igAddFont() functionality callable from C++ too, added
+       last optional parameter:
+       ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx,
+                              PHB_ITEM pChars, HB_BOOL bDefRange,
+                              HB_BOOL bMergeMode, ImFontConfig * pCfg )
+
 2022-11-13 03:03 UTC+0100 Aleksander Czajczynski (hb fki.pl)
    * cimgui/* -> cimgui-common/exstyles.cpp
                  cimgui-common/exstyles.h
@@ -72,7 +85,6 @@
       say "../cimgui-common" so this folder would be common for
       base imgui and -docking, -custom, -tui flavour builds.
 
-   * cimgui-docking/cimgui.hbp
    * cimgui-docking/cimgui.hbp
    * cimgui-docking/hbimgui.cpp
    * cimgui/cimgui.hbp

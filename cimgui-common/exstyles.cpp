@@ -1,12 +1,12 @@
 /* this is kept as .cpp for easier importing of styles from other contributors */
 
-#include "./imgui/imgui.h"
+#include "imgui.h"
 #ifdef CIMGUI_FREETYPE
-#include "./imgui/misc/freetype/imgui_freetype.h"
+#include "misc/freetype/imgui_freetype.h"
 #endif
 // following define clashes with cpp definitions
 // #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
-#include "./imgui/imgui_internal.h"
+#include "imgui_internal.h"
 #include "cimgui.h"
 #include "hbapi.h"
 #include "hbapiitm.h"

@@ -3,6 +3,23 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2022-11-13 03:03 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+   * cimgui/* -> cimgui-common/exstyles.cpp
+                 cimgui-common/exstyles.h
+                 cimgui-common/hbarrays.cpp
+                 cimgui-common/hbctcalw.prg
+                 cimgui-common/hbfunc.prg
+                 cimgui-common/hbfunc_.c
+                 cimgui-common/hbhlp.c
+                 cimgui-common/hbhlpinl.c
+                 cimgui-common/hbimgui.h
+                 cimgui-common/plots.cpp
+
+   * cimgui-docking/cimgui.hbp
+   * cimgui-docking/hbimgui.cpp
+   * cimgui/cimgui.hbp
+     * relocated files that are not specific to any branch,
+       but should work with any to cimgui-common/
 
 2022-11-13 02:17 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * examples/implot/hbmk.hbm

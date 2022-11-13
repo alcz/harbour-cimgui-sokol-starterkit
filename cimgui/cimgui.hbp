@@ -6,15 +6,20 @@
 -env:IMGUI_CUSTOM-
 -env:IMGUI_TUI-
 
+-depkeyhead=imgui:imgui.h
+-depincpathlocal=imgui:./imgui
+
 cimgui.cpp
 {cflag}-I./imgui/
+-I../cimgui-common/
+-I./
 hbimgui.cpp
-hbctcalw.prg
-hbfunc.prg
-hbfunc_.c
-exstyles.cpp
-hbarrays.cpp
-plots.cpp
+../cimgui-common/hbctcalw.prg
+../cimgui-common/hbfunc.prg
+../cimgui-common/hbfunc_.c
+../cimgui-common/exstyles.cpp
+../cimgui-common/hbarrays.cpp
+../cimgui-common/plots.cpp
 
 imgui/imgui.cpp
 imgui/imgui_widgets.cpp

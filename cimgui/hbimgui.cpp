@@ -2119,8 +2119,7 @@ HB_FUNC( IGGETSTYLECOLORVEC4 )
 {
    ImGuiCol idx = ( ImGuiCol ) hb_parni( 1 );
    const ImVec4* ret = igGetStyleColorVec4(idx);
-   PHB_ITEM pret = hb_retam( ret, HB_IT_ARRAY );
-   ImVec4*{ _paf( pret, 1 ), _paf( pret, 2 ), _paf( pret, 3 ), _paf( pret, 4 ) };
+   hb_retptr( ( void * ) ret );
 }
 
 /* float igGetTextLineHeight() */

@@ -9,7 +9,7 @@
 #include "./imgui/imgui_internal.h"
 #include "cimgui.h"
 
-#include "../cimgui/hbhlp.c"
+#include "hbhlp.c"
 
 /* void ImGuiListClipper_Begin(ImGuiListClipper* self,int items_count,float items_height) */
 HB_FUNC( IMGUILISTCLIPPER_BEGIN )

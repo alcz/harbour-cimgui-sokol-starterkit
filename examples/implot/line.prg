@@ -34,7 +34,7 @@ PROCEDURE ImFrame
 
    igSetNextWindowPos( {10,10}, ImGuiCond_Once, {0,0} )
    igSetNextWindowSize( {650, 400}, ImGuiCond_Once )
-   igBegin( "Hello Dear ImGui plots!", 0, ImGuiWindowFlags_None )
+   igBegin( "Hello Dear ImGui plots!", NIL, ImGuiWindowFlags_None )
 
    IF pPlotX == NIL
       pPlotX := hb_igFloats( { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } )

@@ -32,7 +32,11 @@ HB_FUNC( HB_IGPLOTLINESFLOAT )
       scale_min = scale_max = FLT_MAX;  /* avoid casting FLT_MAX from double(?) */
    if( ! values_count || ( HB_SIZE ) values_count > pFloats->nSize )
       values_count = pFloats->nSize;
+#if ( IMGUI_VERSION_NUM > 18400 )
+   igPlotLines_FloatPtr(label,values,values_count,values_offset,overlay_text,scale_min,scale_max,graph_size,stride);
+#else
    igPlotLinesFloatPtr(label,values,values_count,values_offset,overlay_text,scale_min,scale_max,graph_size,stride);
+#endif
 }
 
 /* void igPlotHistogramFloatPtr(const char* label,const float* values,int values_count,int values_offset,const char* overlay_text,float scale_min,float scale_max,ImVec2 graph_size,int stride) */
@@ -53,5 +57,9 @@ HB_FUNC( HB_IGPLOTHISTOGRAMFLOAT )
       scale_min = scale_max = FLT_MAX; /* avoid casting FLT_MAX from double(?) */
    if( ! values_count || ( HB_SIZE ) values_count > pFloats->nSize )
       values_count = pFloats->nSize;
+#if ( IMGUI_VERSION_NUM > 18400 )
+   igPlotHistogram_FloatPtr(label,values,values_count,values_offset,overlay_text,scale_min,scale_max,graph_size,stride);
+#else
    igPlotHistogramFloatPtr(label,values,values_count,values_offset,overlay_text,scale_min,scale_max,graph_size,stride);
+#endif
 }

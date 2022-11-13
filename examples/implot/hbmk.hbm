@@ -1,4 +1,5 @@
-../../cimgui/cimgui.hbc
+{!IMGUI_DOCKING}../../cimgui/cimgui.hbc
+{IMGUI_DOCKING}../../cimgui-docking/cimgui.hbc
 ../../sokol/sokol.hbc
 ../../cimplot/cimplot.hbc
 

@@ -4,11 +4,14 @@
 
     license is MIT, see ../LICENSE
 
-    Copyright (c) 2021 Aleksander Czajczynski
+    Copyright (c) 2021-2022 Aleksander Czajczynski
 */
 
 /* hbhlp.c - the following used in array to ImVec* conversions */
 float _paf( PHB_ITEM p, HB_SIZE nIndex );
+
+/* hbfunc_.c - font tools, etc. */
+ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx, PHB_ITEM pChars, HB_BOOL bDefRange, HB_BOOL bMergeMode );
 
 /* hbarrays.cpp - special kind of arrays/sets used with plotting */
 

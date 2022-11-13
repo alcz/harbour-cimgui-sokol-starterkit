@@ -3,10 +3,11 @@
 
                           hb_igAddFontFromFileTTF()
                           hb_igAddFontFromMemoryTTF()
+                          hb_igCdpRange()
 
     license is MIT, see ../LICENSE
 
-    Copyright (c) 2021 Aleksander Czajczynski
+    Copyright (c) 2021-2022 Aleksander Czajczynski
 */
 
 
@@ -27,7 +28,7 @@ FUNCTION hb_igAddFontFromFileTTF( cFile, nSizePx, xConfig, xCdpList, lDefaultRan
       nSizePx := 10
    ENDIF
 
-   RETURN __igAddFont( .F., cFile, nSizePx, xConfig, __cdpRange( xCdpList ), lDefaultRange, lMerge )
+   RETURN __igAddFont( .F., cFile, nSizePx, xConfig, hb_igCdpRange( xCdpList ), lDefaultRange, lMerge )
 
 FUNCTION hb_igAddFontFromMemoryTTF( cBuffer, nSizePx, xConfig, xCdpList, lDefaultRange, lMerge )
 
@@ -39,9 +40,9 @@ FUNCTION hb_igAddFontFromMemoryTTF( cBuffer, nSizePx, xConfig, xCdpList, lDefaul
       nSizePx := 10
    ENDIF
 
-   RETURN __igAddFont( .T., cBuffer, nSizePx, xConfig, __cdpRange( xCdpList ), lDefaultRange, lMerge )
+   RETURN __igAddFont( .T., cBuffer, nSizePx, xConfig, hb_igCdpRange( xCdpList ), lDefaultRange, lMerge )
 
-STATIC FUNCTION __cdpRange( xCdpList )
+FUNCTION hb_igCdpRange( xCdpList )
    LOCAL cCdp, cCdpVM, hRet := { => }, i
 
    cCdpVM := hb_cdpSelect()
@@ -62,4 +63,3 @@ STATIC FUNCTION __cdpRange( xCdpList )
    hb_cdpSelect( cCdpVM )
 
    RETURN hb_HKeys( hRet )
-

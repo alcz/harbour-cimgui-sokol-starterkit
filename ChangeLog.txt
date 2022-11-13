@@ -3,6 +3,27 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+
+2022-11-13 02:17 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * examples/implot/hbmk.hbm
+    * check for IMGUI_DOCKING envvar
+
+  * examples/implot/line.prg
+    * windows is not closable in igBegin(), pass NIL as 2-nd param
+
+  * cimgui/hbfunc.prg
+    * static __cdpRange() changed to hb_igCdpRange()
+
+  * cimgui/hbimgui.h
+  * cimgui/hbfunc.c
+    * make the __igAddFont() functionality callable from C like this:
+      ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx,
+                             PHB_ITEM pChars, HB_BOOL bDefRange,
+                             HB_BOOL bMergeMode )
+
+  * cimgui/plots.cpp
+    * cimgui overloaded names differs between versions, added #if
+
 2022-11-09 03:26 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui/hbimgui.cpp
   * cimgui-docking/hbimgui.cpp

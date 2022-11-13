@@ -6,7 +6,7 @@
 
     license is MIT, see ../LICENSE
 
-    Copyright (c) 2021 Aleksander Czajczynski
+    Copyright (c) 2021-2022 Aleksander Czajczynski
 */
 
 
@@ -17,23 +17,16 @@
 #include "hbvm.h"
 #include "exstyles.h"
 
-HB_FUNC( __IGADDFONT )
+ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx, PHB_ITEM pChars, HB_BOOL bDefRange, HB_BOOL bMergeMode )
 {
-   HB_BOOL bMem        = hb_parldef( 1, HB_FALSE );
-   const char * szFont = hb_parc( 2 );
-   float fSizePx       = ( float ) hb_parnd( 3 );
-   PHB_ITEM pChars     = hb_param( 5, HB_IT_ARRAY );
-   HB_BOOL bDefRange   = hb_parldef( 6, HB_TRUE );
-   HB_BOOL bMergeMode  = hb_parldef( 7, HB_FALSE );
+   ImGuiIO * io = igGetIO();
 
-   ImGuiIO    *io = igGetIO();
+   ImFontConfig * cfg = ImFontConfig_ImFontConfig();
+   ImFontGlyphRangesBuilder * builder = ImFontGlyphRangesBuilder_ImFontGlyphRangesBuilder();
+   ImVector_ImWchar * ranges = ImVector_ImWchar_create();
 
-   ImFontConfig *cfg = ImFontConfig_ImFontConfig();
-   ImFontGlyphRangesBuilder *builder = ImFontGlyphRangesBuilder_ImFontGlyphRangesBuilder();
-   ImVector_ImWchar *ranges = ImVector_ImWchar_create();
+   ImFont * pRet;
    
-   hb_ret();
-
    if( bDefRange )
       ImFontGlyphRangesBuilder_AddRanges( builder, ImFontAtlas_GetGlyphRangesDefault( io->Fonts ) );
 
@@ -55,15 +48,33 @@ HB_FUNC( __IGADDFONT )
       char * szFontBuf = ( char * ) hb_xmemdup( ( void * ) szFont, hb_parclen( 2 ) );
       cfg->FontDataOwnedByAtlas = false; /* mark ownership - when added from memory, region shouldn't be ever freed by imgui! */
 
-      if( ! ImFontAtlas_AddFontFromMemoryTTF( io->Fonts, szFontBuf, hb_parclen( 2 ), fSizePx, cfg, ranges->Data ) )
+      if( ! ( pRet = ImFontAtlas_AddFontFromMemoryTTF( io->Fonts, szFontBuf, hb_parclen( 2 ), fSizePx, cfg, ranges->Data ) ) )
          hb_xfree( szFontBuf );
    }
    else
-      ImFontAtlas_AddFontFromFileTTF( io->Fonts, szFont, fSizePx, cfg, ranges->Data );
+      pRet = ImFontAtlas_AddFontFromFileTTF( io->Fonts, szFont, fSizePx, cfg, ranges->Data );
+
+   /* TODO: return font handle as GC-item */
+
+   return pRet;
+}
+
+HB_FUNC( __IGADDFONT )
+{
+   HB_BOOL bMem        = hb_parldef( 1, HB_FALSE );
+   const char * szFont = hb_parc( 2 );
+   float fSizePx       = ( float ) hb_parnd( 3 );
+   PHB_ITEM pChars     = hb_param( 5, HB_IT_ARRAY );
+   HB_BOOL bDefRange   = hb_parldef( 6, HB_TRUE );
+   HB_BOOL bMergeMode  = hb_parldef( 7, HB_FALSE );
+   ImGuiIO * io        = igGetIO();
+   ImFont * pRet;
+
+   pRet = hb_igFontAdd( bMem, szFont, fSizePx, pChars, bDefRange, bMergeMode );
 
    ImFontAtlas_Build( io->Fonts );
 
-   /* TODO: return font handle */
+   hb_retptr( ( void * ) pRet );
 }
 
 HB_FUNC( HB_IGFPS )

@@ -84,6 +84,8 @@ PROCEDURE ImFrame
    hb_igDatePicker( "Pick a date", @d )
    hb_igDatePicker( "or if Monday starts your week", @d,, 2 )
 
+   hb_igButtonRounded("i'm different")
+
    igEnd()
 
    RETURN

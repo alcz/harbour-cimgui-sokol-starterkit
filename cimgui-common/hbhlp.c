@@ -23,7 +23,7 @@ typedef struct _HB_IG_TEXT_DATA
 
 float _paf( PHB_ITEM p, HB_SIZE nIndex )
 {
-   if( p && nIndex > 0 && nIndex <= hb_arrayLen( p ) )
+   if( p )
       return ( float ) hb_arrayGetND( p, nIndex );
 
    return ( float ) 0.0;

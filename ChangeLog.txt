@@ -3,35 +3,63 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
-2022-11-13 12:05 UTC+0100 Aleksander Czajczynski (hb fki.pl)
-   * cimgui-docking/cimgui.hbc
-   * cimgui/cimgui.hbc
-     + add ../cimgui-common to include paths
+2023-01-05 00:20 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-common/hbhlp.c
+    % remove redundant checks: _paf() vs hb_arrayGetND()
 
-   * cimgui/hbimgui.h
-   * cimgui/hbfunc.c
-     * make the __igAddFont() functionality callable from C++ too, added
-       last optional parameter:
-       ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx,
-                              PHB_ITEM pChars, HB_BOOL bDefRange,
-                              HB_BOOL bMergeMode, ImFontConfig * pCfg )
+  * cimgui-common/exstyles.cpp
+    + hb_igButtonRounded( <cText> [, <aSize> ] [, <fRadius> ] )
+      as the name says, <fRadius> specifies how big the rounded
+      corners of a button will be.
+
+  * ChangeLog.txt
+    ! fix indentation
+
+  * cimgui-docking/hbimgui.cpp
+  * cimgui/hbimgui.cpp
+    * always redirect igText() -> igTextUnformatted()
+      randomly passing text with %'s is unsafe, could crash application,
+      when there is not enough arguments. We can't practically use C varargs.
+
+    ; many other functions like igButton(), etc. have the same problem,
+      that we should eventually sanitize/escape %'s because *Unformatted()
+      flavour is not there (TODO)
+
+  * cimplot/cimplot.hbp
+    + -I../cimgui-common/
+
+  * examples/loadfont.prg
+    + just added a rounded button
+
+2022-11-13 12:05 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-docking/cimgui.hbc
+  * cimgui/cimgui.hbc
+    + add ../cimgui-common to include paths
+
+  * cimgui/hbimgui.h
+  * cimgui/hbfunc.c
+    * make the __igAddFont() functionality callable from C++ too, added
+      last optional parameter:
+      ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx,
+                             PHB_ITEM pChars, HB_BOOL bDefRange,
+                             HB_BOOL bMergeMode, ImFontConfig * pCfg )
 
 2022-11-13 03:03 UTC+0100 Aleksander Czajczynski (hb fki.pl)
-   * cimgui/* -> cimgui-common/exstyles.cpp
-                 cimgui-common/exstyles.h
-                 cimgui-common/hbarrays.cpp
-                 cimgui-common/hbctcalw.prg
-                 cimgui-common/hbfunc.prg
-                 cimgui-common/hbfunc_.c
-                 cimgui-common/hbhlp.c
-                 cimgui-common/hbhlpinl.c
-                 cimgui-common/hbimgui.h
-                 cimgui-common/plots.cpp
+  * cimgui/* -> cimgui-common/exstyles.cpp
+                cimgui-common/exstyles.h
+                cimgui-common/hbarrays.cpp
+                cimgui-common/hbctcalw.prg
+                cimgui-common/hbfunc.prg
+                cimgui-common/hbfunc_.c
+                cimgui-common/hbhlp.c
+                cimgui-common/hbhlpinl.c
+                cimgui-common/hbimgui.h
+                cimgui-common/plots.cpp
 
-   * cimgui-docking/cimgui.hbp
-   * cimgui-docking/hbimgui.cpp
-   * cimgui/cimgui.hbp
-     * relocated files that are not specific to any branch,
+  * cimgui-docking/cimgui.hbp
+  * cimgui-docking/hbimgui.cpp
+  * cimgui/cimgui.hbp
+    * relocated files that are not specific to any branch,
        but should work with any to cimgui-common/
 
 2022-11-13 02:17 UTC+0100 Aleksander Czajczynski (hb fki.pl)

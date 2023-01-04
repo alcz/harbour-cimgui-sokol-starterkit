@@ -14,6 +14,8 @@
 {IMGUI_TUI}-depincpathlocal=imgui:../cimgui-tui/imgui
 -depincpathlocal=imgui:../cimgui/imgui
 
+-I../cimgui-common/
+
 cimplot.cpp
 {cflag}-I./implot/
 hbimplot.cpp

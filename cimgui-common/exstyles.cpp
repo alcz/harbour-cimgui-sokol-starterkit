@@ -185,3 +185,23 @@ HB_FUNC( HB_IGTHEMECHERRY )
    hb_igThemeCherry();
    hb_ret();
 }
+
+/* bool hb_igButtonRounded(const char* label,const ImVec2 size, float radius) */
+HB_FUNC( HB_IGBUTTONROUNDED )
+{
+   const char* label = hb_parcx( 1 );
+   PHB_ITEM psize = hb_param( 2, HB_IT_ARRAY );
+   ImVec2 size;
+   float rr = ( float ) hb_parnd( 3 );
+   bool ret;
+   if( psize )
+      size = ImVec2{ ( float ) hb_arrayGetND( psize, 1 ), ( float ) hb_arrayGetND( psize, 2 ) };
+   else
+      size = ImVec2{ 0, 0 };
+   if( rr < 0.01 )
+      rr = 5;
+   ImGui::PushStyleVar( ImGuiStyleVar_FrameRounding, rr );
+   ret = ImGui::Button( label, size );
+   ImGui::PopStyleVar( 1 );
+   hb_retl( ret );
+}

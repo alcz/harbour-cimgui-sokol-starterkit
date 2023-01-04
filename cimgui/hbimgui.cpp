@@ -392,7 +392,7 @@ HB_FUNC( IGBULLET )
 HB_FUNC( IGBULLETTEXT )
 {
    const char* fmt = hb_parcx( 1 );
-   /* ... ...; */
+
    igBulletText(fmt,NULL);
 }
 
@@ -2605,7 +2605,7 @@ HB_FUNC( IGIMFORMATSTRING )
    char* buf = hb_itemGetC( hb_paramError( 1 ) );
    size_t buf_size = ( size_t ) hb_parnl( 2 );
    const char* fmt = hb_parcx( 3 );
-   /* ... ...; */
+
    int ret = igImFormatString(buf,buf_size,fmt,NULL);
    hb_itemPutC( hb_paramError( 1 ), buf );
    hb_xfree( buf );
@@ -4065,7 +4065,7 @@ HB_FUNC( IGLABELTEXT )
 {
    const char* label = hb_parcx( 1 );
    const char* fmt = hb_parcx( 2 );
-   /* ... ...; */
+
    igLabelText(label,fmt,NULL);
 }
 
@@ -4179,7 +4179,7 @@ HB_FUNC( IGLOGRENDEREDTEXT )
 HB_FUNC( IGLOGTEXT )
 {
    const char* fmt = hb_parcx( 1 );
-   /* ... ...; */
+
    igLogText(fmt,NULL);
 }
 
@@ -5368,7 +5368,7 @@ HB_FUNC( IGSETTABITEMCLOSED )
 HB_FUNC( IGSETTOOLTIP )
 {
    const char* fmt = hb_parcx( 1 );
-   /* ... ...; */
+
    igSetTooltip(fmt,NULL);
 }
 
@@ -6449,12 +6449,14 @@ HB_FUNC( IGTEMPINPUTTEXT )
 }
 
 /* void igText(const char* fmt,...) */
+/* redirected to igTextUnformatted, randomly passing text with %'s is unsafe, can't practically use C varargs as well
 HB_FUNC( IGTEXT )
 {
    const char* fmt = hb_parcx( 1 );
-   /* ... ...; */
+
    igText(fmt,NULL);
 }
+*/
 
 /* void igTextColored(const ImVec4 col,const char* fmt,...) */
 HB_FUNC( IGTEXTCOLORED )
@@ -6462,7 +6464,7 @@ HB_FUNC( IGTEXTCOLORED )
    PHB_ITEM pcol = hb_param( 1, HB_IT_ARRAY );
    const ImVec4 col = ImVec4{ _paf( pcol, 1 ), _paf( pcol, 2 ), _paf( pcol, 3 ), _paf( pcol, 4 ) };
    const char* fmt = hb_parcx( 2 );
-   /* ... ...; */
+
    igTextColored(col,fmt,NULL);
 }
 
@@ -6479,7 +6481,7 @@ HB_FUNC( IGTEXTCOLOREDV )
 HB_FUNC( IGTEXTDISABLED )
 {
    const char* fmt = hb_parcx( 1 );
-   /* ... ...; */
+
    igTextDisabled(fmt,NULL);
 }
 
@@ -6518,7 +6520,7 @@ HB_FUNC( IGTEXTV )
 HB_FUNC( IGTEXTWRAPPED )
 {
    const char* fmt = hb_parcx( 1 );
-   /* ... ...; */
+
    igTextWrapped(fmt,NULL);
 }
 
@@ -6542,7 +6544,7 @@ HB_FUNC( IGTREENODESTRSTR )
 {
    const char* str_id = hb_parcx( 1 );
    const char* fmt = hb_parcx( 2 );
-   /* ... ...; */
+
    bool ret = igTreeNodeStrStr(str_id,fmt,NULL);
    hb_retl( ret );
 }
@@ -6552,7 +6554,7 @@ HB_FUNC( IGTREENODEPTR )
 {
    const void* ptr_id = ( const void* ) hb_parptr( 1 );
    const char* fmt = hb_parcx( 2 );
-   /* ... ...; */
+
    bool ret = igTreeNodePtr(ptr_id,fmt,NULL);
    hb_retl( ret );
 }
@@ -6592,7 +6594,7 @@ HB_FUNC( IGTREENODEEXSTRSTR )
    const char* str_id = hb_parcx( 1 );
    ImGuiTreeNodeFlags flags = ( ImGuiTreeNodeFlags ) hb_parni( 2 );
    const char* fmt = hb_parcx( 3 );
-   /* ... ...; */
+
    bool ret = igTreeNodeExStrStr(str_id,flags,fmt,NULL);
    hb_retl( ret );
 }
@@ -6603,7 +6605,7 @@ HB_FUNC( IGTREENODEEXPTR )
    const void* ptr_id = ( const void* ) hb_parptr( 1 );
    ImGuiTreeNodeFlags flags = ( ImGuiTreeNodeFlags ) hb_parni( 2 );
    const char* fmt = hb_parcx( 3 );
-   /* ... ...; */
+
    bool ret = igTreeNodeExPtr(ptr_id,flags,fmt,NULL);
    hb_retl( ret );
 }
@@ -6768,6 +6770,8 @@ HB_FUNC( IGVALUEFLOAT )
    const char* float_format = hb_parcx( 3 );
    igValueFloat(prefix,v,float_format);
 }
+
+HB_FUNC_TRANSLATE( IGTEXT, IGTEXTUNFORMATTED )
 
 static void s_ImGuiListClipper_getDisplayStart( ImGuiListClipper * p )
 {

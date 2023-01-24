@@ -3,6 +3,12 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2023-01-24 12:31 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-common/exstyles.cpp
+    + hb_igThemeVSC() - VSCode like theme
+
+    * minor bracket fmt
+
 2023-01-05 00:20 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui-common/hbhlp.c
     % remove redundant checks: _paf() vs hb_arrayGetND()

@@ -14,8 +14,8 @@
 
 #define LC_COUNTER() hb_igLineCounterSet( __LINE__ )
 #xtranslate hb_igLineCounterSet( <x> ) => #undef __LLINE__ ; #define __LLINE__ <x>
-#xtranslate LC_( <exp> ) =>  IIF( Len( IG_LINECACHE_VAR ) >= __LINE__ - __LLINE__, IG_LINECACHE_VAR\[ __LINE__ - __LLINE__ \], hb_igLineCache( IG_LINECACHE_VAR, __LINE__ - __LLINE__, 0, <exp> ) )
-#xtranslate LC_( <n>, <exp> ) =>  IIF( Len( IG_LINECACHE_VAR ) >= __LINE__ - __LLINE__ .AND. Len( IG_LINECACHE_VAR\[ __LINE__ - __LLINE__ \] ) >= n, IG_LINECACHE_VAR\[ __LINE__ - __LLINE__ \]\[ <n> \], hb_igLineCache( IG_LINECACHE_VAR, __LINE__ - __LLINE__, <n>, <exp> ) )
+#xtranslate LC_( <exp> ) =>  IIF( Len( IG_LINECACHE_VAR ) >= __LINE__ - __LLINE__ .AND. ! IG_LINECACHE_VAR\[ __LINE__ - __LLINE__ \] == NIL, IG_LINECACHE_VAR\[ __LINE__ - __LLINE__ \], hb_igLineCache( IG_LINECACHE_VAR, __LINE__ - __LLINE__, 0, <exp> ) )
+#xtranslate LC_( <n>, <exp> ) =>  IIF( Len( IG_LINECACHE_VAR ) >= __LINE__ - __LLINE__ .AND. ! IG_LINECACHE_VAR\[ __LINE__ - __LLINE__ \] == NIL .AND. Len( IG_LINECACHE_VAR\[ __LINE__ - __LLINE__ \] ) >= n, IG_LINECACHE_VAR\[ __LINE__ - __LLINE__ \]\[ <n> \], hb_igLineCache( IG_LINECACHE_VAR, __LINE__ - __LLINE__, <n>, <exp> ) )
 
 #ifdef IG_LINECACHE_IMPL
  #include "hbimca.prg"

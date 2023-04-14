@@ -14,9 +14,11 @@ cimgui.cpp
 -I../cimgui-common/
 -I./
 hbimgui.cpp
+../cimgui-common/hbcombow.prg
 ../cimgui-common/hbctcalw.prg
 ../cimgui-common/hbfunc.prg
 ../cimgui-common/hbfunc_.c
+../cimgui-common/hbimca.prg
 ../cimgui-common/exstyles.cpp
 ../cimgui-common/hbarrays.cpp
 ../cimgui-common/plots.cpp

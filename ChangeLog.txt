@@ -3,6 +3,16 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2023-04-15 11:41 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-common/hbimca.ch
+    ! LC_( expr ) macro should treat NIL like uncached value
+      too, if there are branches in the code, checking
+      array size is not enough... of course.
+
+  * cimgui/cimgui.hbp
+  * cimgui-docking/cimgui.hbp
+   * missing from prev commit
+
 2023-04-12 12:37 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * cimgui-common/exstyles.cpp
     ! fix non-docking build after previous commit

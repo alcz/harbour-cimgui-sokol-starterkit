@@ -3,7 +3,17 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
-2023-04-15 11:41 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+
+2023-04-17 12:14 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-common/hbimca.ch
+  * cimgui-common/hbimca.prg
+    * changed implementation to use wrapper to C hb_arrayGet()
+      function, seems better when treating NIL like uncached
+
+    ! fixed LC_( 1...n, expr ) variant if there are more
+      expressions one line
+
+2023-04-14 11:41 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * cimgui-common/hbimca.ch
     ! LC_( expr ) macro should treat NIL like uncached value
       too, if there are branches in the code, checking

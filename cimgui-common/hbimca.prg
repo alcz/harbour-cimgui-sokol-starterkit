@@ -17,10 +17,22 @@ FUNCTION hb_igLineCache( aImLineCache, nLine, nElement, xStored )
       aImLineCache[ nLine ] := xStored
    ELSE
       IF ! HB_IsArray( a := aImLineCache[ nLine ] )
-         aImLineCache[ nLine ] := Array( nElement )
+         a := aImLineCache[ nLine ] := Array( nElement )
       ELSEIF Len( a ) < nElement
          ASize( a, nElement )
       ENDIF
       a[ nElement ] := xStored
    ENDIF
    RETURN xStored
+
+#pragma BEGINDUMP
+
+#include "hbapi.h"
+#include "hbapiitm.h"
+#include "hbstack.h"
+
+HB_FUNC( HB_IGLINECACHEGET )
+{
+   hb_arrayGet( hb_param( 1, HB_IT_ANY ), hb_parns( 2 ), hb_stackReturnItem() );
+}
+

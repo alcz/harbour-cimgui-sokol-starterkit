@@ -17,6 +17,171 @@
 #xtranslate ImGuiListClipper( <p> ):ItemsFrozen => ImGuiListClipper_Get( <p>, 5 )
 #xtranslate ImGuiListClipper( <p> ):ItemsHeight => ImGuiListClipper_Get( <p>, 6 )
 #xtranslate ImGuiListClipper( <p> ):StartPosY => ImGuiListClipper_Get( <p>, 7 )
+#define ImGuiIO_ConfigFlags                             1
+#define ImGuiIO_BackendFlags                            2
+#define ImGuiIO_DisplaySize                             3
+#define ImGuiIO_DeltaTime                               4
+#define ImGuiIO_IniSavingRate                           5
+#define ImGuiIO_IniFilename                             6
+#define ImGuiIO_LogFilename                             7
+#define ImGuiIO_MouseDoubleClickTime                    8
+#define ImGuiIO_MouseDoubleClickMaxDist                 9
+#define ImGuiIO_MouseDragThreshold                     10
+#define ImGuiIO_KeyMap                                 11
+#define ImGuiIO_KeyRepeatDelay                         12
+#define ImGuiIO_KeyRepeatRate                          13
+#define ImGuiIO_UserData                               14
+#define ImGuiIO_Fonts                                  15
+#define ImGuiIO_FontGlobalScale                        16
+#define ImGuiIO_FontAllowUserScaling                   17
+#define ImGuiIO_FontDefault                            18
+#define ImGuiIO_DisplayFramebufferScale                19
+#define ImGuiIO_MouseDrawCursor                        20
+#define ImGuiIO_ConfigMacOSXBehaviors                  21
+#define ImGuiIO_ConfigInputTextCursorBlink             22
+#define ImGuiIO_ConfigDragClickToInputText             23
+#define ImGuiIO_ConfigWindowsResizeFromEdges           24
+#define ImGuiIO_ConfigWindowsMoveFromTitleBarOnl       25
+#define ImGuiIO_ConfigMemoryCompactTimer               26
+#define ImGuiIO_BackendPlatformName                    27
+#define ImGuiIO_BackendRendererName                    28
+#define ImGuiIO_BackendPlatformUserData                29
+#define ImGuiIO_BackendRendererUserData                30
+#define ImGuiIO_BackendLanguageUserData                31
+#define ImGuiIO_GetClipboardTextFn                     32
+#define ImGuiIO_SetClipboardTextFn                     33
+#define ImGuiIO_ClipboardUserData                      34
+#define ImGuiIO_ImeSetInputScreenPosFn                 35
+#define ImGuiIO_ImeWindowHandle                        36
+#define ImGuiIO_MousePos                               37
+#define ImGuiIO_MouseDown                              38
+#define ImGuiIO_MouseWheel                             39
+#define ImGuiIO_MouseWheelH                            40
+#define ImGuiIO_KeyCtrl                                41
+#define ImGuiIO_KeyShift                               42
+#define ImGuiIO_KeyAlt                                 43
+#define ImGuiIO_KeySuper                               44
+#define ImGuiIO_KeysDown                               45
+#define ImGuiIO_NavInputs                              46
+#define ImGuiIO_WantCaptureMouse                       47
+#define ImGuiIO_WantCaptureKeyboard                    48
+#define ImGuiIO_WantTextInput                          49
+#define ImGuiIO_WantSetMousePos                        50
+#define ImGuiIO_WantSaveIniSettings                    51
+#define ImGuiIO_NavActive                              52
+#define ImGuiIO_NavVisible                             53
+#define ImGuiIO_Framerate                              54
+#define ImGuiIO_MetricsRenderVertices                  55
+#define ImGuiIO_MetricsRenderIndices                   56
+#define ImGuiIO_MetricsRenderWindows                   57
+#define ImGuiIO_MetricsActiveWindows                   58
+#define ImGuiIO_MetricsActiveAllocations               59
+#define ImGuiIO_MouseDelta                             60
+#define ImGuiIO_KeyMods                                61
+#define ImGuiIO_MousePosPrev                           62
+#define ImGuiIO_MouseClickedPos                        63
+#define ImGuiIO_MouseClickedTime                       64
+#define ImGuiIO_MouseClicked                           65
+#define ImGuiIO_MouseDoubleClicked                     66
+#define ImGuiIO_MouseReleased                          67
+#define ImGuiIO_MouseDownOwned                         68
+#define ImGuiIO_MouseDownWasDoubleClick                69
+#define ImGuiIO_MouseDownDuration                      70
+#define ImGuiIO_MouseDownDurationPrev                  71
+#define ImGuiIO_MouseDragMaxDistanceAbs                72
+#define ImGuiIO_MouseDragMaxDistanceSqr                73
+#define ImGuiIO_KeysDownDuration                       74
+#define ImGuiIO_KeysDownDurationPrev                   75
+#define ImGuiIO_NavInputsDownDuration                  76
+#define ImGuiIO_NavInputsDownDurationPrev              77
+#define ImGuiIO_PenPressure                            78
+#define ImGuiIO_InputQueueSurrogate                    79
+#define ImGuiIO_InputQueueCharacters                   80
+#xtranslate ImGuiIO( <p> ):ConfigFlags => ImGuiIO_Get( <p>, 1 )
+#xtranslate ImGuiIO( <p> ):BackendFlags => ImGuiIO_Get( <p>, 2 )
+#xtranslate ImGuiIO( <p> ):DisplaySize => ImGuiIO_Get( <p>, 3 )
+#xtranslate ImGuiIO( <p> ):DeltaTime => ImGuiIO_Get( <p>, 4 )
+#xtranslate ImGuiIO( <p> ):IniSavingRate => ImGuiIO_Get( <p>, 5 )
+#xtranslate ImGuiIO( <p> ):IniFilename => ImGuiIO_Get( <p>, 6 )
+#xtranslate ImGuiIO( <p> ):LogFilename => ImGuiIO_Get( <p>, 7 )
+#xtranslate ImGuiIO( <p> ):MouseDoubleClickTime => ImGuiIO_Get( <p>, 8 )
+#xtranslate ImGuiIO( <p> ):MouseDoubleClickMaxDist => ImGuiIO_Get( <p>, 9 )
+#xtranslate ImGuiIO( <p> ):MouseDragThreshold => ImGuiIO_Get( <p>, 10 )
+#xtranslate ImGuiIO( <p> ):KeyMap\[ <n> \] => ImGuiIO_Get( <p>, 11, <n> )
+#xtranslate ImGuiIO( <p> ):KeyRepeatDelay => ImGuiIO_Get( <p>, 12 )
+#xtranslate ImGuiIO( <p> ):KeyRepeatRate => ImGuiIO_Get( <p>, 13 )
+#xtranslate ImGuiIO( <p> ):UserData => ImGuiIO_Get( <p>, 14 )
+#xtranslate ImGuiIO( <p> ):Fonts => ImGuiIO_Get( <p>, 15 )
+#xtranslate ImGuiIO( <p> ):FontGlobalScale => ImGuiIO_Get( <p>, 16 )
+#xtranslate ImGuiIO( <p> ):FontAllowUserScaling => ImGuiIO_Get( <p>, 17 )
+#xtranslate ImGuiIO( <p> ):FontDefault => ImGuiIO_Get( <p>, 18 )
+#xtranslate ImGuiIO( <p> ):DisplayFramebufferScale => ImGuiIO_Get( <p>, 19 )
+#xtranslate ImGuiIO( <p> ):MouseDrawCursor => ImGuiIO_Get( <p>, 20 )
+#xtranslate ImGuiIO( <p> ):ConfigMacOSXBehaviors => ImGuiIO_Get( <p>, 21 )
+#xtranslate ImGuiIO( <p> ):ConfigInputTextCursorBlink => ImGuiIO_Get( <p>, 22 )
+#xtranslate ImGuiIO( <p> ):ConfigDragClickToInputText => ImGuiIO_Get( <p>, 23 )
+#xtranslate ImGuiIO( <p> ):ConfigWindowsResizeFromEdges => ImGuiIO_Get( <p>, 24 )
+#xtranslate ImGuiIO( <p> ):ConfigWindowsMoveFromTitleBarOnly => ImGuiIO_Get( <p>, 25 )
+#xtranslate ImGuiIO( <p> ):ConfigMemoryCompactTimer => ImGuiIO_Get( <p>, 26 )
+#xtranslate ImGuiIO( <p> ):BackendPlatformName => ImGuiIO_Get( <p>, 27 )
+#xtranslate ImGuiIO( <p> ):BackendRendererName => ImGuiIO_Get( <p>, 28 )
+#xtranslate ImGuiIO( <p> ):BackendPlatformUserData => ImGuiIO_Get( <p>, 29 )
+#xtranslate ImGuiIO( <p> ):BackendRendererUserData => ImGuiIO_Get( <p>, 30 )
+#xtranslate ImGuiIO( <p> ):BackendLanguageUserData => ImGuiIO_Get( <p>, 31 )
+#xtranslate ImGuiIO( <p> ):GetClipboardTextFn => ImGuiIO_Get( <p>, 32 )
+#xtranslate ImGuiIO( <p> ):SetClipboardTextFn => ImGuiIO_Get( <p>, 33 )
+#xtranslate ImGuiIO( <p> ):ClipboardUserData => ImGuiIO_Get( <p>, 34 )
+#xtranslate ImGuiIO( <p> ):ImeSetInputScreenPosFn => ImGuiIO_Get( <p>, 35 )
+#xtranslate ImGuiIO( <p> ):ImeWindowHandle => ImGuiIO_Get( <p>, 36 )
+#xtranslate ImGuiIO( <p> ):MousePos => ImGuiIO_Get( <p>, 37 )
+#xtranslate ImGuiIO( <p> ):MouseDown\[ <n> \] => ImGuiIO_Get( <p>, 38, <n> )
+#xtranslate ImGuiIO( <p> ):MouseWheel => ImGuiIO_Get( <p>, 39 )
+#xtranslate ImGuiIO( <p> ):MouseWheelH => ImGuiIO_Get( <p>, 40 )
+#xtranslate ImGuiIO( <p> ):KeyCtrl => ImGuiIO_Get( <p>, 41 )
+#xtranslate ImGuiIO( <p> ):KeyShift => ImGuiIO_Get( <p>, 42 )
+#xtranslate ImGuiIO( <p> ):KeyAlt => ImGuiIO_Get( <p>, 43 )
+#xtranslate ImGuiIO( <p> ):KeySuper => ImGuiIO_Get( <p>, 44 )
+#xtranslate ImGuiIO( <p> ):KeysDown\[ <n> \] => ImGuiIO_Get( <p>, 45, <n> )
+#xtranslate ImGuiIO( <p> ):NavInputs\[ <n> \] => ImGuiIO_Get( <p>, 46, <n> )
+#xtranslate ImGuiIO( <p> ):WantCaptureMouse => ImGuiIO_Get( <p>, 47 )
+#xtranslate ImGuiIO( <p> ):WantCaptureKeyboard => ImGuiIO_Get( <p>, 48 )
+#xtranslate ImGuiIO( <p> ):WantTextInput => ImGuiIO_Get( <p>, 49 )
+#xtranslate ImGuiIO( <p> ):WantSetMousePos => ImGuiIO_Get( <p>, 50 )
+#xtranslate ImGuiIO( <p> ):WantSaveIniSettings => ImGuiIO_Get( <p>, 51 )
+#xtranslate ImGuiIO( <p> ):NavActive => ImGuiIO_Get( <p>, 52 )
+#xtranslate ImGuiIO( <p> ):NavVisible => ImGuiIO_Get( <p>, 53 )
+#xtranslate ImGuiIO( <p> ):Framerate => ImGuiIO_Get( <p>, 54 )
+#xtranslate ImGuiIO( <p> ):MetricsRenderVertices => ImGuiIO_Get( <p>, 55 )
+#xtranslate ImGuiIO( <p> ):MetricsRenderIndices => ImGuiIO_Get( <p>, 56 )
+#xtranslate ImGuiIO( <p> ):MetricsRenderWindows => ImGuiIO_Get( <p>, 57 )
+#xtranslate ImGuiIO( <p> ):MetricsActiveWindows => ImGuiIO_Get( <p>, 58 )
+#xtranslate ImGuiIO( <p> ):MetricsActiveAllocations => ImGuiIO_Get( <p>, 59 )
+#xtranslate ImGuiIO( <p> ):MouseDelta => ImGuiIO_Get( <p>, 60 )
+#xtranslate ImGuiIO( <p> ):KeyMods => ImGuiIO_Get( <p>, 61 )
+#xtranslate ImGuiIO( <p> ):MousePosPrev => ImGuiIO_Get( <p>, 62 )
+#xtranslate ImGuiIO( <p> ):MouseClickedPos\[ <n> \] => ImGuiIO_Get( <p>, 63, <n> )
+#xtranslate ImGuiIO( <p> ):MouseClickedTime\[ <n> \] => ImGuiIO_Get( <p>, 64, <n> )
+#xtranslate ImGuiIO( <p> ):MouseClicked\[ <n> \] => ImGuiIO_Get( <p>, 65, <n> )
+#xtranslate ImGuiIO( <p> ):MouseDoubleClicked\[ <n> \] => ImGuiIO_Get( <p>, 66, <n> )
+#xtranslate ImGuiIO( <p> ):MouseReleased\[ <n> \] => ImGuiIO_Get( <p>, 67, <n> )
+#xtranslate ImGuiIO( <p> ):MouseDownOwned\[ <n> \] => ImGuiIO_Get( <p>, 68, <n> )
+#xtranslate ImGuiIO( <p> ):MouseDownWasDoubleClick\[ <n> \] => ImGuiIO_Get( <p>, 69, <n> )
+#xtranslate ImGuiIO( <p> ):MouseDownDuration\[ <n> \] => ImGuiIO_Get( <p>, 70, <n> )
+#xtranslate ImGuiIO( <p> ):MouseDownDurationPrev\[ <n> \] => ImGuiIO_Get( <p>, 71, <n> )
+#xtranslate ImGuiIO( <p> ):MouseDragMaxDistanceAbs\[ <n> \] => ImGuiIO_Get( <p>, 72, <n> )
+#xtranslate ImGuiIO( <p> ):MouseDragMaxDistanceSqr\[ <n> \] => ImGuiIO_Get( <p>, 73, <n> )
+#xtranslate ImGuiIO( <p> ):KeysDownDuration\[ <n> \] => ImGuiIO_Get( <p>, 74, <n> )
+#xtranslate ImGuiIO( <p> ):KeysDownDurationPrev\[ <n> \] => ImGuiIO_Get( <p>, 75, <n> )
+#xtranslate ImGuiIO( <p> ):NavInputsDownDuration\[ <n> \] => ImGuiIO_Get( <p>, 76, <n> )
+#xtranslate ImGuiIO( <p> ):NavInputsDownDurationPrev\[ <n> \] => ImGuiIO_Get( <p>, 77, <n> )
+#xtranslate ImGuiIO( <p> ):PenPressure => ImGuiIO_Get( <p>, 78 )
+#xtranslate ImGuiIO( <p> ):InputQueueSurrogate => ImGuiIO_Get( <p>, 79 )
+#xtranslate ImGuiIO( <p> ):InputQueueCharacters => ImGuiIO_Get( <p>, 80 )
+#xtranslate ImGuiIO( <p> ):AddInputCharacter( [ <args,...> ] ) => ImGuiIO_AddInputCharacter( <p>[, <args> ] )
+#xtranslate ImGuiIO( <p> ):AddInputCharacterUTF16( [ <args,...> ] ) => ImGuiIO_AddInputCharacterUTF16( <p>[, <args> ] )
+#xtranslate ImGuiIO( <p> ):AddInputCharactersUTF8( [ <args,...> ] ) => ImGuiIO_AddInputCharactersUTF8( <p>[, <args> ] )
+#xtranslate ImGuiIO( <p> ):ClearInputCharacters( [ <args,...> ] ) => ImGuiIO_ClearInputCharacters( <p>[, <args> ] )
+#xtranslate ImGuiIO( <p> ):destroy( [ <args,...> ] ) => ImGuiIO_destroy( <p>[, <args> ] )
 #xtranslate ImGuiListClipper( <p> ):Begin( [ <args,...> ] ) => ImGuiListClipper_Begin( <p>[, <args> ] )
 #xtranslate ImGuiListClipper( <p> ):End( [ <args,...> ] ) => ImGuiListClipper_End( <p>[, <args> ] )
 #xtranslate ImGuiListClipper( <p> ):Step( [ <args,...> ] ) => ImGuiListClipper_Step( <p>[, <args> ] )

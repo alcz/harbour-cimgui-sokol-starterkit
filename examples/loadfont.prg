@@ -47,7 +47,7 @@ PROCEDURE ImInit
    RETURN
 
 PROCEDURE ImFrame
-   STATIC counter := 0, s, c, d
+   STATIC counter := 0, s, c, d, a
 
 #ifdef ImGuiConfigFlags_DockingEnable
    igDockSpaceOverViewPort()
@@ -85,6 +85,28 @@ PROCEDURE ImFrame
    hb_igDatePicker( "or if Monday starts your week", @d,, 2 )
 
    hb_igButtonRounded("i'm different")
+
+#include "hbimstru.ch"
+
+   IF ImGuiIO( igGetIO() ):KeyAlt
+      igText("ALT is pressed")
+   ENDIF
+
+#ifdef ImGuiIO_AppFocusLost
+   IF ImGuiIO( igGetIO() ):AppFocusLost
+      /* sokol does not seem to support it */
+      igText("Window not in focus")
+   ENDIF
+#endif
+
+   IF ( a := ImGuiIO( igGetIO() ):MouseClickedPos[ 1 ] ) <> NIL
+      igText( "Last left click @ " + hb_valToExp( a ) )
+   ENDIF
+
+   IF ( a := ImGuiIO( igGetIO() ):MouseClickedPos[ 2 ] ) <> NIL
+      igText( "Last right click @ " + hb_valToExp( a ) )
+   ENDIF
+
 
    igEnd()
 

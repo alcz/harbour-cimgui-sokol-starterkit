@@ -5,6 +5,7 @@
 
 #include "hbapi.h"
 #include "hbapiitm.h"
+#include "hbstack.h"
 #include "./imgui/imgui.h"
 #include "./imgui/imgui_internal.h"
 #include "cimgui.h"
@@ -392,7 +393,6 @@ HB_FUNC( IGBULLET )
 HB_FUNC( IGBULLETTEXT )
 {
    const char* fmt = hb_parcx( 1 );
-
    igBulletText(fmt,NULL);
 }
 
@@ -2119,7 +2119,12 @@ HB_FUNC( IGGETSTYLECOLORVEC4 )
 {
    ImGuiCol idx = ( ImGuiCol ) hb_parni( 1 );
    const ImVec4* ret = igGetStyleColorVec4(idx);
-   hb_retptr( ( void * ) ret );
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 4 );
+   hb_arraySetND( pret, 1, ( double ) ret->x );
+   hb_arraySetND( pret, 2, ( double ) ret->y );
+   hb_arraySetND( pret, 3, ( double ) ret->z );
+   hb_arraySetND( pret, 4, ( double ) ret->w );
 }
 
 /* float igGetTextLineHeight() */
@@ -2605,7 +2610,6 @@ HB_FUNC( IGIMFORMATSTRING )
    char* buf = hb_itemGetC( hb_paramError( 1 ) );
    size_t buf_size = ( size_t ) hb_parnl( 2 );
    const char* fmt = hb_parcx( 3 );
-
    int ret = igImFormatString(buf,buf_size,fmt,NULL);
    hb_itemPutC( hb_paramError( 1 ), buf );
    hb_xfree( buf );
@@ -3174,6 +3178,7 @@ HB_FUNC( IGIMUPPERPOWEROFTWO )
 }
 
 /* void igImage(ImTextureID user_texture_id,const ImVec2 size,const ImVec2 uv0,const ImVec2 uv1,const ImVec4 tint_col,const ImVec4 border_col) */
+/* templates only, see hb_sokol_igImage() for real texture usage
 HB_FUNC( IGIMAGE )
 {
    ImTextureID user_texture_id;
@@ -3189,8 +3194,10 @@ HB_FUNC( IGIMAGE )
    const ImVec4 border_col = ImVec4{ _paf( pborder_col, 1 ), _paf( pborder_col, 2 ), _paf( pborder_col, 3 ), _paf( pborder_col, 4 ) };
    igImage(user_texture_id,size,uv0,uv1,tint_col,border_col);
 }
+*/
 
 /* bool igImageButton(ImTextureID user_texture_id,const ImVec2 size,const ImVec2 uv0,const ImVec2 uv1,int frame_padding,const ImVec4 bg_col,const ImVec4 tint_col) */
+/* templates only, see hb_sokol_igImage() for real texture usage
 HB_FUNC( IGIMAGEBUTTON )
 {
    ImTextureID user_texture_id;
@@ -3208,6 +3215,7 @@ HB_FUNC( IGIMAGEBUTTON )
    bool ret = igImageButton(user_texture_id,size,uv0,uv1,frame_padding,bg_col,tint_col);
    hb_retl( ret );
 }
+*/
 
 /* bool igImageButtonEx(ImGuiID id,ImTextureID texture_id,const ImVec2 size,const ImVec2 uv0,const ImVec2 uv1,const ImVec2 padding,const ImVec4 bg_col,const ImVec4 tint_col) */
 HB_FUNC( IGIMAGEBUTTONEX )
@@ -4065,7 +4073,6 @@ HB_FUNC( IGLABELTEXT )
 {
    const char* label = hb_parcx( 1 );
    const char* fmt = hb_parcx( 2 );
-
    igLabelText(label,fmt,NULL);
 }
 
@@ -4179,7 +4186,6 @@ HB_FUNC( IGLOGRENDEREDTEXT )
 HB_FUNC( IGLOGTEXT )
 {
    const char* fmt = hb_parcx( 1 );
-
    igLogText(fmt,NULL);
 }
 
@@ -5368,7 +5374,6 @@ HB_FUNC( IGSETTABITEMCLOSED )
 HB_FUNC( IGSETTOOLTIP )
 {
    const char* fmt = hb_parcx( 1 );
-
    igSetTooltip(fmt,NULL);
 }
 
@@ -6453,7 +6458,6 @@ HB_FUNC( IGTEMPINPUTTEXT )
 HB_FUNC( IGTEXT )
 {
    const char* fmt = hb_parcx( 1 );
-
    igText(fmt,NULL);
 }
 */
@@ -6464,7 +6468,6 @@ HB_FUNC( IGTEXTCOLORED )
    PHB_ITEM pcol = hb_param( 1, HB_IT_ARRAY );
    const ImVec4 col = ImVec4{ _paf( pcol, 1 ), _paf( pcol, 2 ), _paf( pcol, 3 ), _paf( pcol, 4 ) };
    const char* fmt = hb_parcx( 2 );
-
    igTextColored(col,fmt,NULL);
 }
 
@@ -6481,7 +6484,6 @@ HB_FUNC( IGTEXTCOLOREDV )
 HB_FUNC( IGTEXTDISABLED )
 {
    const char* fmt = hb_parcx( 1 );
-
    igTextDisabled(fmt,NULL);
 }
 
@@ -6520,7 +6522,6 @@ HB_FUNC( IGTEXTV )
 HB_FUNC( IGTEXTWRAPPED )
 {
    const char* fmt = hb_parcx( 1 );
-
    igTextWrapped(fmt,NULL);
 }
 
@@ -6544,7 +6545,6 @@ HB_FUNC( IGTREENODESTRSTR )
 {
    const char* str_id = hb_parcx( 1 );
    const char* fmt = hb_parcx( 2 );
-
    bool ret = igTreeNodeStrStr(str_id,fmt,NULL);
    hb_retl( ret );
 }
@@ -6554,7 +6554,6 @@ HB_FUNC( IGTREENODEPTR )
 {
    const void* ptr_id = ( const void* ) hb_parptr( 1 );
    const char* fmt = hb_parcx( 2 );
-
    bool ret = igTreeNodePtr(ptr_id,fmt,NULL);
    hb_retl( ret );
 }
@@ -6594,7 +6593,6 @@ HB_FUNC( IGTREENODEEXSTRSTR )
    const char* str_id = hb_parcx( 1 );
    ImGuiTreeNodeFlags flags = ( ImGuiTreeNodeFlags ) hb_parni( 2 );
    const char* fmt = hb_parcx( 3 );
-
    bool ret = igTreeNodeExStrStr(str_id,flags,fmt,NULL);
    hb_retl( ret );
 }
@@ -6605,7 +6603,6 @@ HB_FUNC( IGTREENODEEXPTR )
    const void* ptr_id = ( const void* ) hb_parptr( 1 );
    ImGuiTreeNodeFlags flags = ( ImGuiTreeNodeFlags ) hb_parni( 2 );
    const char* fmt = hb_parcx( 3 );
-
    bool ret = igTreeNodeExPtr(ptr_id,flags,fmt,NULL);
    hb_retl( ret );
 }
@@ -6773,6 +6770,8 @@ HB_FUNC( IGVALUEFLOAT )
 
 HB_FUNC_TRANSLATE( IGTEXT, IGTEXTUNFORMATTED )
 
+static HB_SIZE s_nArrayGetPos = 0; /* definitely not a thread safe solution, though i'm not aware multi-instance drawing backends yet */
+
 static void s_ImGuiListClipper_getDisplayStart( ImGuiListClipper * p )
 {
    int ret = p->DisplayStart;
@@ -6823,5 +6822,572 @@ HB_FUNC( IMGUILISTCLIPPER_GET )
    int n = hb_parni( 2 ) - 1;
    if( p && n >= 0 && n < 7 )
       s_ImGuiListClipper_fields[ n ]( p );
+}
+
+static void s_ImGuiIO_getConfigFlags( ImGuiIO * p )
+{
+   ImGuiConfigFlags ret = p->ConfigFlags;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiIO_getBackendFlags( ImGuiIO * p )
+{
+   ImGuiBackendFlags ret = p->BackendFlags;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiIO_getDisplaySize( ImGuiIO * p )
+{
+   ImVec2 ret = p->DisplaySize;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiIO_getDeltaTime( ImGuiIO * p )
+{
+   float ret = p->DeltaTime;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getIniSavingRate( ImGuiIO * p )
+{
+   float ret = p->IniSavingRate;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getIniFilename( ImGuiIO * p )
+{
+   const char* ret = p->IniFilename;
+   hb_retc( ret );
+}
+
+static void s_ImGuiIO_getLogFilename( ImGuiIO * p )
+{
+   const char* ret = p->LogFilename;
+   hb_retc( ret );
+}
+
+static void s_ImGuiIO_getMouseDoubleClickTime( ImGuiIO * p )
+{
+   float ret = p->MouseDoubleClickTime;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getMouseDoubleClickMaxDist( ImGuiIO * p )
+{
+   float ret = p->MouseDoubleClickMaxDist;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getMouseDragThreshold( ImGuiIO * p )
+{
+   float ret = p->MouseDragThreshold;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getKeyMap( ImGuiIO * p )
+{
+   int ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 22 )
+      return;
+   ret = p->KeyMap[ s_nArrayGetPos - 1 ];
+   hb_retni( ret );
+}
+
+static void s_ImGuiIO_getKeyRepeatDelay( ImGuiIO * p )
+{
+   float ret = p->KeyRepeatDelay;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getKeyRepeatRate( ImGuiIO * p )
+{
+   float ret = p->KeyRepeatRate;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getUserData( ImGuiIO * p )
+{
+   void* ret = p->UserData;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiIO_getFonts( ImGuiIO * p )
+{
+   ImFontAtlas* ret = p->Fonts;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiIO_getFontGlobalScale( ImGuiIO * p )
+{
+   float ret = p->FontGlobalScale;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getFontAllowUserScaling( ImGuiIO * p )
+{
+   bool ret = p->FontAllowUserScaling;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getFontDefault( ImGuiIO * p )
+{
+   ImFont* ret = p->FontDefault;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiIO_getDisplayFramebufferScale( ImGuiIO * p )
+{
+   ImVec2 ret = p->DisplayFramebufferScale;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiIO_getMouseDrawCursor( ImGuiIO * p )
+{
+   bool ret = p->MouseDrawCursor;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getConfigMacOSXBehaviors( ImGuiIO * p )
+{
+   bool ret = p->ConfigMacOSXBehaviors;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getConfigInputTextCursorBlink( ImGuiIO * p )
+{
+   bool ret = p->ConfigInputTextCursorBlink;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getConfigDragClickToInputText( ImGuiIO * p )
+{
+   bool ret = p->ConfigDragClickToInputText;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getConfigWindowsResizeFromEdges( ImGuiIO * p )
+{
+   bool ret = p->ConfigWindowsResizeFromEdges;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getConfigWindowsMoveFromTitleBarOnly( ImGuiIO * p )
+{
+   bool ret = p->ConfigWindowsMoveFromTitleBarOnly;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getConfigMemoryCompactTimer( ImGuiIO * p )
+{
+   float ret = p->ConfigMemoryCompactTimer;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getBackendPlatformName( ImGuiIO * p )
+{
+   const char* ret = p->BackendPlatformName;
+   hb_retc( ret );
+}
+
+static void s_ImGuiIO_getBackendRendererName( ImGuiIO * p )
+{
+   const char* ret = p->BackendRendererName;
+   hb_retc( ret );
+}
+
+static void s_ImGuiIO_getBackendPlatformUserData( ImGuiIO * p )
+{
+   void* ret = p->BackendPlatformUserData;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiIO_getBackendRendererUserData( ImGuiIO * p )
+{
+   void* ret = p->BackendRendererUserData;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiIO_getBackendLanguageUserData( ImGuiIO * p )
+{
+   void* ret = p->BackendLanguageUserData;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiIO_getGetClipboardTextFn( ImGuiIO * p )
+{
+   void * ret = ( void * ) p->GetClipboardTextFn;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiIO_getSetClipboardTextFn( ImGuiIO * p )
+{
+   void * ret = ( void * ) p->SetClipboardTextFn;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiIO_getClipboardUserData( ImGuiIO * p )
+{
+   void* ret = p->ClipboardUserData;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiIO_getImeSetInputScreenPosFn( ImGuiIO * p )
+{
+   void * ret = ( void * ) p->ImeSetInputScreenPosFn;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiIO_getImeWindowHandle( ImGuiIO * p )
+{
+   void* ret = p->ImeWindowHandle;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiIO_getMousePos( ImGuiIO * p )
+{
+   ImVec2 ret = p->MousePos;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiIO_getMouseDown( ImGuiIO * p )
+{
+   bool ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseDown[ s_nArrayGetPos - 1 ];
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getMouseWheel( ImGuiIO * p )
+{
+   float ret = p->MouseWheel;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getMouseWheelH( ImGuiIO * p )
+{
+   float ret = p->MouseWheelH;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getKeyCtrl( ImGuiIO * p )
+{
+   bool ret = p->KeyCtrl;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getKeyShift( ImGuiIO * p )
+{
+   bool ret = p->KeyShift;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getKeyAlt( ImGuiIO * p )
+{
+   bool ret = p->KeyAlt;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getKeySuper( ImGuiIO * p )
+{
+   bool ret = p->KeySuper;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getKeysDown( ImGuiIO * p )
+{
+   bool ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 512 )
+      return;
+   ret = p->KeysDown[ s_nArrayGetPos - 1 ];
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getNavInputs( ImGuiIO * p )
+{
+   float ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 22 )
+      return;
+   ret = p->NavInputs[ s_nArrayGetPos - 1 ];
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getWantCaptureMouse( ImGuiIO * p )
+{
+   bool ret = p->WantCaptureMouse;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getWantCaptureKeyboard( ImGuiIO * p )
+{
+   bool ret = p->WantCaptureKeyboard;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getWantTextInput( ImGuiIO * p )
+{
+   bool ret = p->WantTextInput;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getWantSetMousePos( ImGuiIO * p )
+{
+   bool ret = p->WantSetMousePos;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getWantSaveIniSettings( ImGuiIO * p )
+{
+   bool ret = p->WantSaveIniSettings;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getNavActive( ImGuiIO * p )
+{
+   bool ret = p->NavActive;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getNavVisible( ImGuiIO * p )
+{
+   bool ret = p->NavVisible;
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getFramerate( ImGuiIO * p )
+{
+   float ret = p->Framerate;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getMetricsRenderVertices( ImGuiIO * p )
+{
+   int ret = p->MetricsRenderVertices;
+   hb_retni( ret );
+}
+
+static void s_ImGuiIO_getMetricsRenderIndices( ImGuiIO * p )
+{
+   int ret = p->MetricsRenderIndices;
+   hb_retni( ret );
+}
+
+static void s_ImGuiIO_getMetricsRenderWindows( ImGuiIO * p )
+{
+   int ret = p->MetricsRenderWindows;
+   hb_retni( ret );
+}
+
+static void s_ImGuiIO_getMetricsActiveWindows( ImGuiIO * p )
+{
+   int ret = p->MetricsActiveWindows;
+   hb_retni( ret );
+}
+
+static void s_ImGuiIO_getMetricsActiveAllocations( ImGuiIO * p )
+{
+   int ret = p->MetricsActiveAllocations;
+   hb_retni( ret );
+}
+
+static void s_ImGuiIO_getMouseDelta( ImGuiIO * p )
+{
+   ImVec2 ret = p->MouseDelta;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiIO_getKeyMods( ImGuiIO * p )
+{
+   ImGuiKeyModFlags ret = p->KeyMods;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiIO_getMousePosPrev( ImGuiIO * p )
+{
+   ImVec2 ret = p->MousePosPrev;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiIO_getMouseClickedPos( ImGuiIO * p )
+{
+   ImVec2 ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseClickedPos[ s_nArrayGetPos - 1 ];
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiIO_getMouseClickedTime( ImGuiIO * p )
+{
+   double ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseClickedTime[ s_nArrayGetPos - 1 ];
+   hb_retnd( ret );
+}
+
+static void s_ImGuiIO_getMouseClicked( ImGuiIO * p )
+{
+   bool ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseClicked[ s_nArrayGetPos - 1 ];
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getMouseDoubleClicked( ImGuiIO * p )
+{
+   bool ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseDoubleClicked[ s_nArrayGetPos - 1 ];
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getMouseReleased( ImGuiIO * p )
+{
+   bool ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseReleased[ s_nArrayGetPos - 1 ];
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getMouseDownOwned( ImGuiIO * p )
+{
+   bool ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseDownOwned[ s_nArrayGetPos - 1 ];
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getMouseDownWasDoubleClick( ImGuiIO * p )
+{
+   bool ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseDownWasDoubleClick[ s_nArrayGetPos - 1 ];
+   hb_retl( ret );
+}
+
+static void s_ImGuiIO_getMouseDownDuration( ImGuiIO * p )
+{
+   float ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseDownDuration[ s_nArrayGetPos - 1 ];
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getMouseDownDurationPrev( ImGuiIO * p )
+{
+   float ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseDownDurationPrev[ s_nArrayGetPos - 1 ];
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getMouseDragMaxDistanceAbs( ImGuiIO * p )
+{
+   ImVec2 ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseDragMaxDistanceAbs[ s_nArrayGetPos - 1 ];
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiIO_getMouseDragMaxDistanceSqr( ImGuiIO * p )
+{
+   float ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+      return;
+   ret = p->MouseDragMaxDistanceSqr[ s_nArrayGetPos - 1 ];
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getKeysDownDuration( ImGuiIO * p )
+{
+   float ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 512 )
+      return;
+   ret = p->KeysDownDuration[ s_nArrayGetPos - 1 ];
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getKeysDownDurationPrev( ImGuiIO * p )
+{
+   float ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 512 )
+      return;
+   ret = p->KeysDownDurationPrev[ s_nArrayGetPos - 1 ];
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getNavInputsDownDuration( ImGuiIO * p )
+{
+   float ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 22 )
+      return;
+   ret = p->NavInputsDownDuration[ s_nArrayGetPos - 1 ];
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getNavInputsDownDurationPrev( ImGuiIO * p )
+{
+   float ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 22 )
+      return;
+   ret = p->NavInputsDownDurationPrev[ s_nArrayGetPos - 1 ];
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getPenPressure( ImGuiIO * p )
+{
+   float ret = p->PenPressure;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiIO_getInputQueueSurrogate( ImGuiIO * p )
+{
+   ImWchar16 ret = p->InputQueueSurrogate;
+}
+
+static void s_ImGuiIO_getInputQueueCharacters( ImGuiIO * p )
+{
+   ImVector_ImWchar ret = p->InputQueueCharacters;
+}
+
+static void(*s_ImGuiIO_fields[])( ImGuiIO * ) = { s_ImGuiIO_getConfigFlags, s_ImGuiIO_getBackendFlags, s_ImGuiIO_getDisplaySize, s_ImGuiIO_getDeltaTime, s_ImGuiIO_getIniSavingRate, s_ImGuiIO_getIniFilename, s_ImGuiIO_getLogFilename, s_ImGuiIO_getMouseDoubleClickTime, s_ImGuiIO_getMouseDoubleClickMaxDist, s_ImGuiIO_getMouseDragThreshold, s_ImGuiIO_getKeyMap, s_ImGuiIO_getKeyRepeatDelay, s_ImGuiIO_getKeyRepeatRate, s_ImGuiIO_getUserData, s_ImGuiIO_getFonts, s_ImGuiIO_getFontGlobalScale, s_ImGuiIO_getFontAllowUserScaling, s_ImGuiIO_getFontDefault, s_ImGuiIO_getDisplayFramebufferScale, s_ImGuiIO_getMouseDrawCursor, s_ImGuiIO_getConfigMacOSXBehaviors, s_ImGuiIO_getConfigInputTextCursorBlink, s_ImGuiIO_getConfigDragClickToInputText, s_ImGuiIO_getConfigWindowsResizeFromEdges, s_ImGuiIO_getConfigWindowsMoveFromTitleBarOnly, s_ImGuiIO_getConfigMemoryCompactTimer, s_ImGuiIO_getBackendPlatformName, s_ImGuiIO_getBackendRendererName, s_ImGuiIO_getBackendPlatformUserData, s_ImGuiIO_getBackendRendererUserData, s_ImGuiIO_getBackendLanguageUserData, s_ImGuiIO_getGetClipboardTextFn, s_ImGuiIO_getSetClipboardTextFn, s_ImGuiIO_getClipboardUserData, s_ImGuiIO_getImeSetInputScreenPosFn, s_ImGuiIO_getImeWindowHandle, s_ImGuiIO_getMousePos, s_ImGuiIO_getMouseDown, s_ImGuiIO_getMouseWheel, s_ImGuiIO_getMouseWheelH, s_ImGuiIO_getKeyCtrl, s_ImGuiIO_getKeyShift, s_ImGuiIO_getKeyAlt, s_ImGuiIO_getKeySuper, s_ImGuiIO_getKeysDown, s_ImGuiIO_getNavInputs, s_ImGuiIO_getWantCaptureMouse, s_ImGuiIO_getWantCaptureKeyboard, s_ImGuiIO_getWantTextInput, s_ImGuiIO_getWantSetMousePos, s_ImGuiIO_getWantSaveIniSettings, s_ImGuiIO_getNavActive, s_ImGuiIO_getNavVisible, s_ImGuiIO_getFramerate, s_ImGuiIO_getMetricsRenderVertices, s_ImGuiIO_getMetricsRenderIndices, s_ImGuiIO_getMetricsRenderWindows, s_ImGuiIO_getMetricsActiveWindows, s_ImGuiIO_getMetricsActiveAllocations, s_ImGuiIO_getMouseDelta, s_ImGuiIO_getKeyMods, s_ImGuiIO_getMousePosPrev, s_ImGuiIO_getMouseClickedPos, s_ImGuiIO_getMouseClickedTime, s_ImGuiIO_getMouseClicked, s_ImGuiIO_getMouseDoubleClicked, s_ImGuiIO_getMouseReleased, s_ImGuiIO_getMouseDownOwned, s_ImGuiIO_getMouseDownWasDoubleClick, s_ImGuiIO_getMouseDownDuration, s_ImGuiIO_getMouseDownDurationPrev, s_ImGuiIO_getMouseDragMaxDistanceAbs, s_ImGuiIO_getMouseDragMaxDistanceSqr, s_ImGuiIO_getKeysDownDuration, s_ImGuiIO_getKeysDownDurationPrev, s_ImGuiIO_getNavInputsDownDuration, s_ImGuiIO_getNavInputsDownDurationPrev, s_ImGuiIO_getPenPressure, s_ImGuiIO_getInputQueueSurrogate, s_ImGuiIO_getInputQueueCharacters };
+
+HB_FUNC( IMGUIIO_GET )
+{
+   ImGuiIO * p = ( ImGuiIO * ) hb_parptr( 1 );
+   int n = hb_parni( 2 ) - 1;
+   s_nArrayGetPos = hb_parns( 3 );
+   if( p && n >= 0 && n < 80 )
+      s_ImGuiIO_fields[ n ]( p );
 }
 

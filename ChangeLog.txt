@@ -3,6 +3,31 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2023-04-18 17:44 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-docking/hbimenum.ch
+  * cimgui-docking/hbimgui.cpp
+  * cimgui-docking/hbimstru.ch
+  * cimgui/hbimenum.ch
+  * cimgui/hbimgui.cpp
+  * cimgui/hbimstru.ch
+    * regenerated using updated version of generator.prg
+
+    + after changes some functions like:
+      igGetStyleColorVec4( <nStyleCol> ) ->  {,,,,}
+      now returns array, instead pointer
+
+      though for this one there is also a manual wrapper
+      that works on already allocated array
+      hb_igGetStyleColorVec4( <aRet>, <nStyleCol> )
+
+    + added getters for ImGuiIO, with support for accessing elements
+      in C arrays, for example:
+      ImGuiIO( igGetIO() ):KeyAlt -> <lAltPressed>
+      ImGuiIO( igGetIO() ):MouseClickedPos[ 1 ] -> <aLeftClickPos>
+      ImGuiIO( igGetIO() ):MouseClickedPos[ 2 ] -> <aRightClickPos>
+
+  * examples/loadfont.prg
+    * added some trivial usage of ImGuiIO getters
 
 2023-04-17 12:14 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * cimgui-common/hbimca.ch

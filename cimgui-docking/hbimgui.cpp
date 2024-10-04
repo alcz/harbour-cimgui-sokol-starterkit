@@ -10,7 +10,7 @@
 #include "./imgui/imgui_internal.h"
 #include "cimgui.h"
 
-#include "hbhlp.c"
+#include "../cimgui-common/hbhlp.c"
 
 /* void ImGuiListClipper_Begin(ImGuiListClipper* self,int items_count,float items_height) */
 HB_FUNC( IMGUILISTCLIPPER_BEGIN )
@@ -8289,5 +8289,302 @@ HB_FUNC( IMGUIIO_GET )
    s_nArrayGetPos = hb_parns( 3 );
    if( p && n >= 0 && n < 90 )
       s_ImGuiIO_fields[ n ]( p );
+}
+
+static void s_ImGuiStyle_getAlpha( ImGuiStyle * p )
+{
+   float ret = p->Alpha;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getDisabledAlpha( ImGuiStyle * p )
+{
+   float ret = p->DisabledAlpha;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getWindowPadding( ImGuiStyle * p )
+{
+   ImVec2 ret = p->WindowPadding;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getWindowRounding( ImGuiStyle * p )
+{
+   float ret = p->WindowRounding;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getWindowBorderSize( ImGuiStyle * p )
+{
+   float ret = p->WindowBorderSize;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getWindowMinSize( ImGuiStyle * p )
+{
+   ImVec2 ret = p->WindowMinSize;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getWindowTitleAlign( ImGuiStyle * p )
+{
+   ImVec2 ret = p->WindowTitleAlign;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getWindowMenuButtonPosition( ImGuiStyle * p )
+{
+   ImGuiDir ret = p->WindowMenuButtonPosition;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiStyle_getChildRounding( ImGuiStyle * p )
+{
+   float ret = p->ChildRounding;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getChildBorderSize( ImGuiStyle * p )
+{
+   float ret = p->ChildBorderSize;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getPopupRounding( ImGuiStyle * p )
+{
+   float ret = p->PopupRounding;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getPopupBorderSize( ImGuiStyle * p )
+{
+   float ret = p->PopupBorderSize;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getFramePadding( ImGuiStyle * p )
+{
+   ImVec2 ret = p->FramePadding;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getFrameRounding( ImGuiStyle * p )
+{
+   float ret = p->FrameRounding;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getFrameBorderSize( ImGuiStyle * p )
+{
+   float ret = p->FrameBorderSize;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getItemSpacing( ImGuiStyle * p )
+{
+   ImVec2 ret = p->ItemSpacing;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getItemInnerSpacing( ImGuiStyle * p )
+{
+   ImVec2 ret = p->ItemInnerSpacing;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getCellPadding( ImGuiStyle * p )
+{
+   ImVec2 ret = p->CellPadding;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getTouchExtraPadding( ImGuiStyle * p )
+{
+   ImVec2 ret = p->TouchExtraPadding;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getIndentSpacing( ImGuiStyle * p )
+{
+   float ret = p->IndentSpacing;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getColumnsMinSpacing( ImGuiStyle * p )
+{
+   float ret = p->ColumnsMinSpacing;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getScrollbarSize( ImGuiStyle * p )
+{
+   float ret = p->ScrollbarSize;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getScrollbarRounding( ImGuiStyle * p )
+{
+   float ret = p->ScrollbarRounding;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getGrabMinSize( ImGuiStyle * p )
+{
+   float ret = p->GrabMinSize;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getGrabRounding( ImGuiStyle * p )
+{
+   float ret = p->GrabRounding;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getLogSliderDeadzone( ImGuiStyle * p )
+{
+   float ret = p->LogSliderDeadzone;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getTabRounding( ImGuiStyle * p )
+{
+   float ret = p->TabRounding;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getTabBorderSize( ImGuiStyle * p )
+{
+   float ret = p->TabBorderSize;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getTabMinWidthForCloseButton( ImGuiStyle * p )
+{
+   float ret = p->TabMinWidthForCloseButton;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getColorButtonPosition( ImGuiStyle * p )
+{
+   ImGuiDir ret = p->ColorButtonPosition;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiStyle_getButtonTextAlign( ImGuiStyle * p )
+{
+   ImVec2 ret = p->ButtonTextAlign;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getSelectableTextAlign( ImGuiStyle * p )
+{
+   ImVec2 ret = p->SelectableTextAlign;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getDisplayWindowPadding( ImGuiStyle * p )
+{
+   ImVec2 ret = p->DisplayWindowPadding;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getDisplaySafeAreaPadding( ImGuiStyle * p )
+{
+   ImVec2 ret = p->DisplaySafeAreaPadding;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiStyle_getMouseCursorScale( ImGuiStyle * p )
+{
+   float ret = p->MouseCursorScale;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getAntiAliasedLines( ImGuiStyle * p )
+{
+   bool ret = p->AntiAliasedLines;
+   hb_retl( ret );
+}
+
+static void s_ImGuiStyle_getAntiAliasedLinesUseTex( ImGuiStyle * p )
+{
+   bool ret = p->AntiAliasedLinesUseTex;
+   hb_retl( ret );
+}
+
+static void s_ImGuiStyle_getAntiAliasedFill( ImGuiStyle * p )
+{
+   bool ret = p->AntiAliasedFill;
+   hb_retl( ret );
+}
+
+static void s_ImGuiStyle_getCurveTessellationTol( ImGuiStyle * p )
+{
+   float ret = p->CurveTessellationTol;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getCircleTessellationMaxError( ImGuiStyle * p )
+{
+   float ret = p->CircleTessellationMaxError;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiStyle_getColors( ImGuiStyle * p )
+{
+   ImVec4 ret = p->Colors;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 4 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+   hb_arraySetND( pret, 3, ( double ) ret.z );
+   hb_arraySetND( pret, 4, ( double ) ret.w );
+}
+
+static void(*s_ImGuiStyle_fields[])( ImGuiStyle * ) = { s_ImGuiStyle_getAlpha, s_ImGuiStyle_getDisabledAlpha, s_ImGuiStyle_getWindowPadding, s_ImGuiStyle_getWindowRounding, s_ImGuiStyle_getWindowBorderSize, s_ImGuiStyle_getWindowMinSize, s_ImGuiStyle_getWindowTitleAlign, s_ImGuiStyle_getWindowMenuButtonPosition, s_ImGuiStyle_getChildRounding, s_ImGuiStyle_getChildBorderSize, s_ImGuiStyle_getPopupRounding, s_ImGuiStyle_getPopupBorderSize, s_ImGuiStyle_getFramePadding, s_ImGuiStyle_getFrameRounding, s_ImGuiStyle_getFrameBorderSize, s_ImGuiStyle_getItemSpacing, s_ImGuiStyle_getItemInnerSpacing, s_ImGuiStyle_getCellPadding, s_ImGuiStyle_getTouchExtraPadding, s_ImGuiStyle_getIndentSpacing, s_ImGuiStyle_getColumnsMinSpacing, s_ImGuiStyle_getScrollbarSize, s_ImGuiStyle_getScrollbarRounding, s_ImGuiStyle_getGrabMinSize, s_ImGuiStyle_getGrabRounding, s_ImGuiStyle_getLogSliderDeadzone, s_ImGuiStyle_getTabRounding, s_ImGuiStyle_getTabBorderSize, s_ImGuiStyle_getTabMinWidthForCloseButton, s_ImGuiStyle_getColorButtonPosition, s_ImGuiStyle_getButtonTextAlign, s_ImGuiStyle_getSelectableTextAlign, s_ImGuiStyle_getDisplayWindowPadding, s_ImGuiStyle_getDisplaySafeAreaPadding, s_ImGuiStyle_getMouseCursorScale, s_ImGuiStyle_getAntiAliasedLines, s_ImGuiStyle_getAntiAliasedLinesUseTex, s_ImGuiStyle_getAntiAliasedFill, s_ImGuiStyle_getCurveTessellationTol, s_ImGuiStyle_getCircleTessellationMaxError, s_ImGuiStyle_getColors };
+
+HB_FUNC( IMGUISTYLE_GET )
+{
+   ImGuiStyle * p = ( ImGuiStyle * ) hb_parptr( 1 );
+   int n = hb_parni( 2 ) - 1;
+   if( p && n >= 0 && n < 41 )
+      s_ImGuiStyle_fields[ n ]( p );
 }
 

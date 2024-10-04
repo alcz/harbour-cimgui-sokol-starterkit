@@ -177,6 +177,86 @@
 #xtranslate ImGuiIO( <p> ):PenPressure => ImGuiIO_Get( <p>, 78 )
 #xtranslate ImGuiIO( <p> ):InputQueueSurrogate => ImGuiIO_Get( <p>, 79 )
 #xtranslate ImGuiIO( <p> ):InputQueueCharacters => ImGuiIO_Get( <p>, 80 )
+#define ImGuiStyle_Alpha                                1
+#define ImGuiStyle_WindowPadding                        2
+#define ImGuiStyle_WindowRounding                       3
+#define ImGuiStyle_WindowBorderSize                     4
+#define ImGuiStyle_WindowMinSize                        5
+#define ImGuiStyle_WindowTitleAlign                     6
+#define ImGuiStyle_WindowMenuButtonPosition             7
+#define ImGuiStyle_ChildRounding                        8
+#define ImGuiStyle_ChildBorderSize                      9
+#define ImGuiStyle_PopupRounding                       10
+#define ImGuiStyle_PopupBorderSize                     11
+#define ImGuiStyle_FramePadding                        12
+#define ImGuiStyle_FrameRounding                       13
+#define ImGuiStyle_FrameBorderSize                     14
+#define ImGuiStyle_ItemSpacing                         15
+#define ImGuiStyle_ItemInnerSpacing                    16
+#define ImGuiStyle_CellPadding                         17
+#define ImGuiStyle_TouchExtraPadding                   18
+#define ImGuiStyle_IndentSpacing                       19
+#define ImGuiStyle_ColumnsMinSpacing                   20
+#define ImGuiStyle_ScrollbarSize                       21
+#define ImGuiStyle_ScrollbarRounding                   22
+#define ImGuiStyle_GrabMinSize                         23
+#define ImGuiStyle_GrabRounding                        24
+#define ImGuiStyle_LogSliderDeadzone                   25
+#define ImGuiStyle_TabRounding                         26
+#define ImGuiStyle_TabBorderSize                       27
+#define ImGuiStyle_TabMinWidthForCloseButton           28
+#define ImGuiStyle_ColorButtonPosition                 29
+#define ImGuiStyle_ButtonTextAlign                     30
+#define ImGuiStyle_SelectableTextAlign                 31
+#define ImGuiStyle_DisplayWindowPadding                32
+#define ImGuiStyle_DisplaySafeAreaPadding              33
+#define ImGuiStyle_MouseCursorScale                    34
+#define ImGuiStyle_AntiAliasedLines                    35
+#define ImGuiStyle_AntiAliasedLinesUseTex              36
+#define ImGuiStyle_AntiAliasedFill                     37
+#define ImGuiStyle_CurveTessellationTol                38
+#define ImGuiStyle_CircleSegmentMaxError               39
+#define ImGuiStyle_Colors                              40
+#xtranslate ImGuiStyle( <p> ):Alpha => ImGuiStyle_Get( <p>, 1 )
+#xtranslate ImGuiStyle( <p> ):WindowPadding => ImGuiStyle_Get( <p>, 2 )
+#xtranslate ImGuiStyle( <p> ):WindowRounding => ImGuiStyle_Get( <p>, 3 )
+#xtranslate ImGuiStyle( <p> ):WindowBorderSize => ImGuiStyle_Get( <p>, 4 )
+#xtranslate ImGuiStyle( <p> ):WindowMinSize => ImGuiStyle_Get( <p>, 5 )
+#xtranslate ImGuiStyle( <p> ):WindowTitleAlign => ImGuiStyle_Get( <p>, 6 )
+#xtranslate ImGuiStyle( <p> ):WindowMenuButtonPosition => ImGuiStyle_Get( <p>, 7 )
+#xtranslate ImGuiStyle( <p> ):ChildRounding => ImGuiStyle_Get( <p>, 8 )
+#xtranslate ImGuiStyle( <p> ):ChildBorderSize => ImGuiStyle_Get( <p>, 9 )
+#xtranslate ImGuiStyle( <p> ):PopupRounding => ImGuiStyle_Get( <p>, 10 )
+#xtranslate ImGuiStyle( <p> ):PopupBorderSize => ImGuiStyle_Get( <p>, 11 )
+#xtranslate ImGuiStyle( <p> ):FramePadding => ImGuiStyle_Get( <p>, 12 )
+#xtranslate ImGuiStyle( <p> ):FrameRounding => ImGuiStyle_Get( <p>, 13 )
+#xtranslate ImGuiStyle( <p> ):FrameBorderSize => ImGuiStyle_Get( <p>, 14 )
+#xtranslate ImGuiStyle( <p> ):ItemSpacing => ImGuiStyle_Get( <p>, 15 )
+#xtranslate ImGuiStyle( <p> ):ItemInnerSpacing => ImGuiStyle_Get( <p>, 16 )
+#xtranslate ImGuiStyle( <p> ):CellPadding => ImGuiStyle_Get( <p>, 17 )
+#xtranslate ImGuiStyle( <p> ):TouchExtraPadding => ImGuiStyle_Get( <p>, 18 )
+#xtranslate ImGuiStyle( <p> ):IndentSpacing => ImGuiStyle_Get( <p>, 19 )
+#xtranslate ImGuiStyle( <p> ):ColumnsMinSpacing => ImGuiStyle_Get( <p>, 20 )
+#xtranslate ImGuiStyle( <p> ):ScrollbarSize => ImGuiStyle_Get( <p>, 21 )
+#xtranslate ImGuiStyle( <p> ):ScrollbarRounding => ImGuiStyle_Get( <p>, 22 )
+#xtranslate ImGuiStyle( <p> ):GrabMinSize => ImGuiStyle_Get( <p>, 23 )
+#xtranslate ImGuiStyle( <p> ):GrabRounding => ImGuiStyle_Get( <p>, 24 )
+#xtranslate ImGuiStyle( <p> ):LogSliderDeadzone => ImGuiStyle_Get( <p>, 25 )
+#xtranslate ImGuiStyle( <p> ):TabRounding => ImGuiStyle_Get( <p>, 26 )
+#xtranslate ImGuiStyle( <p> ):TabBorderSize => ImGuiStyle_Get( <p>, 27 )
+#xtranslate ImGuiStyle( <p> ):TabMinWidthForCloseButton => ImGuiStyle_Get( <p>, 28 )
+#xtranslate ImGuiStyle( <p> ):ColorButtonPosition => ImGuiStyle_Get( <p>, 29 )
+#xtranslate ImGuiStyle( <p> ):ButtonTextAlign => ImGuiStyle_Get( <p>, 30 )
+#xtranslate ImGuiStyle( <p> ):SelectableTextAlign => ImGuiStyle_Get( <p>, 31 )
+#xtranslate ImGuiStyle( <p> ):DisplayWindowPadding => ImGuiStyle_Get( <p>, 32 )
+#xtranslate ImGuiStyle( <p> ):DisplaySafeAreaPadding => ImGuiStyle_Get( <p>, 33 )
+#xtranslate ImGuiStyle( <p> ):MouseCursorScale => ImGuiStyle_Get( <p>, 34 )
+#xtranslate ImGuiStyle( <p> ):AntiAliasedLines => ImGuiStyle_Get( <p>, 35 )
+#xtranslate ImGuiStyle( <p> ):AntiAliasedLinesUseTex => ImGuiStyle_Get( <p>, 36 )
+#xtranslate ImGuiStyle( <p> ):AntiAliasedFill => ImGuiStyle_Get( <p>, 37 )
+#xtranslate ImGuiStyle( <p> ):CurveTessellationTol => ImGuiStyle_Get( <p>, 38 )
+#xtranslate ImGuiStyle( <p> ):CircleSegmentMaxError => ImGuiStyle_Get( <p>, 39 )
+#xtranslate ImGuiStyle( <p> ):Colors => ImGuiStyle_Get( <p>, 40 )
 #xtranslate ImGuiIO( <p> ):AddInputCharacter( [ <args,...> ] ) => ImGuiIO_AddInputCharacter( <p>[, <args> ] )
 #xtranslate ImGuiIO( <p> ):AddInputCharacterUTF16( [ <args,...> ] ) => ImGuiIO_AddInputCharacterUTF16( <p>[, <args> ] )
 #xtranslate ImGuiIO( <p> ):AddInputCharactersUTF8( [ <args,...> ] ) => ImGuiIO_AddInputCharactersUTF8( <p>[, <args> ] )
@@ -186,3 +266,5 @@
 #xtranslate ImGuiListClipper( <p> ):End( [ <args,...> ] ) => ImGuiListClipper_End( <p>[, <args> ] )
 #xtranslate ImGuiListClipper( <p> ):Step( [ <args,...> ] ) => ImGuiListClipper_Step( <p>[, <args> ] )
 #xtranslate ImGuiListClipper( <p> ):destroy( [ <args,...> ] ) => ImGuiListClipper_destroy( <p>[, <args> ] )
+#xtranslate ImGuiStyle( <p> ):ScaleAllSizes( [ <args,...> ] ) => ImGuiStyle_ScaleAllSizes( <p>[, <args> ] )
+#xtranslate ImGuiStyle( <p> ):destroy( [ <args,...> ] ) => ImGuiStyle_destroy( <p>[, <args> ] )

@@ -3,6 +3,25 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2024-10-04 09:49 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-docking/hbimgui.cpp
+  * cimgui-docking/hbimstru.ch
+  * cimgui/hbimgui.cpp
+  * cimgui/hbimstru.ch
+    * regenerated using updated version of generator.prg
+
+    + added getters for ImGuiStyle
+
+  * hbdemo.hbp
+    * adapt C references via *.hbc, so hopefully the demo
+      can be now built against another imgui branch,
+      docking for example
+
+  * sokol/sokol_app.h
+    ! win32 DispatchMessage() call changed to DispatchMessageW(),
+      it fixes entering national characters to text boxes.
+      But not completly, Alt+combinations still rather don't work
+
 2023-04-18 17:44 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * cimgui-docking/hbimenum.ch
   * cimgui-docking/hbimgui.cpp

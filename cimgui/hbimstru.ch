@@ -256,7 +256,7 @@
 #xtranslate ImGuiStyle( <p> ):AntiAliasedFill => ImGuiStyle_Get( <p>, 37 )
 #xtranslate ImGuiStyle( <p> ):CurveTessellationTol => ImGuiStyle_Get( <p>, 38 )
 #xtranslate ImGuiStyle( <p> ):CircleSegmentMaxError => ImGuiStyle_Get( <p>, 39 )
-#xtranslate ImGuiStyle( <p> ):Colors => ImGuiStyle_Get( <p>, 40 )
+#xtranslate ImGuiStyle( <p> ):Colors\[ <n> \] => ImGuiStyle_Get( <p>, 40, <n> )
 #xtranslate ImGuiIO( <p> ):AddInputCharacter( [ <args,...> ] ) => ImGuiIO_AddInputCharacter( <p>[, <args> ] )
 #xtranslate ImGuiIO( <p> ):AddInputCharacterUTF16( [ <args,...> ] ) => ImGuiIO_AddInputCharacterUTF16( <p>[, <args> ] )
 #xtranslate ImGuiIO( <p> ):AddInputCharactersUTF8( [ <args,...> ] ) => ImGuiIO_AddInputCharactersUTF8( <p>[, <args> ] )

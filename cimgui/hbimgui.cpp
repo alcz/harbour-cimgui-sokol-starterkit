@@ -7663,7 +7663,10 @@ static void s_ImGuiStyle_getCircleSegmentMaxError( ImGuiStyle * p )
 
 static void s_ImGuiStyle_getColors( ImGuiStyle * p )
 {
-   ImVec4 ret = p->Colors;
+   ImVec4 ret;
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 53 )
+      return;
+   ret = p->Colors[ s_nArrayGetPos - 1 ];
    PHB_ITEM pret = hb_stackReturnItem();
    hb_arrayNew( pret, 4 );
    hb_arraySetND( pret, 1, ( double ) ret.x );
@@ -7678,6 +7681,7 @@ HB_FUNC( IMGUISTYLE_GET )
 {
    ImGuiStyle * p = ( ImGuiStyle * ) hb_parptr( 1 );
    int n = hb_parni( 2 ) - 1;
+   s_nArrayGetPos = hb_parns( 3 );
    if( p && n >= 0 && n < 40 )
       s_ImGuiStyle_fields[ n ]( p );
 }

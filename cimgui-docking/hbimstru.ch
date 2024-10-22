@@ -278,7 +278,7 @@
 #xtranslate ImGuiStyle( <p> ):AntiAliasedFill => ImGuiStyle_Get( <p>, 38 )
 #xtranslate ImGuiStyle( <p> ):CurveTessellationTol => ImGuiStyle_Get( <p>, 39 )
 #xtranslate ImGuiStyle( <p> ):CircleTessellationMaxError => ImGuiStyle_Get( <p>, 40 )
-#xtranslate ImGuiStyle( <p> ):Colors => ImGuiStyle_Get( <p>, 41 )
+#xtranslate ImGuiStyle( <p> ):Colors\[ <n> \] => ImGuiStyle_Get( <p>, 41, <n> )
 #xtranslate ImGuiIO( <p> ):AddFocusEvent( [ <args,...> ] ) => ImGuiIO_AddFocusEvent( <p>[, <args> ] )
 #xtranslate ImGuiIO( <p> ):AddInputCharacter( [ <args,...> ] ) => ImGuiIO_AddInputCharacter( <p>[, <args> ] )
 #xtranslate ImGuiIO( <p> ):AddInputCharacterUTF16( [ <args,...> ] ) => ImGuiIO_AddInputCharacterUTF16( <p>[, <args> ] )

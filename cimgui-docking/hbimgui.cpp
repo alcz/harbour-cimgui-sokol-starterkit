@@ -8291,6 +8291,226 @@ HB_FUNC( IMGUIIO_GET )
       s_ImGuiIO_fields[ n ]( p );
 }
 
+static void s_ImGuiStyle_setAlpha( ImGuiStyle * p )
+{
+   p->Alpha = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setDisabledAlpha( ImGuiStyle * p )
+{
+   p->DisabledAlpha = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setWindowPadding( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->WindowPadding = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setWindowRounding( ImGuiStyle * p )
+{
+   p->WindowRounding = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setWindowBorderSize( ImGuiStyle * p )
+{
+   p->WindowBorderSize = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setWindowMinSize( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->WindowMinSize = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setWindowTitleAlign( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->WindowTitleAlign = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setWindowMenuButtonPosition( ImGuiStyle * p )
+{
+   p->WindowMenuButtonPosition = ( ImGuiDir ) hb_parni( 3 );
+}
+
+static void s_ImGuiStyle_setChildRounding( ImGuiStyle * p )
+{
+   p->ChildRounding = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setChildBorderSize( ImGuiStyle * p )
+{
+   p->ChildBorderSize = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setPopupRounding( ImGuiStyle * p )
+{
+   p->PopupRounding = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setPopupBorderSize( ImGuiStyle * p )
+{
+   p->PopupBorderSize = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setFramePadding( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->FramePadding = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setFrameRounding( ImGuiStyle * p )
+{
+   p->FrameRounding = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setFrameBorderSize( ImGuiStyle * p )
+{
+   p->FrameBorderSize = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setItemSpacing( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->ItemSpacing = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setItemInnerSpacing( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->ItemInnerSpacing = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setCellPadding( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->CellPadding = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setTouchExtraPadding( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->TouchExtraPadding = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setIndentSpacing( ImGuiStyle * p )
+{
+   p->IndentSpacing = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setColumnsMinSpacing( ImGuiStyle * p )
+{
+   p->ColumnsMinSpacing = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setScrollbarSize( ImGuiStyle * p )
+{
+   p->ScrollbarSize = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setScrollbarRounding( ImGuiStyle * p )
+{
+   p->ScrollbarRounding = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setGrabMinSize( ImGuiStyle * p )
+{
+   p->GrabMinSize = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setGrabRounding( ImGuiStyle * p )
+{
+   p->GrabRounding = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setLogSliderDeadzone( ImGuiStyle * p )
+{
+   p->LogSliderDeadzone = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setTabRounding( ImGuiStyle * p )
+{
+   p->TabRounding = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setTabBorderSize( ImGuiStyle * p )
+{
+   p->TabBorderSize = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setTabMinWidthForCloseButton( ImGuiStyle * p )
+{
+   p->TabMinWidthForCloseButton = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setColorButtonPosition( ImGuiStyle * p )
+{
+   p->ColorButtonPosition = ( ImGuiDir ) hb_parni( 3 );
+}
+
+static void s_ImGuiStyle_setButtonTextAlign( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->ButtonTextAlign = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setSelectableTextAlign( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->SelectableTextAlign = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setDisplayWindowPadding( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->DisplayWindowPadding = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setDisplaySafeAreaPadding( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->DisplaySafeAreaPadding = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiStyle_setMouseCursorScale( ImGuiStyle * p )
+{
+   p->MouseCursorScale = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setAntiAliasedLines( ImGuiStyle * p )
+{
+   p->AntiAliasedLines = hb_parl( 3 );
+}
+
+static void s_ImGuiStyle_setAntiAliasedLinesUseTex( ImGuiStyle * p )
+{
+   p->AntiAliasedLinesUseTex = hb_parl( 3 );
+}
+
+static void s_ImGuiStyle_setAntiAliasedFill( ImGuiStyle * p )
+{
+   p->AntiAliasedFill = hb_parl( 3 );
+}
+
+static void s_ImGuiStyle_setCurveTessellationTol( ImGuiStyle * p )
+{
+   p->CurveTessellationTol = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setCircleTessellationMaxError( ImGuiStyle * p )
+{
+   p->CircleTessellationMaxError = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiStyle_setColors( ImGuiStyle * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 55 )
+      return;
+   p->Colors[ s_nArrayGetPos ] = ImVec4{ _paf( p__set, 1 ), _paf( p__set, 2 ), _paf( p__set, 3 ), _paf( p__set, 4 ) };
+}
+
 static void s_ImGuiStyle_getAlpha( ImGuiStyle * p )
 {
    float ret = p->Alpha;
@@ -8581,7 +8801,7 @@ static void s_ImGuiStyle_getColors( ImGuiStyle * p )
    hb_arraySetND( pret, 4, ( double ) ret.w );
 }
 
-static void(*s_ImGuiStyle_fields[])( ImGuiStyle * ) = { s_ImGuiStyle_getAlpha, s_ImGuiStyle_getDisabledAlpha, s_ImGuiStyle_getWindowPadding, s_ImGuiStyle_getWindowRounding, s_ImGuiStyle_getWindowBorderSize, s_ImGuiStyle_getWindowMinSize, s_ImGuiStyle_getWindowTitleAlign, s_ImGuiStyle_getWindowMenuButtonPosition, s_ImGuiStyle_getChildRounding, s_ImGuiStyle_getChildBorderSize, s_ImGuiStyle_getPopupRounding, s_ImGuiStyle_getPopupBorderSize, s_ImGuiStyle_getFramePadding, s_ImGuiStyle_getFrameRounding, s_ImGuiStyle_getFrameBorderSize, s_ImGuiStyle_getItemSpacing, s_ImGuiStyle_getItemInnerSpacing, s_ImGuiStyle_getCellPadding, s_ImGuiStyle_getTouchExtraPadding, s_ImGuiStyle_getIndentSpacing, s_ImGuiStyle_getColumnsMinSpacing, s_ImGuiStyle_getScrollbarSize, s_ImGuiStyle_getScrollbarRounding, s_ImGuiStyle_getGrabMinSize, s_ImGuiStyle_getGrabRounding, s_ImGuiStyle_getLogSliderDeadzone, s_ImGuiStyle_getTabRounding, s_ImGuiStyle_getTabBorderSize, s_ImGuiStyle_getTabMinWidthForCloseButton, s_ImGuiStyle_getColorButtonPosition, s_ImGuiStyle_getButtonTextAlign, s_ImGuiStyle_getSelectableTextAlign, s_ImGuiStyle_getDisplayWindowPadding, s_ImGuiStyle_getDisplaySafeAreaPadding, s_ImGuiStyle_getMouseCursorScale, s_ImGuiStyle_getAntiAliasedLines, s_ImGuiStyle_getAntiAliasedLinesUseTex, s_ImGuiStyle_getAntiAliasedFill, s_ImGuiStyle_getCurveTessellationTol, s_ImGuiStyle_getCircleTessellationMaxError, s_ImGuiStyle_getColors };
+static void(*s_ImGuiStyle_fields[])( ImGuiStyle * ) = { s_ImGuiStyle_getAlpha, s_ImGuiStyle_getDisabledAlpha, s_ImGuiStyle_getWindowPadding, s_ImGuiStyle_getWindowRounding, s_ImGuiStyle_getWindowBorderSize, s_ImGuiStyle_getWindowMinSize, s_ImGuiStyle_getWindowTitleAlign, s_ImGuiStyle_getWindowMenuButtonPosition, s_ImGuiStyle_getChildRounding, s_ImGuiStyle_getChildBorderSize, s_ImGuiStyle_getPopupRounding, s_ImGuiStyle_getPopupBorderSize, s_ImGuiStyle_getFramePadding, s_ImGuiStyle_getFrameRounding, s_ImGuiStyle_getFrameBorderSize, s_ImGuiStyle_getItemSpacing, s_ImGuiStyle_getItemInnerSpacing, s_ImGuiStyle_getCellPadding, s_ImGuiStyle_getTouchExtraPadding, s_ImGuiStyle_getIndentSpacing, s_ImGuiStyle_getColumnsMinSpacing, s_ImGuiStyle_getScrollbarSize, s_ImGuiStyle_getScrollbarRounding, s_ImGuiStyle_getGrabMinSize, s_ImGuiStyle_getGrabRounding, s_ImGuiStyle_getLogSliderDeadzone, s_ImGuiStyle_getTabRounding, s_ImGuiStyle_getTabBorderSize, s_ImGuiStyle_getTabMinWidthForCloseButton, s_ImGuiStyle_getColorButtonPosition, s_ImGuiStyle_getButtonTextAlign, s_ImGuiStyle_getSelectableTextAlign, s_ImGuiStyle_getDisplayWindowPadding, s_ImGuiStyle_getDisplaySafeAreaPadding, s_ImGuiStyle_getMouseCursorScale, s_ImGuiStyle_getAntiAliasedLines, s_ImGuiStyle_getAntiAliasedLinesUseTex, s_ImGuiStyle_getAntiAliasedFill, s_ImGuiStyle_getCurveTessellationTol, s_ImGuiStyle_getCircleTessellationMaxError, s_ImGuiStyle_getColors, s_ImGuiStyle_setAlpha, s_ImGuiStyle_setDisabledAlpha, s_ImGuiStyle_setWindowPadding, s_ImGuiStyle_setWindowRounding, s_ImGuiStyle_setWindowBorderSize, s_ImGuiStyle_setWindowMinSize, s_ImGuiStyle_setWindowTitleAlign, s_ImGuiStyle_setWindowMenuButtonPosition, s_ImGuiStyle_setChildRounding, s_ImGuiStyle_setChildBorderSize, s_ImGuiStyle_setPopupRounding, s_ImGuiStyle_setPopupBorderSize, s_ImGuiStyle_setFramePadding, s_ImGuiStyle_setFrameRounding, s_ImGuiStyle_setFrameBorderSize, s_ImGuiStyle_setItemSpacing, s_ImGuiStyle_setItemInnerSpacing, s_ImGuiStyle_setCellPadding, s_ImGuiStyle_setTouchExtraPadding, s_ImGuiStyle_setIndentSpacing, s_ImGuiStyle_setColumnsMinSpacing, s_ImGuiStyle_setScrollbarSize, s_ImGuiStyle_setScrollbarRounding, s_ImGuiStyle_setGrabMinSize, s_ImGuiStyle_setGrabRounding, s_ImGuiStyle_setLogSliderDeadzone, s_ImGuiStyle_setTabRounding, s_ImGuiStyle_setTabBorderSize, s_ImGuiStyle_setTabMinWidthForCloseButton, s_ImGuiStyle_setColorButtonPosition, s_ImGuiStyle_setButtonTextAlign, s_ImGuiStyle_setSelectableTextAlign, s_ImGuiStyle_setDisplayWindowPadding, s_ImGuiStyle_setDisplaySafeAreaPadding, s_ImGuiStyle_setMouseCursorScale, s_ImGuiStyle_setAntiAliasedLines, s_ImGuiStyle_setAntiAliasedLinesUseTex, s_ImGuiStyle_setAntiAliasedFill, s_ImGuiStyle_setCurveTessellationTol, s_ImGuiStyle_setCircleTessellationMaxError, s_ImGuiStyle_setColors };
 
 HB_FUNC( IMGUISTYLE_GET )
 {
@@ -8590,5 +8810,15 @@ HB_FUNC( IMGUISTYLE_GET )
    s_nArrayGetPos = hb_parns( 3 );
    if( p && n >= 0 && n < 41 )
       s_ImGuiStyle_fields[ n ]( p );
+}
+
+HB_FUNC( IMGUISTYLE_SET )
+{
+   ImGuiStyle * p = ( ImGuiStyle * ) hb_parptr( 1 );
+   int n = hb_parni( 2 ) - 1;
+   s_nArrayGetPos = hb_parns( 4 );
+   if( p && n >= 0 && n < 41 )
+      s_ImGuiStyle_fields[ 41 + n ]( p );
+   hb_itemCopy( hb_stackReturnItem(), hb_paramError( 3 ) );
 }
 

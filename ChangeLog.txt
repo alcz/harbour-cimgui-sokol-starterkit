@@ -3,6 +3,25 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2024-10-24 10:27 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-docking/hbimgui.cpp
+  * cimgui-docking/hbimstru.ch
+  * cimgui/hbimgui.cpp
+  * cimgui/hbimstru.ch
+    * regenerated using updated version of generator.prg
+
+    + setting values that are held in allocated structs is
+      now implemented
+
+      example of setting a global window border rounding radius
+      ImGuiStyle( igGetStyle() ):popupRounding := 7.00
+
+      Setters are translated using preprocessor rules =>
+      ImGuiStyle_Set( igGetStyle(), 11 /* ImGuiStyle_PopupRounding */, 7.00 )
+
+      There should be enough implemented so they will work in exprssions like
+      nVar := ImGuiStyle( pStyle ):popupRounding := nVar2 := 7.00
+
 2024-10-22 21:24 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * cimgui-docking/hbimgui.cpp
   * cimgui-docking/hbimstru.ch

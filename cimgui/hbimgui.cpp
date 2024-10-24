@@ -6770,8 +6770,6 @@ HB_FUNC( IGVALUEFLOAT )
 
 HB_FUNC_TRANSLATE( IGTEXT, IGTEXTUNFORMATTED )
 
-static HB_SIZE s_nArrayGetPos = 0; /* definitely not a thread safe solution, though i'm not aware multi-instance drawing backends yet */
-
 static void s_ImGuiListClipper_getDisplayStart( ImGuiListClipper * p )
 {
    int ret = p->DisplayStart;
@@ -6890,9 +6888,10 @@ static void s_ImGuiIO_getMouseDragThreshold( ImGuiIO * p )
 static void s_ImGuiIO_getKeyMap( ImGuiIO * p )
 {
    int ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 22 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 22 )
       return;
-   ret = p->KeyMap[ s_nArrayGetPos - 1 ];
+   ret = p->KeyMap[ pos - 1 ];
    hb_retni( ret );
 }
 
@@ -7061,9 +7060,10 @@ static void s_ImGuiIO_getMousePos( ImGuiIO * p )
 static void s_ImGuiIO_getMouseDown( ImGuiIO * p )
 {
    bool ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseDown[ s_nArrayGetPos - 1 ];
+   ret = p->MouseDown[ pos - 1 ];
    hb_retl( ret );
 }
 
@@ -7106,18 +7106,20 @@ static void s_ImGuiIO_getKeySuper( ImGuiIO * p )
 static void s_ImGuiIO_getKeysDown( ImGuiIO * p )
 {
    bool ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 512 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 512 )
       return;
-   ret = p->KeysDown[ s_nArrayGetPos - 1 ];
+   ret = p->KeysDown[ pos - 1 ];
    hb_retl( ret );
 }
 
 static void s_ImGuiIO_getNavInputs( ImGuiIO * p )
 {
    float ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 22 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 22 )
       return;
-   ret = p->NavInputs[ s_nArrayGetPos - 1 ];
+   ret = p->NavInputs[ pos - 1 ];
    hb_retnd( ( double ) ret );
 }
 
@@ -7226,9 +7228,10 @@ static void s_ImGuiIO_getMousePosPrev( ImGuiIO * p )
 static void s_ImGuiIO_getMouseClickedPos( ImGuiIO * p )
 {
    ImVec2 ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseClickedPos[ s_nArrayGetPos - 1 ];
+   ret = p->MouseClickedPos[ pos - 1 ];
    PHB_ITEM pret = hb_stackReturnItem();
    hb_arrayNew( pret, 2 );
    hb_arraySetND( pret, 1, ( double ) ret.x );
@@ -7238,81 +7241,90 @@ static void s_ImGuiIO_getMouseClickedPos( ImGuiIO * p )
 static void s_ImGuiIO_getMouseClickedTime( ImGuiIO * p )
 {
    double ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseClickedTime[ s_nArrayGetPos - 1 ];
+   ret = p->MouseClickedTime[ pos - 1 ];
    hb_retnd( ret );
 }
 
 static void s_ImGuiIO_getMouseClicked( ImGuiIO * p )
 {
    bool ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseClicked[ s_nArrayGetPos - 1 ];
+   ret = p->MouseClicked[ pos - 1 ];
    hb_retl( ret );
 }
 
 static void s_ImGuiIO_getMouseDoubleClicked( ImGuiIO * p )
 {
    bool ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseDoubleClicked[ s_nArrayGetPos - 1 ];
+   ret = p->MouseDoubleClicked[ pos - 1 ];
    hb_retl( ret );
 }
 
 static void s_ImGuiIO_getMouseReleased( ImGuiIO * p )
 {
    bool ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseReleased[ s_nArrayGetPos - 1 ];
+   ret = p->MouseReleased[ pos - 1 ];
    hb_retl( ret );
 }
 
 static void s_ImGuiIO_getMouseDownOwned( ImGuiIO * p )
 {
    bool ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseDownOwned[ s_nArrayGetPos - 1 ];
+   ret = p->MouseDownOwned[ pos - 1 ];
    hb_retl( ret );
 }
 
 static void s_ImGuiIO_getMouseDownWasDoubleClick( ImGuiIO * p )
 {
    bool ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseDownWasDoubleClick[ s_nArrayGetPos - 1 ];
+   ret = p->MouseDownWasDoubleClick[ pos - 1 ];
    hb_retl( ret );
 }
 
 static void s_ImGuiIO_getMouseDownDuration( ImGuiIO * p )
 {
    float ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseDownDuration[ s_nArrayGetPos - 1 ];
+   ret = p->MouseDownDuration[ pos - 1 ];
    hb_retnd( ( double ) ret );
 }
 
 static void s_ImGuiIO_getMouseDownDurationPrev( ImGuiIO * p )
 {
    float ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseDownDurationPrev[ s_nArrayGetPos - 1 ];
+   ret = p->MouseDownDurationPrev[ pos - 1 ];
    hb_retnd( ( double ) ret );
 }
 
 static void s_ImGuiIO_getMouseDragMaxDistanceAbs( ImGuiIO * p )
 {
    ImVec2 ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseDragMaxDistanceAbs[ s_nArrayGetPos - 1 ];
+   ret = p->MouseDragMaxDistanceAbs[ pos - 1 ];
    PHB_ITEM pret = hb_stackReturnItem();
    hb_arrayNew( pret, 2 );
    hb_arraySetND( pret, 1, ( double ) ret.x );
@@ -7322,45 +7334,50 @@ static void s_ImGuiIO_getMouseDragMaxDistanceAbs( ImGuiIO * p )
 static void s_ImGuiIO_getMouseDragMaxDistanceSqr( ImGuiIO * p )
 {
    float ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 5 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 5 )
       return;
-   ret = p->MouseDragMaxDistanceSqr[ s_nArrayGetPos - 1 ];
+   ret = p->MouseDragMaxDistanceSqr[ pos - 1 ];
    hb_retnd( ( double ) ret );
 }
 
 static void s_ImGuiIO_getKeysDownDuration( ImGuiIO * p )
 {
    float ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 512 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 512 )
       return;
-   ret = p->KeysDownDuration[ s_nArrayGetPos - 1 ];
+   ret = p->KeysDownDuration[ pos - 1 ];
    hb_retnd( ( double ) ret );
 }
 
 static void s_ImGuiIO_getKeysDownDurationPrev( ImGuiIO * p )
 {
    float ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 512 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 512 )
       return;
-   ret = p->KeysDownDurationPrev[ s_nArrayGetPos - 1 ];
+   ret = p->KeysDownDurationPrev[ pos - 1 ];
    hb_retnd( ( double ) ret );
 }
 
 static void s_ImGuiIO_getNavInputsDownDuration( ImGuiIO * p )
 {
    float ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 22 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 22 )
       return;
-   ret = p->NavInputsDownDuration[ s_nArrayGetPos - 1 ];
+   ret = p->NavInputsDownDuration[ pos - 1 ];
    hb_retnd( ( double ) ret );
 }
 
 static void s_ImGuiIO_getNavInputsDownDurationPrev( ImGuiIO * p )
 {
    float ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 22 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 22 )
       return;
-   ret = p->NavInputsDownDurationPrev[ s_nArrayGetPos - 1 ];
+   ret = p->NavInputsDownDurationPrev[ pos - 1 ];
    hb_retnd( ( double ) ret );
 }
 
@@ -7386,7 +7403,6 @@ HB_FUNC( IMGUIIO_GET )
 {
    ImGuiIO * p = ( ImGuiIO * ) hb_parptr( 1 );
    int n = hb_parni( 2 ) - 1;
-   s_nArrayGetPos = hb_parns( 3 );
    if( p && n >= 0 && n < 80 )
       s_ImGuiIO_fields[ n ]( p );
 }
@@ -7601,9 +7617,10 @@ static void s_ImGuiStyle_setCircleSegmentMaxError( ImGuiStyle * p )
 static void s_ImGuiStyle_setColors( ImGuiStyle * p )
 {
    PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 53 )
+   HB_SIZE pos = hb_parns( 4 );
+   if( pos == 0 || pos > 53 )
       return;
-   p->Colors[ s_nArrayGetPos ] = ImVec4{ _paf( p__set, 1 ), _paf( p__set, 2 ), _paf( p__set, 3 ), _paf( p__set, 4 ) };
+   p->Colors[ pos - 1 ] = ImVec4{ _paf( p__set, 1 ), _paf( p__set, 2 ), _paf( p__set, 3 ), _paf( p__set, 4 ) };
 }
 
 static void s_ImGuiStyle_getAlpha( ImGuiStyle * p )
@@ -7879,9 +7896,10 @@ static void s_ImGuiStyle_getCircleSegmentMaxError( ImGuiStyle * p )
 static void s_ImGuiStyle_getColors( ImGuiStyle * p )
 {
    ImVec4 ret;
-   if( s_nArrayGetPos == 0 || s_nArrayGetPos > 53 )
+   HB_SIZE pos = hb_parns( 3 );
+   if( pos == 0 || pos > 53 )
       return;
-   ret = p->Colors[ s_nArrayGetPos - 1 ];
+   ret = p->Colors[ pos - 1 ];
    PHB_ITEM pret = hb_stackReturnItem();
    hb_arrayNew( pret, 4 );
    hb_arraySetND( pret, 1, ( double ) ret.x );
@@ -7896,7 +7914,6 @@ HB_FUNC( IMGUISTYLE_GET )
 {
    ImGuiStyle * p = ( ImGuiStyle * ) hb_parptr( 1 );
    int n = hb_parni( 2 ) - 1;
-   s_nArrayGetPos = hb_parns( 3 );
    if( p && n >= 0 && n < 40 )
       s_ImGuiStyle_fields[ n ]( p );
 }
@@ -7905,7 +7922,6 @@ HB_FUNC( IMGUISTYLE_SET )
 {
    ImGuiStyle * p = ( ImGuiStyle * ) hb_parptr( 1 );
    int n = hb_parni( 2 ) - 1;
-   s_nArrayGetPos = hb_parns( 4 );
    if( p && n >= 0 && n < 40 )
       s_ImGuiStyle_fields[ 40 + n ]( p );
    hb_itemCopy( hb_stackReturnItem(), hb_paramError( 3 ) );

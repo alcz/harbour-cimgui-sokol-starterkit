@@ -3,6 +3,15 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2024-10-24 12:04 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-docking/hbimgui.cpp
+  * cimgui/hbimgui.cpp
+    * regenerated using updated version of generator.prg
+
+    ! removed non-sense static variable, fix C array setter
+      ImGuiStyle( <p> ):Colors[ <n> ] := <value>
+      <n> slipped off-by-one in previous commit
+
 2024-10-24 10:27 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * cimgui-docking/hbimgui.cpp
   * cimgui-docking/hbimstru.ch

@@ -1,0 +1,5 @@
+-gc3
+runner.prg
+ig_winlist.prg
+hbct.hbc -request=__HBEXTERN__HBCT__
+hbmemio.hbc -request=__HBEXTERN__HBMEMIO__

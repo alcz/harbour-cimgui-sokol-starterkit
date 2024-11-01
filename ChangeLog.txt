@@ -3,6 +3,62 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2024-11-01 21:59 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + examples/ig_winlist.prg
+    + microframework routines for managing multiple widgets
+      of the same type, considering widget is a function call
+
+      parameters called to a create function end up stored
+      in an array, of which every individual element is passed by
+      reference - like @array[ 1 ], etc. STATIC variables can't be
+      used in such scenario when single widget is used multiple instances
+
+      IG_MultiWin_Init() - initialize before first use
+      IG_MultiWin()      - should be called in main loop (inside ImFrame())
+      IG_WinCreate( <symFunc>[, <cKey> ][, <aData> ][, <nElements> ]
+                   [, <lCloneData> ] ) -> <nWnd>
+      IG_WinCreate( <symFunc>[, <cKey> ], NIL, <xParam1>, <xParam2>, ... )
+                    -> <nWnd>
+
+      possibilities:
+      IG_WinCreate( @WIG_*(), "document:1234", { oDok, "test" } )  -> nWnd
+      IG_WinCreate( @WIG_*(), "document:1234", NIL, oDok, "test" ) -> nWnd
+      IG_WinCreate( @WIG_SQLWait(),, { 0 /* nState */ } )          -> nWnd
+      IG_WinCreate( @GetNotifyLoop(), "SysNotifies" )              -> nWnd
+      IG_WinDestroy( nWnd ) or IG_WinDestroy("document:1234")
+      or IG_WinDestroy() without a parameter when called from
+      of the widget inside ()WIG_*
+
+  + examples/runner.hbp
+  + examples/runner.prg
+    + created simple script runner of Dear ImGui apps,
+      a program compiled to .hrb should contain a procedure
+      named ImFrame() that will be called repeatedly
+      and optionally ImInit() procedure that will be called
+      once. If ImFrame() is not found the runner will try
+      to call main/first function in the .hrb file in hope
+      that it contains widget rendering.
+
+    ; most likely examples/*.prg will run when compiled
+      to .hrb, but their main function is skipped,
+      maybe an option should be added to use .hrb main
+      and skip some more of runner's initialization
+
+  * LICENSE
+    * years have passed
+
+  * cimgui-common/hbarrays.cpp
+    ! cursor parameter support was missing in hb_igIntsPush()
+
+  * cimgui-docking/cimgui.cpp
+  * cimgui-docking/cimgui.hbp
+  * cimgui-docking/hbimgui.cpp
+  * cimgui/cimgui.cpp
+  * cimgui/cimgui.hbp
+  * cimgui/hbimgui.cpp
+    * added IMGUI_NO_DEMO envvar and define, that disables
+      ImGui demo code from building
+
 2024-10-24 12:04 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * cimgui-docking/hbimgui.cpp
   * cimgui/hbimgui.cpp

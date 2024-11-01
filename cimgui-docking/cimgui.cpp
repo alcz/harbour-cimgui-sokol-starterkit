@@ -76,6 +76,7 @@ CIMGUI_API ImDrawData* igGetDrawData()
 {
     return ImGui::GetDrawData();
 }
+#ifndef IMGUI_NO_DEMO
 CIMGUI_API void igShowDemoWindow(bool* p_open)
 {
     return ImGui::ShowDemoWindow(p_open);
@@ -108,6 +109,7 @@ CIMGUI_API void igShowUserGuide()
 {
     return ImGui::ShowUserGuide();
 }
+#endif
 CIMGUI_API const char* igGetVersion()
 {
     return ImGui::GetVersion();

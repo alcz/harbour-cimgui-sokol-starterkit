@@ -105,9 +105,15 @@ HB_FUNC( HB_IGFLOATSPUSH )
    {
       if( pFloats->nSize > 1 )
       {
-         // what's up with this?
-         // memmove( values, values + sizeof( float ), sizeof( float ) * ( pFloats->nSize - 1 ) );
-         // igText("align of float %d", __alignof__(float) );
+         /*
+          * TOFIX: use different memmove that supports overlapping blocks
+          * or different schema like working on oversized region,
+          * which won't need to reallocate on every push
+          *
+          * memmove( values, values + sizeof( float ), sizeof( float ) * ( pFloats->nSize - 1 ) );
+          * will likely not do okay on overlapping blocks
+          */
+
          HB_SIZE n;
          if( ! bUseCursor || pFloats->nCursor == pFloats->nSize )
          {
@@ -206,14 +212,23 @@ HB_FUNC( HB_IGINTSPUSH )
    PHB_IG_INTS pInts = hb_ig_ints_par( 1 );
    int * values = ( pInts ? pInts->pBuf : NULL );
    int value = hb_parni( 2 );
+   HB_BOOL bUseCursor = hb_parl( 3 );
 
    if( values )
    {
       if( pInts->nSize > 1 )
       {
          HB_SIZE n;
-         for( n = 0; n < ( HB_SIZE ) pInts->nSize; n++ )
-            values[ n ] = values[ n + 1 ];
+         if( ! bUseCursor || pInts->nCursor == pInts->nSize )
+         {
+            for( n = 0; n < ( HB_SIZE ) pInts->nSize; n++ )
+               values[ n ] = values[ n + 1 ];
+
+            values[ pInts->nSize - 1 ] = value;
+         }
+         else
+            values[ pInts->nCursor++ ] = value;
+
       }
       values[ pInts->nSize - 1 ] = value;
    }

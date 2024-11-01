@@ -1,6 +1,7 @@
 -hblib
 
 -o${hb_name}
+-hbx=cimgui.hbx
 
 -env:IMGUI_DOCKING-
 -env:IMGUI_CUSTOM-
@@ -27,4 +28,5 @@ imgui/imgui.cpp
 imgui/imgui_widgets.cpp
 imgui/imgui_draw.cpp
 imgui/imgui_tables.cpp
-imgui/imgui_demo.cpp
+imgui/imgui_demo.cpp{!IMGUI_NO_DEMO}
+{IMGUI_NO_DEMO}-cflag=-DIMGUI_NO_DEMO

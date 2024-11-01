@@ -6291,6 +6291,7 @@ HB_FUNC( IGSHADEVERTSLINEARUV )
    igShadeVertsLinearUV(draw_list,vert_start_idx,vert_end_idx,a,b,uv_a,uv_b,clamp);
 }
 
+#ifndef IMGUI_NO_DEMO
 /* void igShowAboutWindow(bool* p_open) */
 HB_FUNC( IGSHOWABOUTWINDOW )
 {
@@ -6361,6 +6362,7 @@ HB_FUNC( IGSHOWUSERGUIDE )
 {
    igShowUserGuide();
 }
+#endif
 
 /* void igShrinkWidths(ImGuiShrinkWidthItem* items,int count,float width_excess) */
 HB_FUNC( IGSHRINKWIDTHS )

@@ -3,6 +3,15 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-01-12 21:35 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * wmake.sh
+    + call meta-rebuild*.hbp for emscripten, respect IMGUI_DOCKING
+      envvar to build for a branch
+
+    ; it's very important to keep all the libraries built for the
+      same branch, as the structs and headers files may be different
+      between branches, making the final WebAssembly app crash
+
 2025-01-12 20:17 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * examples/browse1.prg
   * examples/images/hello.prg

@@ -14,7 +14,7 @@ PROCEDURE MAIN
 
    hb_cdpSelect("UTF8EX")
 
-#ifndef __PLATFORM__WEB
+#ifndef __PLATFORM__WASM
    IF ! File( "OpenSans-Regular.ttf" )
       Alert("can't find my font")
    ENDIF
@@ -22,7 +22,7 @@ PROCEDURE MAIN
    hb_sokol_imguiNoDefaultFont( .T. )
    sapp_run_default( "Custom Font Example", 800, 600 )
 
-#ifdef __PLATFORM__WEB
+#ifdef __PLATFORM__WASM
    IF ImFrame() # NIL /* dummy calls for emscripten, to be removed when those functions are properly requested from .c code */
       ImInit()
    ENDIF
@@ -30,7 +30,7 @@ PROCEDURE MAIN
    RETURN
 
 PROCEDURE ImInit
-#ifdef __PLATFORM__WEB
+#ifdef __PLATFORM__WASM
    LOCAL cFontBuf
 #pragma __binarystreaminclude "OpenSans-Regular.ttf"|cFontBuf := %s
    hb_igAddFontFromMemoryTTF( cFontBuf, 18.0, , { "EL737", "PL852" }, .T., .F. )

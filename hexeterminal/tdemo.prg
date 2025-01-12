@@ -11,7 +11,7 @@
 PROCEDURE Main
    sapp_run() /* execute sokol library based application */
 
-#ifdef __PLATFORM__WEB
+#ifdef __PLATFORM__WASM
    ImFrame() /* This is a dummy call, REQUEST placed here doesn't work with
                 emscripten and it aggresively optimizes out this symbol */
 #endif

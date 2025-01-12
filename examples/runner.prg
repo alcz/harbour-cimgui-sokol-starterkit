@@ -48,7 +48,7 @@ PROCEDURE Main( cRun )
 
 PROCEDURE ImInit
    LOCAL sym
-#ifdef __PLATFORM__WEB
+#ifdef __PLATFORM__WASM
    LOCAL cFontBuf
 #pragma __binarystreaminclude "OpenSans-Regular.ttf"|cFontBuf := %s
    hb_igAddFontFromMemoryTTF( cFontBuf, 18.0, , __cdpList(), .T., .F. )

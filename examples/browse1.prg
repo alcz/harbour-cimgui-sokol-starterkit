@@ -14,7 +14,7 @@ REQUEST HB_MEMIO
 
 PROCEDURE MAIN
 
-#ifdef __PLATFORM__WEB
+#ifdef __PLATFORM__WASM
    LOCAL cDBF
 #pragma __binarystreaminclude "test.dbf"|cDBF := %s
    hb_memoWrit( "mem:test.dbf", cDBF )
@@ -29,7 +29,7 @@ PROCEDURE MAIN
 
    sapp_run_default( "Simple databrowser", 800, 600 )
 
-#ifdef __PLATFORM__WEB
+#ifdef __PLATFORM__WASM
    ImFrame()  /* dummy calls for emscripten, to be removed when those */
    HB_MEMIO() /* functions are properly requested from .c code        */
    DBFNTX()
@@ -43,7 +43,7 @@ PROCEDURE ImFrame
    ImGui::SetNextWindowSize( {650, 350}, ImGuiCond_Once )
    ImGui::Begin( ".dbf browse", 0, ImGuiWindowFlags_None )
 
-#ifndef __PLATFORM__WEB
+#ifndef __PLATFORM__WASM
    IF ImGui::CheckBox("use in-memory .dbf", @lMem )
       IF lMem
          DBSelectArea("TESTMEM")

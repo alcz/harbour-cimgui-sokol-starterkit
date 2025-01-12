@@ -3,6 +3,35 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-01-12 20:17 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * examples/browse1.prg
+  * examples/images/hello.prg
+  * examples/implot/line.prg
+  * examples/loadfont.prg
+  * examples/plotfloat.prg
+  * examples/procdbf.prg
+  * examples/runner.prg
+  * examples/treetable.prg
+  * hbdemo.prg
+  * hexeterminal/tdemo.prg
+    * #ifdef's __PLATFORM__WEB changed to __PLATFORM__WASM
+
+  * examples/wmake.sh
+  * examples/implot/wmake.sh
+  * cimgui-docking/wmake.sh
+  * cimgui/wmake.sh
+  * cimplot/wmake.sh
+  * examples/wmake.sh
+
+  * sokol/wmake.sh
+  * wmake.sh
+    * HB_PLATFORM=wasm (changed from =abstr)
+    * HB_COMPILER=emcc (changed from =wasm)
+    * permissions of some .sh scripts reset to 644
+
+  ; this makes project not compatible anymore with experimental
+    WebAssembly in forked Harbour 3.4
+
 2024-11-01 21:59 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + examples/ig_winlist.prg
     + microframework routines for managing multiple widgets

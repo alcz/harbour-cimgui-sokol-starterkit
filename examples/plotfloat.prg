@@ -14,7 +14,7 @@ PROCEDURE MAIN
 
    sapp_run_default( "Plotting", 800, 600 )
 
-#ifdef __PLATFORM__WEB
+#ifdef __PLATFORM__WASM
    ImFrame() /* dummy call for emscripten, to be removed when those functions are properly requested from .c code */
 #endif
    RETURN

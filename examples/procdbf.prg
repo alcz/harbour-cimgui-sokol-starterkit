@@ -15,7 +15,7 @@ PROCEDURE MAIN
    hb_sokol_imguiNoDefaultFont( .T. )
    sapp_run_default( "Data processing", 800, 600 )
 
-#ifdef __PLATFORM__WEB
+#ifdef __PLATFORM__WASM
    IF ImFrame() # NIL /* dummy calls for emscripten, to be removed when those functions are properly requested from .c code */
       ImInit()
    ENDIF

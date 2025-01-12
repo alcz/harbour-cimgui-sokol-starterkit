@@ -3,8 +3,8 @@ cd /home/$USER/emsdk
 . ./emsdk_env.sh --build=Release
 cd $OPATH
 
-export HB_PLATFORM=abstr
-export HB_COMPILER=wasm
+export HB_PLATFORM=wasm
+export HB_COMPILER=emcc
 export HB_BUILD_3RDEXT=no
 export HB_HOST_BIN=/home/$USER/harbour/bin/linux/gcc/
 export LLVM_ROOT=/home/$USER/emsdk/upstream/bin

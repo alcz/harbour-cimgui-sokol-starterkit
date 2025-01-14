@@ -3,6 +3,33 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-01-14 19:36 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * examples/runner.prg
+    * some effort to make runner usable under emscripten WASM
+
+    + more validation of arguments and STDIN input
+
+    ! fix error message on .hrb loading to include details again
+
+    ! added emscripten WASM linking hack as seen in other samples,
+      i'd be happy to get rid of it.
+
+    + added deurlize routine, this is the format introduced by
+      Viktor Szakats in HB3.4.
+      To manually convert .hrb file to an url which this runner can
+      understand from web browser address, you could use Harbour
+      3.4 hbmk2. Make sure that output is prefixed with '*'
+
+      in a batch script:
+      echo -n * > file.hrb.z (on Unix)
+      echo | set /p dummy="*" > file.hrb.z (on Windows)
+      hbmk2 -urlize < file.hrb >> file.hrb.z
+
+      Then address bar of a browser could be filled with url such as:
+      https://example.com/runner.html#<file.hrb.z contents here>
+      which effectively would be something like:
+      https://example.com/runner.html#*eJx1VM9z20QUfpLtuHGdpiR...
+
 2025-01-12 23:46 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * examples/runner.prg
     + added simple feature to read .hrb file from STDIN.

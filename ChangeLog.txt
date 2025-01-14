@@ -3,6 +3,16 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-01-12 23:46 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * examples/runner.prg
+    + added simple feature to read .hrb file from STDIN.
+      note on Windows: "type file.hrb | runner -"  runs,
+      but "runner - < file.hrb", does not work. Probably due
+      to some some TEXT/BINARY switch being different in C RTL
+      STDIO routines.
+
+    * experiment with UbuntuMono font
+
 2025-01-12 21:35 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * wmake.sh
     + call meta-rebuild*.hbp for emscripten, respect IMGUI_DOCKING
@@ -11,6 +21,16 @@
     ; it's very important to keep all the libraries built for the
       same branch, as the structs and headers files may be different
       between branches, making the final WebAssembly app crash
+
+2025-01-12 23:46 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * examples/runner.prg
+    + added simple feature to read .hrb file from STDIN.
+      note on Windows: "type file.hrb | runner -"  runs,
+      but "runner - < file.hrb", does not work. Probably due
+      to some some TEXT/BINARY switch being different in C RTL
+      STDIO routines.
+
+    * experiment with UbuntuMono font
 
 2025-01-12 20:17 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * examples/browse1.prg

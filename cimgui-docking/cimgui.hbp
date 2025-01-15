@@ -1,7 +1,9 @@
 -hblib
 
 -o${hb_name}
--hbx=cimgui.hbx
+
+# TOFIX: .hbx generating on emcc looks broken (empty list)
+{!wasm}-hbx=cimgui.hbx
 
 -env:IMGUI_DOCKING=yes
 -env:IMGUI_CUSTOM-
@@ -11,7 +13,7 @@
 -depincpathlocal=imgui:./imgui
 
 cimgui.cpp
-{cflag}-I./imgui/
+#-cflag=I./imgui/
 -I../cimgui-common/
 -I./
 hbimgui.cpp

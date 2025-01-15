@@ -11,11 +11,15 @@
 #include "hbimenum.ch"
 #include "hbimstru.ch"
 
+#ifndef __PLATFORM__WASM
+
 #define __HBEXTERN__CIMGUI__REQUEST
 #include "cimgui.hbx"
 
 #define __HBEXTERN__HBCPAGE__REQUEST
 #include "hbcpage.hbx"
+
+#endif
 
 #define __HBEXTERN__HARBOUR__REQUEST
 #include "harbour.hbx"
@@ -77,6 +81,11 @@ PROCEDURE Main( cRun )
 #ifdef __PLATFORM__WASM
    IF ImFrame() # NIL /* dummy calls for emscripten, to be removed when those functions are properly requested from .c code */
       ImInit()
+#command DYNAMIC <fncs,...> => <fncs>()
+#include "cimgui.hbx"
+#include "hbcpage.hbx"
+#include "hbct.hbx"
+#uncommand DYNAMIC <fncs,...> => <fncs>()
    ENDIF
 #endif
 
@@ -182,3 +191,4 @@ STATIC FUNCTION __unhbz( cIn )
    ENDIF
 
    RETURN cTmp
+

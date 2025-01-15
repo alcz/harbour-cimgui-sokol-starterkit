@@ -17,7 +17,7 @@
 -I../cimgui-common/
 
 cimplot.cpp
-{cflag}-I./implot/
+#-cflag=-I./implot/
 hbimplot.cpp
 implots.cpp
 

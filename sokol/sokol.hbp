@@ -9,7 +9,7 @@
 -cflag=-DSOKOL_NO_ENTRY
 
 # debug output not available on Win10, see sokol_imgui.h
--cflag=-DNDEBUG 
+-cflag=-DNDEBUG
 
 {darwin}{ldflag}"-framework QuartzCore"
 {darwin}{ldflag}"-framework Cocoa"

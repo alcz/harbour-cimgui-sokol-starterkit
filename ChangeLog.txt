@@ -3,6 +3,32 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-01-15 13:47 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-docking/cimgui.hbp
+  * cimgui/cimgui.hbp
+  * cimplot/cimplot.hbp
+    ! don't regenerate .hbx when using emscripten wasm compiler,
+      it results in a empty listing
+
+  * examples/runner.prg
+    + apply emscripten linking hack for all cimgui/ImGui functions,
+      REQUEST is not enough, emscripten + LLVM combo still optimizes
+      out functions that are not really called
+
+    ; HELP WANTED with the above
+    ; I've at least studied all the compiler options like -O0, etc.
+    ; some say that compiling as SIDE_MODULE helps, then maybe we
+    ; will need small loader as MAIN_MODULE and app itself in
+    ; SIDE_MODULE. 
+
+  * examples/wmake_runner.sh
+    ! with all the ImGui functions compiled in the runner
+      -sALLOW_MEMORY_GROWTH=1
+      emscripten build flag is now needed
+
+  * sokol/sokol.hbp
+    % space
+
 2025-01-14 19:36 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * examples/runner.prg
     * some effort to make runner usable under emscripten WASM

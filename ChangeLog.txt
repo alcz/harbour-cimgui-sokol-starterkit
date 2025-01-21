@@ -3,6 +3,14 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-01-21 15:16 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+   * sokol/hbsokol.c
+     + pass sapp_dpi_scale() to ImGui frame init, HiDPI displays
+       are common now
+
+     + added .prg function sapp_dpi_scale() -> <nScale>, for
+       possible diagnostics
+
 2025-01-21 12:56 UTC+0100 Aleksander Czajczynski (hb fki.pl)
    * examples/runner.prg
      + added -hidpi mode

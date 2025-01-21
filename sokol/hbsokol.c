@@ -51,7 +51,7 @@ static void frame(void) {
     const int width = sapp_width();
     const int height = sapp_height();
     const double delta_time = stm_sec(stm_round_to_common_refresh_rate(stm_laptime(&state.laptime)));
-    simgui_new_frame(width, height, delta_time);
+    simgui_new_frame(width, height, delta_time, sapp_dpi_scale());
 
     if( ! pDynSym )
        pDynSym = hb_dynsymFindName( "IMFRAME" );
@@ -132,6 +132,11 @@ HB_FUNC( SAPP_REQUEST_QUIT )
 HB_FUNC( SAPP_CANCEL_QUIT )
 {
    sapp_cancel_quit();
+}
+
+HB_FUNC( SAPP_DPI_SCALE )
+{
+   hb_retnd( sapp_dpi_scale() );
 }
 
 HB_FUNC( SAPP_RUN_DEFAULT )

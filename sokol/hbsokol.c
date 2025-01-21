@@ -3,7 +3,7 @@
 
     license is MIT, see ../LICENSE
 
-    Copyright (c) 2021 Aleksander Czajczynski
+    Copyright (c) 2021-2025 Aleksander Czajczynski
 */
 
 
@@ -92,7 +92,7 @@ static void event(const sapp_event* ev) {
     simgui_handle_event(ev);
 }
 
-static sapp_desc hb_sokol_main( const char * pszCaption, int width, int height ) {
+static sapp_desc hb_sokol_main( const char * pszCaption, int width, int height, HB_BOOL bClipboard, HB_BOOL bHiDPI ) {
     return (sapp_desc){
         .init_cb = init,
         .frame_cb = frame,
@@ -101,6 +101,8 @@ static sapp_desc hb_sokol_main( const char * pszCaption, int width, int height )
         .window_title = pszCaption,
         .width = width,
         .height = height,
+        .high_dpi = bHiDPI,
+        .enable_clipboard = bClipboard
     };
 }
 
@@ -134,6 +136,6 @@ HB_FUNC( SAPP_CANCEL_QUIT )
 
 HB_FUNC( SAPP_RUN_DEFAULT )
 { 
-   sapp_desc s = hb_sokol_main( hb_parcx( 1 ), hb_parnidef( 2, 800 ), hb_parnidef( 3, 600 ) );
+   sapp_desc s = hb_sokol_main( hb_parcx( 1 ), hb_parnidef( 2, 800 ), hb_parnidef( 3, 600 ), hb_parldef( 4, HB_TRUE ), hb_parldef( 5, HB_FALSE ) );
    sapp_run( &s );
 }

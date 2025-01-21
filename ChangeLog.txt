@@ -3,6 +3,18 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-01-21 12:56 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+   * examples/runner.prg
+     + added -hidpi mode
+
+   * sokol/hbsokol.c
+     * exposed clipboard access and high DPI mode in the default/demo
+       app starting routine
+
+       Updated parameters specification are:
+       sapp_default_run( <cWindowCaption>, [ <nWidth> ], [ <nHeight> ],
+                     [ <lClipboardAccess> := .T. ], [ <lHiDPI> := .F. ] )
+
 2025-01-15 13:47 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui-docking/cimgui.hbp
   * cimgui/cimgui.hbp

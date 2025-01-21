@@ -28,7 +28,7 @@ REQUEST HB_CODEPAGE_UTF8EX
 
 STATIC s_pHRB, s_symImFrame
 
-PROCEDURE Main( cRun )
+PROCEDURE Main( cRun, cHiDPI )
    LOCAL aScriptHost, cBuf, nRead, lLoad := .T.
 
    hb_cdpSelect("UTF8EX")
@@ -36,7 +36,7 @@ PROCEDURE Main( cRun )
    IG_MultiWin_Init()
 
    IF Empty( cRun )
-      __ErrorWindow_Create( "no arguments specified", "usage: runner <file.hrb> or - (stdin)" )
+      __ErrorWindow_Create( "no arguments specified", "usage: runner <file.hrb> or - (stdin) <-hidpi>" )
       lLoad := .F.
    ELSEIF cRun == "@" .OR. cRun == "-" /* in future @ may force .hrb mode with less header checks */
       cBuf := Space( 4 )
@@ -76,7 +76,9 @@ PROCEDURE Main( cRun )
 
    hb_sokol_imguiNoDefaultFont( .T. )
 
-   sapp_run_default( "Dear ImGui HRB runner", 800, 600 )
+   sapp_run_default( "Dear ImGui HRB runner", 800, 600, ;
+                     .T. /* clipboard access */, ;
+                     HB_IsString( cHiDPI ) .AND. Lower( cHiDPI ) == "-hidpi"  )
 
 #ifdef __PLATFORM__WASM
    IF ImFrame() # NIL /* dummy calls for emscripten, to be removed when those functions are properly requested from .c code */

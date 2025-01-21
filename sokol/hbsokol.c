@@ -50,8 +50,13 @@ static void frame(void) {
     static PHB_DYNS pDynSym = NULL;
     const int width = sapp_width();
     const int height = sapp_height();
-    const double delta_time = stm_sec(stm_round_to_common_refresh_rate(stm_laptime(&state.laptime)));
-    simgui_new_frame(width, height, delta_time, sapp_dpi_scale());
+
+    simgui_new_frame(&(simgui_frame_desc_t){
+        .width = width,
+        .height = height,
+        .delta_time = sapp_frame_duration(),
+        .dpi_scale = sapp_dpi_scale()
+    });
 
     if( ! pDynSym )
        pDynSym = hb_dynsymFindName( "IMFRAME" );

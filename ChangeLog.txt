@@ -3,6 +3,25 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-01-21 16:19 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+   * demo.c
+   * hbdemo.prg
+   * sokol/hbsokol.c
+   * sokol/sokol_app.h
+   * sokol/sokol_gfx.h
+   * sokol/sokol_imgui.h
+   * sokol/sokol_time.h
+     updated sokol to 1776998de341bc68b2e25aae6374f5fa3648f4ec
+     '2022 as some incremental update step
+     sokol_imgui.h is from ae1c4b50545bee6efc44415502db8429ca66d883
+     next step will be to update both to the newest, or possibly
+     we may step up to Dear ImGui 1.87 first, which has new
+     keycode handlings - if it ever needs some debugging by 
+     bisecting.
+
+   * ChangeLog.txt
+     * fix indent
+
 2025-01-21 15:16 UTC+0100 Aleksander Czajczynski (hb fki.pl)
    * sokol/hbsokol.c
      + pass sapp_dpi_scale() to ImGui frame init, HiDPI displays
@@ -12,16 +31,16 @@
        possible diagnostics
 
 2025-01-21 12:56 UTC+0100 Aleksander Czajczynski (hb fki.pl)
-   * examples/runner.prg
-     + added -hidpi mode
+  * examples/runner.prg
+    + added -hidpi mode
 
-   * sokol/hbsokol.c
-     * exposed clipboard access and high DPI mode in the default/demo
-       app starting routine
+  * sokol/hbsokol.c
+    * exposed clipboard access and high DPI mode in the default/demo
+      app starting routine
 
-       Updated parameters specification are:
-       sapp_default_run( <cWindowCaption>, [ <nWidth> ], [ <nHeight> ],
-                     [ <lClipboardAccess> := .T. ], [ <lHiDPI> := .F. ] )
+      Updated parameters specification are:
+      sapp_default_run( <cWindowCaption>, [ <nWidth> ], [ <nHeight> ],
+                      [ <lClipboardAccess> := .T. ], [ <lHiDPI> := .F. ] )
 
 2025-01-15 13:47 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui-docking/cimgui.hbp

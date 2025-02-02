@@ -3,6 +3,12 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-02-02 23:10 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+   + examples/emcc_uncool.ch
+   * examples/runner.prg
+     * extended emscripten linking hack to make sure all Harbour core
+       functions are going in
+
 2025-01-21 16:19 UTC+0100 Aleksander Czajczynski (hb fki.pl)
    * demo.c
    * hbdemo.prg

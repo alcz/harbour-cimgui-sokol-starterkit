@@ -19,10 +19,10 @@
 #define __HBEXTERN__HBCPAGE__REQUEST
 #include "hbcpage.hbx"
 
-#endif
-
 #define __HBEXTERN__HARBOUR__REQUEST
 #include "harbour.hbx"
+
+#endif
 
 REQUEST HB_CODEPAGE_UTF8EX
 
@@ -87,6 +87,8 @@ PROCEDURE Main( cRun, cHiDPI )
 #include "cimgui.hbx"
 #include "hbcpage.hbx"
 #include "hbct.hbx"
+#include "emcc_uncool.ch"
+#include "harbour.hbx"
 #uncommand DYNAMIC <fncs,...> => <fncs>()
    ENDIF
 #endif

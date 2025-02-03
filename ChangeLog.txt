@@ -3,6 +3,26 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-02-03 23:08 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * examples/runner.prg
+  * sokol/hbsokol.c
+    + enabled facilities to handle drag-and-drop events (opening by dragging)
+
+      Default/demo application start routine updated parameters
+      specification are:
+      sapp_default_run( <cWindowCaption>, [ <nWidth> ], [ <nHeight> ],
+                      [ <lClipboardAccess> := .T. ], [ <lHiDPI> := .F. ],
+                      [ <nDropFilesMax> := 0 ], [ <nMaxPathLen> := 2048 ] )
+
+      <nDropFilesMax> == 0 disables drag-and-drop, -1 could enable other
+      drag-drop events, but not files (don't know if it's possible now)
+
+      To handle dropped files, add PROCEDURE ImDrop( aFiles, nMouseX, nMouseY )
+      to your application source. <aFiles> elements should contain full paths to
+      the files.
+
+      TODO: HTML5/emscripten needs additional handling - async recv of files
+
 2025-02-02 23:10 UTC+0100 Aleksander Czajczynski (hb fki.pl)
    + examples/emcc_uncool.ch
    * examples/runner.prg

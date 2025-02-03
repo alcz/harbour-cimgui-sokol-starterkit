@@ -29,14 +29,14 @@ REQUEST HB_CODEPAGE_UTF8EX
 STATIC s_pHRB, s_symImFrame
 
 PROCEDURE Main( cRun, cHiDPI )
-   LOCAL aScriptHost, cBuf, nRead, lLoad := .T.
+   LOCAL aScriptHost, cBuf, nRead, lLoad := .T., lDynAddFiles := .F.
 
    hb_cdpSelect("UTF8EX")
 
    IG_MultiWin_Init()
 
    IF Empty( cRun )
-      __ErrorWindow_Create( "no arguments specified", "usage: runner <file.hrb> or - (stdin) <-hidpi>" )
+      __ErrorWindow_Create( "no arguments specified", "usage: runner <file.hrb> or - (stdin) or + (GUI open/drop) <-hidpi>" )
       lLoad := .F.
    ELSEIF cRun == "@" .OR. cRun == "-" /* in future @ may force .hrb mode with less header checks */
       cBuf := Space( 4 )
@@ -61,6 +61,8 @@ PROCEDURE Main( cRun, cHiDPI )
             cRun := __unhbz( SubStr( cRun, 2 ) )
          ENDIF
       ENDIF
+   ELSEIF cRun == "+" /* instead enable runtime adding of .hrb files using OS open file dialog and/or drag-and-drop */
+      lDynAddFiles := .T.
    ENDIF
 
    IF lLoad
@@ -78,7 +80,9 @@ PROCEDURE Main( cRun, cHiDPI )
 
    sapp_run_default( "Dear ImGui HRB runner", 800, 600, ;
                      .T. /* clipboard access */, ;
-                     HB_IsString( cHiDPI ) .AND. Lower( cHiDPI ) == "-hidpi"  )
+                     HB_IsString( cHiDPI ) .AND. Lower( cHiDPI ) == "-hidpi", ;
+                     IIF( lDynAddFiles, 16, 0 ) /* opt. enable drag-and-drop of up to 16 files at once */, ;
+                     8192 /* maximum length of filesystem path supported */ )
 
 #ifdef __PLATFORM__WASM
    IF ImFrame() # NIL /* dummy calls for emscripten, to be removed when those functions are properly requested from .c code */

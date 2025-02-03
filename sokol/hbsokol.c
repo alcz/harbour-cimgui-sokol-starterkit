@@ -15,7 +15,10 @@
 #include "cimgui.h"
 #include "sokol_imgui.h"
 #include "hbapi.h"
+#include "hbapiitm.h"
 #include "hbvm.h"
+#include "hbstack.h"
+#include "hbgtcore.h"
 
 static HB_BOOL s_bNoDefaultFont = HB_FALSE;
 
@@ -84,7 +87,42 @@ static void cleanup(void) {
 }
 
 static void event(const sapp_event* ev) {
-    if( ev->type == SAPP_EVENTTYPE_QUIT_REQUESTED )
+    if( ev->type == SAPP_EVENTTYPE_FILES_DROPPED )
+    {
+       const int num_dropped_files = sapp_get_num_dropped_files();
+       PHB_ITEM pArray = hb_itemNew( NULL );
+       PHB_DYNS pDynSym = NULL;
+       HB_SIZE i;
+
+       hb_arrayNew( pArray, ( HB_SIZE ) num_dropped_files );
+
+       for( i = 0; i < ( HB_SIZE ) num_dropped_files; i++ )
+          hb_arraySetC( pArray, i + 1, sapp_get_dropped_file_path( i ) );
+
+       if( ( pDynSym = hb_dynsymFindName( "IMDROP" ) ) )
+       {
+          hb_vmPushDynSym( pDynSym );
+          hb_vmPushNil();
+          hb_vmPush( pArray );
+          hb_vmPushDouble( ( double ) ev->mouse_x, 2 );
+          hb_vmPushDouble( ( double ) ev->mouse_y, 2 );
+          hb_vmProc( 3 );
+       }
+       else if( ( pDynSym = hb_dynsymFindName( "HB_VALTOEXP" ) ) )
+       {
+          hb_arraySize( pArray, hb_arrayLen( pArray ) + 1 );
+          hb_arraySetC( pArray, hb_arrayLen( pArray ), "ERROR: files received on drag-and-drop event, but ImDrop handler function not found" );
+          hb_vmPushDynSym( pDynSym );
+          hb_vmPushNil();
+          hb_vmPush( pArray );
+          hb_vmProc( 1 );
+          /* let's emit some sort of warning if app has not defined ImDrop function */
+          hb_gtAlert( hb_stackReturnItem(), NULL, 0, 0, 0 );
+       }
+
+       hb_itemRelease( pArray );
+    }
+    else if( ev->type == SAPP_EVENTTYPE_QUIT_REQUESTED )
     {
        PHB_DYNS pDynSym = NULL;
        if( ( pDynSym = hb_dynsymFindName( "IMQUIT" ) ) )
@@ -97,17 +135,30 @@ static void event(const sapp_event* ev) {
     simgui_handle_event(ev);
 }
 
-static sapp_desc hb_sokol_main( const char * pszCaption, int width, int height, HB_BOOL bClipboard, HB_BOOL bHiDPI ) {
+static sapp_desc hb_sokol_main( const char * pszCaption, int width, int height, HB_BOOL bClipboard,
+                                HB_BOOL bHiDPI, int iDropAcceptCount, int iMaxPathLen ) {
+    HB_BOOL bDD = HB_FALSE;
+    /* when <iDropAcceptCount> is > 0, it means application can receive drag and drop events
+       (max number of files dragged at once) */
+    if( iDropAcceptCount )
+    {
+      bDD = true;
+      if( iMaxPathLen && iMaxPathLen < 256 )
+         iMaxPathLen = 256; /* sokol default is 2048, we can passthru 0, but another low value seems not sensible here */
+    }
     return (sapp_desc){
-        .init_cb = init,
-        .frame_cb = frame,
-        .cleanup_cb = cleanup,
-        .event_cb = event,
-        .window_title = pszCaption,
-        .width = width,
-        .height = height,
-        .high_dpi = bHiDPI,
-        .enable_clipboard = bClipboard
+        .init_cb           = init,
+        .frame_cb          = frame,
+        .cleanup_cb        = cleanup,
+        .event_cb          = event,
+        .window_title      = pszCaption,
+        .width             = width,
+        .height            = height,
+        .high_dpi          = bHiDPI,
+        .enable_clipboard  = bClipboard,
+        .enable_dragndrop  = bDD,
+        .max_dropped_files = iDropAcceptCount,
+        .max_dropped_file_path_length = iMaxPathLen
     };
 }
 
@@ -146,6 +197,8 @@ HB_FUNC( SAPP_DPI_SCALE )
 
 HB_FUNC( SAPP_RUN_DEFAULT )
 { 
-   sapp_desc s = hb_sokol_main( hb_parcx( 1 ), hb_parnidef( 2, 800 ), hb_parnidef( 3, 600 ), hb_parldef( 4, HB_TRUE ), hb_parldef( 5, HB_FALSE ) );
+   sapp_desc s = hb_sokol_main( hb_parcx( 1 ), hb_parnidef( 2, 800 ), hb_parnidef( 3, 600 ),
+                                hb_parldef( 4, HB_TRUE ), hb_parldef( 5, HB_FALSE ),
+                                hb_parnidef( 6, 0 ), hb_parnidef( 7, 0 ) );
    sapp_run( &s );
 }

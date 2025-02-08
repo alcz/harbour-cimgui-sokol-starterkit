@@ -3,6 +3,16 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-02-08 23:42 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-docking/hbimgui.cpp
+  * cimgui-docking/hbimstru.ch
+    + generation of ImGuiViewport struct, available in 1.85+,
+      example:
+      ImGuiViewPort( igGetMainViewport() ):Size -> { x, y }
+
+  + examples/UbuntuMono.ttf
+    + added the file used in the samples
+
 2025-02-03 23:08 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * examples/runner.prg
   * sokol/hbsokol.c

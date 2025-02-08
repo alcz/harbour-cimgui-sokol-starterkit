@@ -8841,3 +8841,121 @@ HB_FUNC( IMGUISTYLE_SET )
    hb_itemCopy( hb_stackReturnItem(), hb_paramError( 3 ) );
 }
 
+static void s_ImGuiViewport_getID( ImGuiViewport * p )
+{
+   ImGuiID ret = p->ID;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiViewport_getFlags( ImGuiViewport * p )
+{
+   ImGuiViewportFlags ret = p->Flags;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiViewport_getPos( ImGuiViewport * p )
+{
+   ImVec2 ret = p->Pos;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiViewport_getSize( ImGuiViewport * p )
+{
+   ImVec2 ret = p->Size;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiViewport_getWorkPos( ImGuiViewport * p )
+{
+   ImVec2 ret = p->WorkPos;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiViewport_getWorkSize( ImGuiViewport * p )
+{
+   ImVec2 ret = p->WorkSize;
+   PHB_ITEM pret = hb_stackReturnItem();
+   hb_arrayNew( pret, 2 );
+   hb_arraySetND( pret, 1, ( double ) ret.x );
+   hb_arraySetND( pret, 2, ( double ) ret.y );
+}
+
+static void s_ImGuiViewport_getDpiScale( ImGuiViewport * p )
+{
+   float ret = p->DpiScale;
+   hb_retnd( ( double ) ret );
+}
+
+static void s_ImGuiViewport_getParentViewportId( ImGuiViewport * p )
+{
+   ImGuiID ret = p->ParentViewportId;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiViewport_getDrawData( ImGuiViewport * p )
+{
+   ImDrawData* ret = p->DrawData;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiViewport_getRendererUserData( ImGuiViewport * p )
+{
+   void* ret = p->RendererUserData;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiViewport_getPlatformUserData( ImGuiViewport * p )
+{
+   void* ret = p->PlatformUserData;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiViewport_getPlatformHandle( ImGuiViewport * p )
+{
+   void* ret = p->PlatformHandle;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiViewport_getPlatformHandleRaw( ImGuiViewport * p )
+{
+   void* ret = p->PlatformHandleRaw;
+   hb_retptr( ( void * ) ret );
+}
+
+static void s_ImGuiViewport_getPlatformRequestMove( ImGuiViewport * p )
+{
+   bool ret = p->PlatformRequestMove;
+   hb_retl( ret );
+}
+
+static void s_ImGuiViewport_getPlatformRequestResize( ImGuiViewport * p )
+{
+   bool ret = p->PlatformRequestResize;
+   hb_retl( ret );
+}
+
+static void s_ImGuiViewport_getPlatformRequestClose( ImGuiViewport * p )
+{
+   bool ret = p->PlatformRequestClose;
+   hb_retl( ret );
+}
+
+static void(*s_ImGuiViewport_fields[])( ImGuiViewport * ) = { s_ImGuiViewport_getID, s_ImGuiViewport_getFlags, s_ImGuiViewport_getPos, s_ImGuiViewport_getSize, s_ImGuiViewport_getWorkPos, s_ImGuiViewport_getWorkSize, s_ImGuiViewport_getDpiScale, s_ImGuiViewport_getParentViewportId, s_ImGuiViewport_getDrawData, s_ImGuiViewport_getRendererUserData, s_ImGuiViewport_getPlatformUserData, s_ImGuiViewport_getPlatformHandle, s_ImGuiViewport_getPlatformHandleRaw, s_ImGuiViewport_getPlatformRequestMove, s_ImGuiViewport_getPlatformRequestResize, s_ImGuiViewport_getPlatformRequestClose };
+
+HB_FUNC( IMGUIVIEWPORT_GET )
+{
+   ImGuiViewport * p = ( ImGuiViewport * ) hb_parptr( 1 );
+   int n = hb_parni( 2 ) - 1;
+   if( p && n >= 0 && n < 16 )
+      s_ImGuiViewport_fields[ n ]( p );
+}
+

@@ -320,6 +320,38 @@
 #xtranslate ImGuiStyle( <p> ):CurveTessellationTol := <v> => ImGuiStyle_Set( <p>, 39, <v> )
 #xtranslate ImGuiStyle( <p> ):CircleTessellationMaxError := <v> => ImGuiStyle_Set( <p>, 40, <v> )
 #xtranslate ImGuiStyle( <p> ):Colors\[ <n> \] := <v> => ImGuiStyle_Set( <p>, 41, <v>, <n> )
+#define ImGuiViewport_ID                                1
+#define ImGuiViewport_Flags                             2
+#define ImGuiViewport_Pos                               3
+#define ImGuiViewport_Size                              4
+#define ImGuiViewport_WorkPos                           5
+#define ImGuiViewport_WorkSize                          6
+#define ImGuiViewport_DpiScale                          7
+#define ImGuiViewport_ParentViewportId                  8
+#define ImGuiViewport_DrawData                          9
+#define ImGuiViewport_RendererUserData                 10
+#define ImGuiViewport_PlatformUserData                 11
+#define ImGuiViewport_PlatformHandle                   12
+#define ImGuiViewport_PlatformHandleRaw                13
+#define ImGuiViewport_PlatformRequestMove              14
+#define ImGuiViewport_PlatformRequestResize            15
+#define ImGuiViewport_PlatformRequestClose             16
+#xtranslate ImGuiViewport( <p> ):ID => ImGuiViewport_Get( <p>, 1 )
+#xtranslate ImGuiViewport( <p> ):Flags => ImGuiViewport_Get( <p>, 2 )
+#xtranslate ImGuiViewport( <p> ):Pos => ImGuiViewport_Get( <p>, 3 )
+#xtranslate ImGuiViewport( <p> ):Size => ImGuiViewport_Get( <p>, 4 )
+#xtranslate ImGuiViewport( <p> ):WorkPos => ImGuiViewport_Get( <p>, 5 )
+#xtranslate ImGuiViewport( <p> ):WorkSize => ImGuiViewport_Get( <p>, 6 )
+#xtranslate ImGuiViewport( <p> ):DpiScale => ImGuiViewport_Get( <p>, 7 )
+#xtranslate ImGuiViewport( <p> ):ParentViewportId => ImGuiViewport_Get( <p>, 8 )
+#xtranslate ImGuiViewport( <p> ):DrawData => ImGuiViewport_Get( <p>, 9 )
+#xtranslate ImGuiViewport( <p> ):RendererUserData => ImGuiViewport_Get( <p>, 10 )
+#xtranslate ImGuiViewport( <p> ):PlatformUserData => ImGuiViewport_Get( <p>, 11 )
+#xtranslate ImGuiViewport( <p> ):PlatformHandle => ImGuiViewport_Get( <p>, 12 )
+#xtranslate ImGuiViewport( <p> ):PlatformHandleRaw => ImGuiViewport_Get( <p>, 13 )
+#xtranslate ImGuiViewport( <p> ):PlatformRequestMove => ImGuiViewport_Get( <p>, 14 )
+#xtranslate ImGuiViewport( <p> ):PlatformRequestResize => ImGuiViewport_Get( <p>, 15 )
+#xtranslate ImGuiViewport( <p> ):PlatformRequestClose => ImGuiViewport_Get( <p>, 16 )
 #xtranslate ImGuiIO( <p> ):AddFocusEvent( [ <args,...> ] ) => ImGuiIO_AddFocusEvent( <p>[, <args> ] )
 #xtranslate ImGuiIO( <p> ):AddInputCharacter( [ <args,...> ] ) => ImGuiIO_AddInputCharacter( <p>[, <args> ] )
 #xtranslate ImGuiIO( <p> ):AddInputCharacterUTF16( [ <args,...> ] ) => ImGuiIO_AddInputCharacterUTF16( <p>[, <args> ] )
@@ -333,3 +365,4 @@
 #xtranslate ImGuiListClipper( <p> ):destroy( [ <args,...> ] ) => ImGuiListClipper_destroy( <p>[, <args> ] )
 #xtranslate ImGuiStyle( <p> ):ScaleAllSizes( [ <args,...> ] ) => ImGuiStyle_ScaleAllSizes( <p>[, <args> ] )
 #xtranslate ImGuiStyle( <p> ):destroy( [ <args,...> ] ) => ImGuiStyle_destroy( <p>[, <args> ] )
+#xtranslate ImGuiViewport( <p> ):destroy( [ <args,...> ] ) => ImGuiViewport_destroy( <p>[, <args> ] )

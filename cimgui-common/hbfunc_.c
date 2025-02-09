@@ -17,10 +17,11 @@
 #include "hbvm.h"
 #include "exstyles.h"
 
+static ImFontConfig * s_pCfg = NULL;
+
 ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx, PHB_ITEM pChars, HB_BOOL bDefRange, HB_BOOL bMergeMode, ImFontConfig * pCfg )
 {
    ImGuiIO * io = igGetIO();
-
    ImFontGlyphRangesBuilder * builder = ImFontGlyphRangesBuilder_ImFontGlyphRangesBuilder();
    ImVector_ImWchar * ranges = ImVector_ImWchar_create();
 
@@ -34,16 +35,37 @@ ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx, PHB_ITE
       HB_SIZE i;
       HB_SIZE nChars = hb_arrayLen( pChars );
 
-      for( i = 1; i <= ( HB_SIZE ) nChars; i++ )
-         ImFontGlyphRangesBuilder_AddChar( builder, hb_arrayGetNI( pChars, i ) );
+      if( hb_arrayGetNI( pChars, hb_arrayLen( pChars ) ) == 0 )
+      {
+         ImWchar ranges_a[] = { 0, 0, 0 };
+         ImWchar * ranges_p = ( ImWchar * ) &ranges_a;
+         for( i = 1; i <= ( HB_SIZE ) nChars; i += 2 )
+         {
+            if( hb_arrayGetNI( pChars, i ) == 0 )
+               break;
+            ranges_a[ 0 ] = hb_arrayGetNI( pChars, i );
+            ranges_a[ 1 ] = hb_arrayGetNI( pChars, i + 1 );
+            ImFontGlyphRangesBuilder_AddRanges( builder, ranges_p );
+         }
+      }
+      else
+      {
+         for( i = 1; i <= ( HB_SIZE ) nChars; i++ )
+            ImFontGlyphRangesBuilder_AddChar( builder, hb_arrayGetNI( pChars, i ) );
+      }
    }
 
    ImFontGlyphRangesBuilder_BuildRanges( builder, ranges );
 
    if( ! pCfg )
    {
-      pCfg = ImFontConfig_ImFontConfig();
+      if( ! s_pCfg )
+         s_pCfg = pCfg = ImFontConfig_ImFontConfig();
+      else
+         pCfg = s_pCfg;
+
       pCfg->SizePixels = fSizePx; /* ( for HiDPI x-multiply ?) * SCALE; */
+      pCfg->MergeMode  = bMergeMode;
    }
 
    if( bMem )
@@ -75,6 +97,7 @@ HB_FUNC( __IGADDFONT )
 
    pRet = hb_igFontAdd( bMem, szFont, fSizePx, pChars, bDefRange, bMergeMode, NULL );
 
+   /* NOTE: doesn't seem to be required in current ImGui */
    ImFontAtlas_Build( io->Fonts );
 
    hb_retptr( ( void * ) pRet );

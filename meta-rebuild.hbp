@@ -3,3 +3,4 @@ sokol/sokol.hbp
 sokol/sokolimg.hbp
 hexeterminal/hexeterminal.hbp
 cimplot/cimplot.hbp
+-hbcontainer

@@ -5,6 +5,7 @@
 */
 
 #include "hbimenum.ch"
+#include "fonts/IconsFontAwesome6.ch"
 
 REQUEST HB_CODEPAGE_PL852
 REQUEST HB_CODEPAGE_EL737
@@ -31,11 +32,17 @@ PROCEDURE MAIN
 
 PROCEDURE ImInit
 #ifdef __PLATFORM__WASM
-   LOCAL cFontBuf
+   LOCAL cFontBuf, cFontABuf
 #pragma __binarystreaminclude "OpenSans-Regular.ttf"|cFontBuf := %s
    hb_igAddFontFromMemoryTTF( cFontBuf, 18.0, , { "EL737", "PL852" }, .T., .F. )
+#pragma __binarystreaminclude "fonts/fa-solid-900.ttf"|cFontABuf := %s
+   hb_igAddFontFromMemoryTTF( cFontABuf, 18.0 * ( 3 / 4 ), , { 0xf4e3, 0xf72f }, .F., .T. )
 #else
    hb_igAddFontFromFileTTF( "OpenSans-Regular.ttf", 18.0, , { "EL737", "PL852" }, .T., .F. )
+   hb_igAddFontFromFileTTF( "fonts/fa-solid-900.ttf", 18.0 * ( 3 / 4 ), , { 0xf4e3, 0xf72f }, .F., .T. )
+   // if you want to make all icons available try following... note that the range pairs
+   // keep 0 as the last element to distinct from character list
+   // hb_igAddFontFromFileTTF( "fonts/fa-solid-900.ttf", 18.0 * ( 3 / 4 ), , { ICON_MIN_FA, ICON_MAX_FA, 0 }, .F., .T. )
 #endif
 
    hb_sokol_imguiFont2Texture()
@@ -57,7 +64,7 @@ PROCEDURE ImFrame
    igSetNextWindowSize( {650, 350}, ImGuiCond_Once )
    igBegin( "Hello Dear ImGui!", 0, ImGuiWindowFlags_None )
 
-   igText("Viel Glück! α Ω")
+   igText("Viel Glück! α Ω " + ICON_FA_WINE_BOTTLE + " " + ICON_FA_WINE_GLASS )
 
    IF IgButton( "dupa.8 dópą.8" )
       counter++

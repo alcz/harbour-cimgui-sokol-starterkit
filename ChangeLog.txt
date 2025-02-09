@@ -3,6 +3,43 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-02-09 03:07 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui/hbfunc.prg
+    * hb_igAddFontFromFileTTF( <cFile>, <nSizePx>, <xConfig>,
+                               <xCdpList>, <lDefaultRange>, <lMerge> )
+                              -> <pFont>
+      hb_igAddFontFromMemoryTTF( <cBuffer>, <nSizePx>, <xConfig>,
+                                <xCdpList>, <lDefaultRange>, <lMerge> )
+                              -> <pFont>
+      <lMerge>   - this parameter now works, if you want to supplement
+                   additional icons/glyphs to your main font
+      <xCdpList> - apart from Harbour CDP names like "PL852", this parameter
+                   can now receive custom a list or range of additional UNICODE
+                   characters:
+                   { 0xaabb =>, 0xbbcc => } - individual characters as hash
+                   { 0xaabb, 0xbbcc }       - individual characters as array
+                   { 0xaa00, 0xaaff, 0 }    - range of characters as array
+                                              (needs trailing 0)
+                   { 0xaa00, 0xaaff, 0xbb00, 0xbbff, 0 } - more ranges too
+
+  * examples/loadfont.prg
+    * updated to load and show awesome icons font
+
+  * meta-rebuild.hbp
+  * meta-rebuild-docking.hbp
+    * specify -hbcontainer as the project only list subprojects
+
+  + examples/fonts/IconsFontAwesome6.ch
+  + examples/fonts/IconsFontAwesome6.h
+  + examples/fonts/IconsMaterialDesign.ch
+  + examples/fonts/IconsMaterialDesign.h
+  + examples/fonts/MaterialIcons-Regular.ttf
+  + examples/fonts/fa-regular-400.ttf
+  + examples/fonts/fa-solid-900.ttf
+    + glyph fonts borrowed from ImRAD project
+      (https://github.com/tpecholt/imrad)
+      supplemented by me with .ch files based on .h
+
 2025-02-08 23:42 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui-docking/hbimgui.cpp
   * cimgui-docking/hbimstru.ch

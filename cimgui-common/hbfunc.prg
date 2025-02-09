@@ -45,6 +45,12 @@ FUNCTION hb_igAddFontFromMemoryTTF( cBuffer, nSizePx, xConfig, xCdpList, lDefaul
 FUNCTION hb_igCdpRange( xCdpList )
    LOCAL cCdp, cCdpVM, hRet := { => }, i
 
+   IF hb_isHash( xCdpList )
+      RETURN hb_HKeys( xCdpList )
+   ELSEIF hb_isArray( xCdpList ) .AND. Len( xCdpList ) > 0 .AND. HB_IsNumeric( xCdpList[ 1 ] )
+      RETURN xCdpList
+   ENDIF
+
    cCdpVM := hb_cdpSelect()
 
    IF HB_IsString( xCdpList )

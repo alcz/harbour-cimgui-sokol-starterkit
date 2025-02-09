@@ -3,6 +3,34 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-02-09 14:55 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-common/hbfunc.prg
+    + now also can use hash to specify unicode ranges and
+      specific characters together, description updated in
+      previous commit message
+
+  * cimgui-common/hbfunc_.c
+    + added entrypoint for setting font oversampling to use
+      by HiDPI renderers (currently used by sokol):
+      __IMFONTHIDPI()
+      __IMFONTHIDPITEST() is for debugging, to check if
+      renderer has really set something
+
+    ; this was last missing bit for HiDPI being decently
+      handled - detecting a HiDPI screen is another story
+      to do
+
+  * cimgui-docking/hbimgui.cpp
+  * cimgui/hbimgui.cpp
+    * igPopStyleColor( <n> ), igPopStyleVar( <n> )
+      make <n> default to 1, as 0 does not make sense
+
+  * examples/loadfont.prg
+    + added -hidpi parameters for testing the difference
+
+  * sokol/hbsokol.c
+    + call __IMFONTHIDPI()
+
 2025-02-09 03:07 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui/hbfunc.prg
     * hb_igAddFontFromFileTTF( <cFile>, <nSizePx>, <xConfig>,
@@ -17,6 +45,7 @@
                    can now receive custom a list or range of additional UNICODE
                    characters:
                    { 0xaabb =>, 0xbbcc => } - individual characters as hash
+                   { 0xaabb => 0xaff, 0xbbcc => } - both range and i. as hash
                    { 0xaabb, 0xbbcc }       - individual characters as array
                    { 0xaa00, 0xaaff, 0 }    - range of characters as array
                                               (needs trailing 0)

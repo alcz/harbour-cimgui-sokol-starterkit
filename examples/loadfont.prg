@@ -11,7 +11,7 @@ REQUEST HB_CODEPAGE_PL852
 REQUEST HB_CODEPAGE_EL737
 REQUEST HB_CODEPAGE_UTF8EX
 
-PROCEDURE MAIN
+PROCEDURE MAIN( cHiDpi )
 
    hb_cdpSelect("UTF8EX")
 
@@ -21,7 +21,7 @@ PROCEDURE MAIN
    ENDIF
 #endif
    hb_sokol_imguiNoDefaultFont( .T. )
-   sapp_run_default( "Custom Font Example", 800, 600 )
+   sapp_run_default( "Custom Font Example", 800, 600, .T., IIF( cHiDpi == "-hidpi", .T., .F. ) )
 
 #ifdef __PLATFORM__WASM
    IF ImFrame() # NIL /* dummy calls for emscripten, to be removed when those functions are properly requested from .c code */
@@ -113,7 +113,6 @@ PROCEDURE ImFrame
    IF ( a := ImGuiIO( igGetIO() ):MouseClickedPos[ 2 ] ) <> NIL
       igText( "Last right click @ " + hb_valToExp( a ) )
    ENDIF
-
 
    igEnd()
 

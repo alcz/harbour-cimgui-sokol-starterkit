@@ -5145,14 +5145,14 @@ HB_FUNC( IGPOPITEMWIDTH )
 /* void igPopStyleColor(int count) */
 HB_FUNC( IGPOPSTYLECOLOR )
 {
-   int count = hb_parni( 1 );
+   int count = hb_parnidef( 1, 1 );
    igPopStyleColor(count);
 }
 
 /* void igPopStyleVar(int count) */
 HB_FUNC( IGPOPSTYLEVAR )
 {
-   int count = hb_parni( 1 );
+   int count = hb_parnidef( 1, 1 );
    igPopStyleVar(count);
 }
 

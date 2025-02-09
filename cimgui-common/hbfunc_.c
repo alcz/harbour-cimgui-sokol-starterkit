@@ -6,7 +6,7 @@
 
     license is MIT, see ../LICENSE
 
-    Copyright (c) 2021-2022 Aleksander Czajczynski
+    Copyright (c) 2021-2025 Aleksander Czajczynski
 */
 
 
@@ -82,6 +82,22 @@ ImFont * hb_igFontAdd( HB_BOOL bMem, const char * szFont, float fSizePx, PHB_ITE
    /* TODO: return font handle as GC-item, destroy own ImFontConfig, *Builder, they're not on stack */
 
    return pRet;
+}
+
+HB_FUNC( __IGFONTHIDPI )
+{
+   if( ! s_pCfg )
+      s_pCfg = ImFontConfig_ImFontConfig();
+
+   s_pCfg->OversampleH = 2;
+   s_pCfg->OversampleV = 2;
+   s_pCfg->RasterizerMultiply = 1.5;
+}
+
+HB_FUNC( __IGFONTHIDPITEST )
+{
+   if( s_pCfg )
+      hb_retnd( s_pCfg->RasterizerMultiply );
 }
 
 HB_FUNC( __IGADDFONT )

@@ -146,6 +146,16 @@ static sapp_desc hb_sokol_main( const char * pszCaption, int width, int height, 
       if( iMaxPathLen && iMaxPathLen < 256 )
          iMaxPathLen = 256; /* sokol default is 2048, we can passthru 0, but another low value seems not sensible here */
     }
+    if( bHiDPI )
+    {
+       PHB_DYNS pDynSym = NULL; /* another call via HVM, so we don't need extra header from cimgui wrappers (yet!) */
+       if( ( pDynSym = hb_dynsymFindName( "__IGFONTHIDPI" ) ) )
+       {
+          hb_vmPushDynSym( pDynSym );
+          hb_vmPushNil();
+          hb_vmProc( 0 );
+       }
+    }
     return (sapp_desc){
         .init_cb           = init,
         .frame_cb          = frame,

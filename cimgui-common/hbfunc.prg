@@ -7,7 +7,7 @@
 
     license is MIT, see ../LICENSE
 
-    Copyright (c) 2021-2022 Aleksander Czajczynski
+    Copyright (c) 2021-2025 Aleksander Czajczynski
 */
 
 
@@ -43,11 +43,28 @@ FUNCTION hb_igAddFontFromMemoryTTF( cBuffer, nSizePx, xConfig, xCdpList, lDefaul
    RETURN __igAddFont( .T., cBuffer, nSizePx, xConfig, hb_igCdpRange( xCdpList ), lDefaultRange, lMerge )
 
 FUNCTION hb_igCdpRange( xCdpList )
-   LOCAL cCdp, cCdpVM, hRet := { => }, i
+   LOCAL cCdp, cCdpVM, hRet := { => }, aRet, x, i
 
    IF hb_isHash( xCdpList )
+      IF AScan( hb_HValues( xCdpList ), { |x| hb_isNumeric( x ) } ) > 0
+         aRet := Array( Len( xCdpList ) * 2 + 1 )
+         i := 0 /* convert { 0xaaaa => 0xaaff, ... } ranges to { 0xaaaa, 0xaaff, ..., 0 } */
+         FOR EACH x IN xCdpList
+            IF hb_isNumeric( x:__enumKey )
+               IF hb_isNumeric( x )
+                  aRet[ ++i ] := x:__enumKey
+                  aRet[ ++i ] := x
+               ELSE /* 0xaaaa => NIL will go as repeated { 0xaaaa, 0xaaaa, ..., 0 } in range mode */
+                  aRet[ ++i ] := aRet[ ++i ] := x:__enumKey
+               ENDIF
+            ENDIF
+         NEXT
+         ASize( aRet, ++i )
+         aRet[ Len( aRet ) ] := 0
+         RETURN aRet /* TODO: amalgamation passthru if "CP123" => key is found */
+      ENDIF
       RETURN hb_HKeys( xCdpList )
-   ELSEIF hb_isArray( xCdpList ) .AND. Len( xCdpList ) > 0 .AND. HB_IsNumeric( xCdpList[ 1 ] )
+   ELSEIF hb_isArray( xCdpList ) .AND. Len( xCdpList ) > 0 .AND. hb_IsNumeric( xCdpList[ 1 ] )
       RETURN xCdpList
    ENDIF
 
@@ -69,3 +86,5 @@ FUNCTION hb_igCdpRange( xCdpList )
    hb_cdpSelect( cCdpVM )
 
    RETURN hb_HKeys( hRet )
+
+REQUEST __IGFONTHIDPI

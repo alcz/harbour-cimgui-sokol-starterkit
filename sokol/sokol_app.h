@@ -11868,7 +11868,14 @@ SOKOL_API_IMPL uint64_t sapp_frame_count(void) {
 }
 
 SOKOL_API_IMPL double sapp_frame_duration(void) {
+#if defined(_SAPP_EMSCRIPTEN)
+    double d = _sapp_timing_get_avg(&_sapp.timing);
+    if (d<=0.00)
+       d = 0.00001;
+    return d;
+#else
     return _sapp_timing_get_avg(&_sapp.timing);
+#endif
 }
 
 SOKOL_API_IMPL int sapp_width(void) {

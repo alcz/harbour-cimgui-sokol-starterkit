@@ -28,6 +28,10 @@ FUNCTION hb_igAddFontFromFileTTF( cFile, nSizePx, xConfig, xCdpList, lDefaultRan
       nSizePx := 10
    ENDIF
 
+   IF xCdpList == NIL
+      xCdpList := "EN"
+   ENDIF
+
    RETURN __igAddFont( .F., cFile, nSizePx, xConfig, hb_igCdpRange( xCdpList ), lDefaultRange, lMerge )
 
 FUNCTION hb_igAddFontFromMemoryTTF( cBuffer, nSizePx, xConfig, xCdpList, lDefaultRange, lMerge )
@@ -38,6 +42,10 @@ FUNCTION hb_igAddFontFromMemoryTTF( cBuffer, nSizePx, xConfig, xCdpList, lDefaul
 
    IF ! HB_IsNumeric( nSizePx )
       nSizePx := 10
+   ENDIF
+
+   IF xCdpList == NIL
+      xCdpList := "EN"
    ENDIF
 
    RETURN __igAddFont( .T., cBuffer, nSizePx, xConfig, hb_igCdpRange( xCdpList ), lDefaultRange, lMerge )

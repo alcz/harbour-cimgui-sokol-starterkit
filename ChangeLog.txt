@@ -3,6 +3,16 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+
+2025-02-12 15:09 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui/hbimgui.cpp
+  * cimgui-docking/hbimgui.cpp
+    * respect default float parameters for functions (values other than 0)
+
+  * cimgui-common/hbfunc.prg
+    * default to "EN" codepage in font adding routines
+      if no parameter is passed
+
 2025-02-12 14:07 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui/hbimgui.cpp
   * cimgui-docking/hbimgui.cpp

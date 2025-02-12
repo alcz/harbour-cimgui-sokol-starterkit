@@ -17,7 +17,7 @@ HB_FUNC( IMGUILISTCLIPPER_BEGIN )
 {
    ImGuiListClipper* pOut = ( ImGuiListClipper* ) hb_parptr( 1 );
    int items_count = hb_parni( 2 );
-   float items_height = ( float ) hb_parnd( 3 );
+   float items_height = ( float ) ( ! HB_ISNUM( 3 ) ? -1.0 : hb_parnd( 3 ) );
    ImGuiListClipper_Begin(pOut,items_count,items_height);
 }
 
@@ -483,7 +483,7 @@ HB_FUNC( IGCALCTEXTSIZE )
    const char* text = hb_parcx( 2 );
    const char* text_end = NULL;
    bool hide_text_after_double_hash = hb_parldef( 3, 0 );
-   float wrap_width = ( float ) hb_parnd( 4 );
+   float wrap_width = ( float ) ( ! HB_ISNUM( 4 ) ? -1.0 : hb_parnd( 4 ) );
    igCalcTextSize(&pOut,text,text_end,hide_text_after_double_hash,wrap_width);
    _ImVec2toA( &pOut, pOutItem );
 }
@@ -1102,7 +1102,7 @@ HB_FUNC( IGDRAGFLOAT )
    const char* label = hb_parcx( 1 );
    float /* @ */ _v = ( float ) hb_parnd( 2 );
    float * v = &_v;
-   float v_speed = ( float ) hb_parnd( 3 );
+   float v_speed = ( float ) ( ! HB_ISNUM( 3 ) ? 1.0 : hb_parnd( 3 ) );
    float v_min = ( float ) hb_parnd( 4 );
    float v_max = ( float ) hb_parnd( 5 );
    const char* format = hb_parcx( 6 );
@@ -1118,7 +1118,7 @@ HB_FUNC( IGDRAGFLOAT2 )
    const char* label = hb_parcx( 1 );
    float * v;
    PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
-   float v_speed = ( float ) hb_parnd( 3 );
+   float v_speed = ( float ) ( ! HB_ISNUM( 3 ) ? 1.0 : hb_parnd( 3 ) );
    float v_min = ( float ) hb_parnd( 4 );
    float v_max = ( float ) hb_parnd( 5 );
    const char* format = hb_parcx( 6 );
@@ -1138,7 +1138,7 @@ HB_FUNC( IGDRAGFLOAT3 )
    const char* label = hb_parcx( 1 );
    float * v;
    PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
-   float v_speed = ( float ) hb_parnd( 3 );
+   float v_speed = ( float ) ( ! HB_ISNUM( 3 ) ? 1.0 : hb_parnd( 3 ) );
    float v_min = ( float ) hb_parnd( 4 );
    float v_max = ( float ) hb_parnd( 5 );
    const char* format = hb_parcx( 6 );
@@ -1158,7 +1158,7 @@ HB_FUNC( IGDRAGFLOAT4 )
    const char* label = hb_parcx( 1 );
    float * v;
    PHB_IG_FLOATS _v = hb_ig_floats_par( 2 );
-   float v_speed = ( float ) hb_parnd( 3 );
+   float v_speed = ( float ) ( ! HB_ISNUM( 3 ) ? 1.0 : hb_parnd( 3 ) );
    float v_min = ( float ) hb_parnd( 4 );
    float v_max = ( float ) hb_parnd( 5 );
    const char* format = hb_parcx( 6 );
@@ -1180,7 +1180,7 @@ HB_FUNC( IGDRAGFLOATRANGE2 )
    float * v_current_min = &_v_current_min;
    float /* @ */ _v_current_max = ( float ) hb_parnd( 3 );
    float * v_current_max = &_v_current_max;
-   float v_speed = ( float ) hb_parnd( 4 );
+   float v_speed = ( float ) ( ! HB_ISNUM( 4 ) ? 1.0 : hb_parnd( 4 ) );
    float v_min = ( float ) hb_parnd( 5 );
    float v_max = ( float ) hb_parnd( 6 );
    const char* format = hb_parcx( 7 );
@@ -1198,7 +1198,7 @@ HB_FUNC( IGDRAGINT )
    const char* label = hb_parcx( 1 );
    int /* @ */ _v = hb_parni( 2 );
    int * v = &_v;
-   float v_speed = ( float ) hb_parnd( 3 );
+   float v_speed = ( float ) ( ! HB_ISNUM( 3 ) ? 1.0 : hb_parnd( 3 ) );
    int v_min = hb_parni( 4 );
    int v_max = hb_parni( 5 );
    const char* format = hb_parcx( 6 );
@@ -1214,7 +1214,7 @@ HB_FUNC( IGDRAGINT2 )
    const char* label = hb_parcx( 1 );
    int * v;
    PHB_IG_INTS _v = hb_ig_ints_par( 2 );
-   float v_speed = ( float ) hb_parnd( 3 );
+   float v_speed = ( float ) ( ! HB_ISNUM( 3 ) ? 1.0 : hb_parnd( 3 ) );
    int v_min = hb_parni( 4 );
    int v_max = hb_parni( 5 );
    const char* format = hb_parcx( 6 );
@@ -1234,7 +1234,7 @@ HB_FUNC( IGDRAGINT3 )
    const char* label = hb_parcx( 1 );
    int * v;
    PHB_IG_INTS _v = hb_ig_ints_par( 2 );
-   float v_speed = ( float ) hb_parnd( 3 );
+   float v_speed = ( float ) ( ! HB_ISNUM( 3 ) ? 1.0 : hb_parnd( 3 ) );
    int v_min = hb_parni( 4 );
    int v_max = hb_parni( 5 );
    const char* format = hb_parcx( 6 );
@@ -1254,7 +1254,7 @@ HB_FUNC( IGDRAGINT4 )
    const char* label = hb_parcx( 1 );
    int * v;
    PHB_IG_INTS _v = hb_ig_ints_par( 2 );
-   float v_speed = ( float ) hb_parnd( 3 );
+   float v_speed = ( float ) ( ! HB_ISNUM( 3 ) ? 1.0 : hb_parnd( 3 ) );
    int v_min = hb_parni( 4 );
    int v_max = hb_parni( 5 );
    const char* format = hb_parcx( 6 );
@@ -1276,7 +1276,7 @@ HB_FUNC( IGDRAGINTRANGE2 )
    int * v_current_min = &_v_current_min;
    int /* @ */ _v_current_max = hb_parni( 3 );
    int * v_current_max = &_v_current_max;
-   float v_speed = ( float ) hb_parnd( 4 );
+   float v_speed = ( float ) ( ! HB_ISNUM( 4 ) ? 1.0 : hb_parnd( 4 ) );
    int v_min = hb_parni( 5 );
    int v_max = hb_parni( 6 );
    const char* format = hb_parcx( 7 );
@@ -1600,7 +1600,7 @@ HB_FUNC( IGGETCLIPBOARDTEXT )
 HB_FUNC( IGGETCOLORU32COL )
 {
    ImGuiCol idx = ( ImGuiCol ) hb_parni( 1 );
-   float alpha_mul = ( float ) hb_parnd( 2 );
+   float alpha_mul = ( float ) ( ! HB_ISNUM( 2 ) ? 1.0 : hb_parnd( 2 ) );
    ImU32 ret = igGetColorU32Col(idx,alpha_mul);
    hb_retnl( ( HB_LONG ) ret );
 }
@@ -2019,7 +2019,7 @@ HB_FUNC( IGGETMOUSEDRAGDELTA )
    PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
    ImVec2 pOut;
    ImGuiMouseButton button = ( ImGuiMouseButton ) hb_parni( 2 );
-   float lock_threshold = ( float ) hb_parnd( 3 );
+   float lock_threshold = ( float ) ( ! HB_ISNUM( 3 ) ? -1.0 : hb_parnd( 3 ) );
    igGetMouseDragDelta(&pOut,button,lock_threshold);
    _ImVec2toA( &pOut, pOutItem );
 }
@@ -3869,7 +3869,7 @@ HB_FUNC( IGISMOUSEDOWN )
 HB_FUNC( IGISMOUSEDRAGPASTTHRESHOLD )
 {
    ImGuiMouseButton button = ( ImGuiMouseButton ) hb_parni( 1 );
-   float lock_threshold = ( float ) hb_parnd( 2 );
+   float lock_threshold = ( float ) ( ! HB_ISNUM( 2 ) ? -1.0 : hb_parnd( 2 ) );
    bool ret = igIsMouseDragPastThreshold(button,lock_threshold);
    hb_retl( ret );
 }
@@ -3878,7 +3878,7 @@ HB_FUNC( IGISMOUSEDRAGPASTTHRESHOLD )
 HB_FUNC( IGISMOUSEDRAGGING )
 {
    ImGuiMouseButton button = ( ImGuiMouseButton ) hb_parni( 1 );
-   float lock_threshold = ( float ) hb_parnd( 2 );
+   float lock_threshold = ( float ) ( ! HB_ISNUM( 2 ) ? -1.0 : hb_parnd( 2 ) );
    bool ret = igIsMouseDragging(button,lock_threshold);
    hb_retl( ret );
 }
@@ -4048,7 +4048,7 @@ HB_FUNC( IGITEMSIZEVEC2 )
 {
    PHB_ITEM psize = hb_param( 1, HB_IT_ARRAY );
    const ImVec2 size = ImVec2{ _paf( psize, 1 ), _paf( psize, 2 ) };
-   float text_baseline_y = ( float ) hb_parnd( 2 );
+   float text_baseline_y = ( float ) ( ! HB_ISNUM( 2 ) ? -1.0 : hb_parnd( 2 ) );
    igItemSizeVec2(size,text_baseline_y);
 }
 
@@ -4057,7 +4057,7 @@ HB_FUNC( IGITEMSIZERECT )
 {
    PHB_ITEM pbb = hb_param( 1, HB_IT_ARRAY );
    const ImRect bb = ImRect{ ImVec2{ _paf( pbb, 1 ), _paf( pbb, 2 ) }, ImVec2{ _paf( pbb, 3 ), _paf( pbb, 4 ) } };
-   float text_baseline_y = ( float ) hb_parnd( 2 );
+   float text_baseline_y = ( float ) ( ! HB_ISNUM( 2 ) ? -1.0 : hb_parnd( 2 ) );
    igItemSizeRect(bb,text_baseline_y);
 }
 
@@ -4384,8 +4384,8 @@ HB_FUNC( IGPLOTHISTOGRAMFLOATPTR )
    int values_count = hb_parni( 3 );
    int values_offset = hb_parni( 4 );
    const char* overlay_text = hb_parcx( 5 );
-   float scale_min = ( float ) hb_parnd( 6 );
-   float scale_max = ( float ) hb_parnd( 7 );
+   float scale_min = ( float ) ( ! HB_ISNUM( 6 ) ? FLT_MAX : hb_parnd( 6 ) );
+   float scale_max = ( float ) ( ! HB_ISNUM( 7 ) ? FLT_MAX : hb_parnd( 7 ) );
    PHB_ITEM pgraph_size = hb_param( 8, HB_IT_ARRAY );
    ImVec2 graph_size = ImVec2{ _paf( pgraph_size, 1 ), _paf( pgraph_size, 2 ) };
    int stride = hb_parnidef( 9, sizeof(float) );
@@ -4400,8 +4400,8 @@ HB_FUNC( IGPLOTHISTOGRAMFNFLOATPTR )
    int values_count = hb_parni( 4 );
    int values_offset = hb_parni( 5 );
    const char* overlay_text = hb_parcx( 6 );
-   float scale_min = ( float ) hb_parnd( 7 );
-   float scale_max = ( float ) hb_parnd( 8 );
+   float scale_min = ( float ) ( ! HB_ISNUM( 7 ) ? FLT_MAX : hb_parnd( 7 ) );
+   float scale_max = ( float ) ( ! HB_ISNUM( 8 ) ? FLT_MAX : hb_parnd( 8 ) );
    PHB_ITEM pgraph_size = hb_param( 9, HB_IT_ARRAY );
    ImVec2 graph_size = ImVec2{ _paf( pgraph_size, 1 ), _paf( pgraph_size, 2 ) };
    igPlotHistogramFnFloatPtr(label,&hb_ig_values_getter,data,values_count,values_offset,overlay_text,scale_min,scale_max,graph_size);
@@ -4415,8 +4415,8 @@ HB_FUNC( IGPLOTLINESFLOATPTR )
    int values_count = hb_parni( 3 );
    int values_offset = hb_parni( 4 );
    const char* overlay_text = hb_parcx( 5 );
-   float scale_min = ( float ) hb_parnd( 6 );
-   float scale_max = ( float ) hb_parnd( 7 );
+   float scale_min = ( float ) ( ! HB_ISNUM( 6 ) ? FLT_MAX : hb_parnd( 6 ) );
+   float scale_max = ( float ) ( ! HB_ISNUM( 7 ) ? FLT_MAX : hb_parnd( 7 ) );
    PHB_ITEM pgraph_size = hb_param( 8, HB_IT_ARRAY );
    ImVec2 graph_size = ImVec2{ _paf( pgraph_size, 1 ), _paf( pgraph_size, 2 ) };
    int stride = hb_parnidef( 9, sizeof(float) );
@@ -4431,8 +4431,8 @@ HB_FUNC( IGPLOTLINESFNFLOATPTR )
    int values_count = hb_parni( 4 );
    int values_offset = hb_parni( 5 );
    const char* overlay_text = hb_parcx( 6 );
-   float scale_min = ( float ) hb_parnd( 7 );
-   float scale_max = ( float ) hb_parnd( 8 );
+   float scale_min = ( float ) ( ! HB_ISNUM( 7 ) ? FLT_MAX : hb_parnd( 7 ) );
+   float scale_max = ( float ) ( ! HB_ISNUM( 8 ) ? FLT_MAX : hb_parnd( 8 ) );
    PHB_ITEM pgraph_size = hb_param( 9, HB_IT_ARRAY );
    ImVec2 graph_size = ImVec2{ _paf( pgraph_size, 1 ), _paf( pgraph_size, 2 ) };
    igPlotLinesFnFloatPtr(label,&hb_ig_values_getter,data,values_count,values_offset,overlay_text,scale_min,scale_max,graph_size);
@@ -4709,7 +4709,7 @@ HB_FUNC( IGRENDERARROW )
    ImVec2 pos = ImVec2{ _paf( ppos, 1 ), _paf( ppos, 2 ) };
    ImU32 col = ( HB_U32 ) hb_parnl( 3 );
    ImGuiDir dir = ( ImGuiDir ) hb_parni( 4 );
-   float scale = ( float ) hb_parnd( 5 );
+   float scale = ( float ) ( ! HB_ISNUM( 5 ) ? 1.0 : hb_parnd( 5 ) );
    igRenderArrow(draw_list,pos,col,dir,scale);
 }
 
@@ -4920,7 +4920,7 @@ HB_FUNC( IGRESETMOUSEDRAGDELTA )
 HB_FUNC( IGSAMELINE )
 {
    float offset_from_start_x = ( float ) hb_parnd( 1 );
-   float spacing = ( float ) hb_parnd( 2 );
+   float spacing = ( float ) ( ! HB_ISNUM( 2 ) ? -1.0 : hb_parnd( 2 ) );
    igSameLine(offset_from_start_x,spacing);
 }
 
@@ -5282,7 +5282,7 @@ HB_FUNC( IGSETNEXTWINDOWSIZECONSTRAINTS )
 HB_FUNC( IGSETSCROLLFROMPOSXFLOAT )
 {
    float local_x = ( float ) hb_parnd( 1 );
-   float center_x_ratio = ( float ) hb_parnd( 2 );
+   float center_x_ratio = ( float ) ( ! HB_ISNUM( 2 ) ? 0.5 : hb_parnd( 2 ) );
    igSetScrollFromPosXFloat(local_x,center_x_ratio);
 }
 
@@ -5299,7 +5299,7 @@ HB_FUNC( IGSETSCROLLFROMPOSXWINDOWPTR )
 HB_FUNC( IGSETSCROLLFROMPOSYFLOAT )
 {
    float local_y = ( float ) hb_parnd( 1 );
-   float center_y_ratio = ( float ) hb_parnd( 2 );
+   float center_y_ratio = ( float ) ( ! HB_ISNUM( 2 ) ? 0.5 : hb_parnd( 2 ) );
    igSetScrollFromPosYFloat(local_y,center_y_ratio);
 }
 
@@ -5315,14 +5315,14 @@ HB_FUNC( IGSETSCROLLFROMPOSYWINDOWPTR )
 /* void igSetScrollHereX(float center_x_ratio) */
 HB_FUNC( IGSETSCROLLHEREX )
 {
-   float center_x_ratio = ( float ) hb_parnd( 1 );
+   float center_x_ratio = ( float ) ( ! HB_ISNUM( 1 ) ? 0.5 : hb_parnd( 1 ) );
    igSetScrollHereX(center_x_ratio);
 }
 
 /* void igSetScrollHereY(float center_y_ratio) */
 HB_FUNC( IGSETSCROLLHEREY )
 {
-   float center_y_ratio = ( float ) hb_parnd( 1 );
+   float center_y_ratio = ( float ) ( ! HB_ISNUM( 1 ) ? 0.5 : hb_parnd( 1 ) );
    igSetScrollHereY(center_y_ratio);
 }
 
@@ -5620,8 +5620,8 @@ HB_FUNC( IGSLIDERANGLE )
    const char* label = hb_parcx( 1 );
    float /* @ */ _v_rad = ( float ) hb_parnd( 2 );
    float * v_rad = &_v_rad;
-   float v_degrees_min = ( float ) hb_parnd( 3 );
-   float v_degrees_max = ( float ) hb_parnd( 4 );
+   float v_degrees_min = ( float ) ( ! HB_ISNUM( 3 ) ? -360.0 : hb_parnd( 3 ) );
+   float v_degrees_max = ( float ) ( ! HB_ISNUM( 4 ) ? +360.0 : hb_parnd( 4 ) );
    const char* format = hb_parcx( 5 );
    ImGuiSliderFlags flags = ( ImGuiSliderFlags ) hb_parni( 6 );
    bool ret = igSliderAngle(label,v_rad,v_degrees_min,v_degrees_max,format,flags);

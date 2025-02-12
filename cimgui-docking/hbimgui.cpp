@@ -926,7 +926,7 @@ HB_FUNC( IGCOLORTOOLTIP )
 /* void igColumns(int count,const char* id,bool border) */
 HB_FUNC( IGCOLUMNS )
 {
-   int count = hb_parni( 1 );
+   int count = hb_parnidef( 1, 1 );
    const char* id = hb_parcx( 2 );
    bool border = hb_parldef( 3, 1 );
    igColumns(count,id,border);
@@ -940,7 +940,7 @@ HB_FUNC( IGCOMBO_STRARR )
    int * current_item = &_current_item;
    const char* const items[] = { 0 };
    int items_count = hb_parni( 4 );
-   int popup_max_height_in_items = hb_parni( 5 );
+   int popup_max_height_in_items = hb_parnidef( 5, -1 );
    bool ret = igCombo_Str_arr(label,current_item,items,items_count,popup_max_height_in_items);
    hb_itemPutNI( hb_paramError( 2 ), _current_item );
    hb_retl( ret );
@@ -953,7 +953,7 @@ HB_FUNC( IGCOMBOSTR )
    int /* @ */ _current_item = hb_parni( 2 );
    int * current_item = &_current_item;
    const char* items_separated_by_zeros = hb_parcx( 3 );
-   int popup_max_height_in_items = hb_parni( 4 );
+   int popup_max_height_in_items = hb_parnidef( 4, -1 );
    bool ret = igCombo_Str(label,current_item,items_separated_by_zeros,popup_max_height_in_items);
    hb_itemPutNI( hb_paramError( 2 ), _current_item );
    hb_retl( ret );
@@ -967,7 +967,7 @@ HB_FUNC( IGCOMBOFNBOOLPTR )
    int * current_item = &_current_item;
    void* data = ( void* ) hb_parptr( 4 );
    int items_count = hb_parni( 5 );
-   int popup_max_height_in_items = hb_parni( 6 );
+   int popup_max_height_in_items = hb_parnidef( 6, -1 );
    bool ret = igCombo_FnBoolPtr(label,current_item,&hb_ig_items_getter,data,items_count,popup_max_height_in_items);
    hb_itemPutNI( hb_paramError( 2 ), _current_item );
    hb_retl( ret );
@@ -2107,7 +2107,7 @@ HB_FUNC( IGGETCOLUMNNORMFROMOFFSET )
 /* float igGetColumnOffset(int column_index) */
 HB_FUNC( IGGETCOLUMNOFFSET )
 {
-   int column_index = hb_parni( 1 );
+   int column_index = hb_parnidef( 1, -1 );
    float ret = igGetColumnOffset(column_index);
    hb_retnd( ( double ) ret );
 }
@@ -2124,7 +2124,7 @@ HB_FUNC( IGGETCOLUMNOFFSETFROMNORM )
 /* float igGetColumnWidth(int column_index) */
 HB_FUNC( IGGETCOLUMNWIDTH )
 {
-   int column_index = hb_parni( 1 );
+   int column_index = hb_parnidef( 1, -1 );
    float ret = igGetColumnWidth(column_index);
    hb_retnd( ( double ) ret );
 }
@@ -3804,7 +3804,7 @@ HB_FUNC( IGIMAGEBUTTON )
    const ImVec2 uv0 = ImVec2{ _paf( puv0, 1 ), _paf( puv0, 2 ) };
    PHB_ITEM puv1 = hb_param( 4, HB_IT_ARRAY );
    const ImVec2 uv1 = ImVec2{ _paf( puv1, 1 ), _paf( puv1, 2 ) };
-   int frame_padding = hb_parni( 5 );
+   int frame_padding = hb_parnidef( 5, -1 );
    PHB_ITEM pbg_col = hb_param( 6, HB_IT_ARRAY );
    const ImVec4 bg_col = ImVec4{ _paf( pbg_col, 1 ), _paf( pbg_col, 2 ), _paf( pbg_col, 3 ), _paf( pbg_col, 4 ) };
    PHB_ITEM ptint_col = hb_param( 7, HB_IT_ARRAY );
@@ -3936,8 +3936,8 @@ HB_FUNC( IGINPUTINT )
    const char* label = hb_parcx( 1 );
    int /* @ */ _v = hb_parni( 2 );
    int * v = &_v;
-   int step = hb_parni( 3 );
-   int step_fast = hb_parni( 4 );
+   int step = hb_parnidef( 3, 1 );
+   int step_fast = hb_parnidef( 4, 100 );
    ImGuiInputTextFlags flags = ( ImGuiInputTextFlags ) hb_parni( 5 );
    bool ret = igInputInt(label,v,step,step_fast,flags);
    hb_itemPutNI( hb_paramError( 2 ), _v );
@@ -4706,7 +4706,7 @@ HB_FUNC( IGLISTBOX_STRARR )
    int * current_item = &_current_item;
    const char* const items[] = { 0 };
    int items_count = hb_parni( 4 );
-   int height_in_items = hb_parni( 5 );
+   int height_in_items = hb_parnidef( 5, -1 );
    bool ret = igListBox_Str_arr(label,current_item,items,items_count,height_in_items);
    hb_itemPutNI( hb_paramError( 2 ), _current_item );
    hb_retl( ret );
@@ -4720,7 +4720,7 @@ HB_FUNC( IGLISTBOXFNBOOLPTR )
    int * current_item = &_current_item;
    void* data = ( void* ) hb_parptr( 4 );
    int items_count = hb_parni( 5 );
-   int height_in_items = hb_parni( 6 );
+   int height_in_items = hb_parnidef( 6, -1 );
    bool ret = igListBox_FnBoolPtr(label,current_item,&hb_ig_items_getter,data,items_count,height_in_items);
    hb_itemPutNI( hb_paramError( 2 ), _current_item );
    hb_retl( ret );
@@ -4795,21 +4795,21 @@ HB_FUNC( IGLOGTEXTV )
 /* void igLogToBuffer(int auto_open_depth) */
 HB_FUNC( IGLOGTOBUFFER )
 {
-   int auto_open_depth = hb_parni( 1 );
+   int auto_open_depth = hb_parnidef( 1, -1 );
    igLogToBuffer(auto_open_depth);
 }
 
 /* void igLogToClipboard(int auto_open_depth) */
 HB_FUNC( IGLOGTOCLIPBOARD )
 {
-   int auto_open_depth = hb_parni( 1 );
+   int auto_open_depth = hb_parnidef( 1, -1 );
    igLogToClipboard(auto_open_depth);
 }
 
 /* void igLogToFile(int auto_open_depth,const char* filename) */
 HB_FUNC( IGLOGTOFILE )
 {
-   int auto_open_depth = hb_parni( 1 );
+   int auto_open_depth = hb_parnidef( 1, -1 );
    const char* filename = hb_parcx( 2 );
    igLogToFile(auto_open_depth,filename);
 }
@@ -4817,7 +4817,7 @@ HB_FUNC( IGLOGTOFILE )
 /* void igLogToTTY(int auto_open_depth) */
 HB_FUNC( IGLOGTOTTY )
 {
-   int auto_open_depth = hb_parni( 1 );
+   int auto_open_depth = hb_parnidef( 1, -1 );
    igLogToTTY(auto_open_depth);
 }
 
@@ -5038,7 +5038,7 @@ HB_FUNC( IGPLOTHISTOGRAMFLOATPTR )
    float scale_max = ( float ) hb_parnd( 7 );
    PHB_ITEM pgraph_size = hb_param( 8, HB_IT_ARRAY );
    ImVec2 graph_size = ImVec2{ _paf( pgraph_size, 1 ), _paf( pgraph_size, 2 ) };
-   int stride = hb_parni( 9 );
+   int stride = hb_parnidef( 9, sizeof(float) );
    igPlotHistogram_FloatPtr(label,values,values_count,values_offset,overlay_text,scale_min,scale_max,graph_size,stride);
 }
 
@@ -5069,7 +5069,7 @@ HB_FUNC( IGPLOTLINESFLOATPTR )
    float scale_max = ( float ) hb_parnd( 7 );
    PHB_ITEM pgraph_size = hb_param( 8, HB_IT_ARRAY );
    ImVec2 graph_size = ImVec2{ _paf( pgraph_size, 1 ), _paf( pgraph_size, 2 ) };
-   int stride = hb_parni( 9 );
+   int stride = hb_parnidef( 9, sizeof(float) );
    igPlotLines_FloatPtr(label,values,values_count,values_offset,overlay_text,scale_min,scale_max,graph_size,stride);
 }
 
@@ -6917,7 +6917,7 @@ HB_FUNC( IGTABLEGETCOLUMNCOUNT )
 /* ImGuiTableColumnFlags igTableGetColumnFlags(int column_n) */
 HB_FUNC( IGTABLEGETCOLUMNFLAGS )
 {
-   int column_n = hb_parni( 1 );
+   int column_n = hb_parnidef( 1, -1 );
    ImGuiTableColumnFlags ret = igTableGetColumnFlags(column_n);
    hb_retni( ( int ) ret );
 }
@@ -6932,7 +6932,7 @@ HB_FUNC( IGTABLEGETCOLUMNINDEX )
 /* const char* igTableGetColumnName_Int(int column_n) */
 HB_FUNC( IGTABLEGETCOLUMNNAMEINT )
 {
-   int column_n = hb_parni( 1 );
+   int column_n = hb_parnidef( 1, -1 );
    const char* ret = igTableGetColumnName_Int(column_n);
    hb_retc( ret );
 }
@@ -7055,7 +7055,7 @@ HB_FUNC( IGTABLENEXTROW )
 /* void igTableOpenContextMenu(int column_n) */
 HB_FUNC( IGTABLEOPENCONTEXTMENU )
 {
-   int column_n = hb_parni( 1 );
+   int column_n = hb_parnidef( 1, -1 );
    igTableOpenContextMenu(column_n);
 }
 
@@ -7097,7 +7097,7 @@ HB_FUNC( IGTABLESETBGCOLOR )
 {
    ImGuiTableBgTarget target = ( ImGuiTableBgTarget ) hb_parni( 1 );
    ImU32 color = ( HB_U32 ) hb_parnl( 2 );
-   int column_n = hb_parni( 3 );
+   int column_n = hb_parnidef( 3, -1 );
    igTableSetBgColor(target,color,column_n);
 }
 

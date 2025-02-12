@@ -5,6 +5,7 @@
 */
 
 #include "hbimenum.ch"
+#include "hbimstru.ch"
 #include "fonts/IconsFontAwesome6.ch"
 
 REQUEST HB_CODEPAGE_PL852
@@ -50,6 +51,8 @@ PROCEDURE ImInit
 #ifdef ImGuiConfigFlags_DockingEnable
    hb_igConfigFlagsAdd( ImGuiConfigFlags_DockingEnable )
 #endif
+
+   ImGuiIO( igGetIO() ):ConfigInputTextCursorBlink := .T.
 
    RETURN
 

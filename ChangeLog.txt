@@ -3,6 +3,46 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-02-12 16:55 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui/hbimgui.cpp
+  * cimgui/hbimstru.ch
+  * cimgui-docking/hbimgui.cpp
+  * cimgui-docking/hbimstru.ch
+    + following ImGuiIO struct possibly useful properties should
+      be now settable:
+
+      :ConfigFlags NOTE: this already had hb_igConfigFlagsAdd()/Del() helper
+      :BackendFlags
+      :DeltaTime
+      :IniSavingRate
+      :MouseDoubleClickTime
+      :MouseDoubleClickMaxDist
+      :MouseDragThreshold
+      :KeyMap
+      :KeyRepeatDelay
+      :KeyRepeatRate
+      :FontGlobalScale
+      :FontAllowUserScaling
+      :FontDefault
+      :DisplayFramebufferScale
+      :ConfigDockingNoSplit
+      :ConfigDockingAlwaysTabBar
+      :ConfigDockingTransparentPayload
+      :ConfigViewportsNoAutoMerge
+      :ConfigViewportsNoTaskBarIcon
+      :ConfigViewportsNoDecoration
+      :ConfigViewportsNoDefaultParent
+      :MouseDrawCursor
+      :ConfigMacOSXBehaviors
+      :ConfigInputTextCursorBlink
+      :ConfigDragClickToInputText
+      :ConfigWindowsResizeFromEdges
+      :ConfigWindowsMoveFromTitleBarOnly
+      :ConfigMemoryCompactTimer
+
+  * examples/loadfont.prg
+    * example of use:
+      ImGuiIO( igGetIO() ):ConfigInputTextCursorBlink := .T.
 
 2025-02-12 15:09 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui/hbimgui.cpp

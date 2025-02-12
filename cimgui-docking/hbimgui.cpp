@@ -7661,6 +7661,150 @@ HB_FUNC( IMGUILISTCLIPPER_GET )
       s_ImGuiListClipper_fields[ n ]( p );
 }
 
+static void s_ImGuiIO_setConfigFlags( ImGuiIO * p )
+{
+   p->ConfigFlags = ( ImGuiConfigFlags ) hb_parni( 3 );
+}
+
+static void s_ImGuiIO_setBackendFlags( ImGuiIO * p )
+{
+   p->BackendFlags = ( ImGuiBackendFlags ) hb_parni( 3 );
+}
+
+static void s_ImGuiIO_setDeltaTime( ImGuiIO * p )
+{
+   p->DeltaTime = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiIO_setIniSavingRate( ImGuiIO * p )
+{
+   p->IniSavingRate = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiIO_setMouseDoubleClickTime( ImGuiIO * p )
+{
+   p->MouseDoubleClickTime = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiIO_setMouseDoubleClickMaxDist( ImGuiIO * p )
+{
+   p->MouseDoubleClickMaxDist = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiIO_setMouseDragThreshold( ImGuiIO * p )
+{
+   p->MouseDragThreshold = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiIO_setKeyMap( ImGuiIO * p )
+{
+   HB_SIZE pos = hb_parns( 4 );
+   if( pos == 0 || pos > 22 )
+      return;
+   p->KeyMap[ pos - 1 ] = hb_parni( 3 );
+}
+
+static void s_ImGuiIO_setKeyRepeatDelay( ImGuiIO * p )
+{
+   p->KeyRepeatDelay = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiIO_setKeyRepeatRate( ImGuiIO * p )
+{
+   p->KeyRepeatRate = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiIO_setFontGlobalScale( ImGuiIO * p )
+{
+   p->FontGlobalScale = ( float ) hb_parnd( 3 );
+}
+
+static void s_ImGuiIO_setFontAllowUserScaling( ImGuiIO * p )
+{
+   p->FontAllowUserScaling = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setFontDefault( ImGuiIO * p )
+{
+   p->FontDefault = ( ImFont* ) hb_parptr( 3 );
+}
+
+static void s_ImGuiIO_setDisplayFramebufferScale( ImGuiIO * p )
+{
+   PHB_ITEM p__set = hb_param( 3, HB_IT_ARRAY );
+   p->DisplayFramebufferScale = ImVec2{ _paf( p__set, 1 ), _paf( p__set, 2 ) };
+}
+
+static void s_ImGuiIO_setConfigDockingNoSplit( ImGuiIO * p )
+{
+   p->ConfigDockingNoSplit = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigDockingAlwaysTabBar( ImGuiIO * p )
+{
+   p->ConfigDockingAlwaysTabBar = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigDockingTransparentPayload( ImGuiIO * p )
+{
+   p->ConfigDockingTransparentPayload = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigViewportsNoAutoMerge( ImGuiIO * p )
+{
+   p->ConfigViewportsNoAutoMerge = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigViewportsNoTaskBarIcon( ImGuiIO * p )
+{
+   p->ConfigViewportsNoTaskBarIcon = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigViewportsNoDecoration( ImGuiIO * p )
+{
+   p->ConfigViewportsNoDecoration = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigViewportsNoDefaultParent( ImGuiIO * p )
+{
+   p->ConfigViewportsNoDefaultParent = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setMouseDrawCursor( ImGuiIO * p )
+{
+   p->MouseDrawCursor = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigMacOSXBehaviors( ImGuiIO * p )
+{
+   p->ConfigMacOSXBehaviors = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigInputTextCursorBlink( ImGuiIO * p )
+{
+   p->ConfigInputTextCursorBlink = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigDragClickToInputText( ImGuiIO * p )
+{
+   p->ConfigDragClickToInputText = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigWindowsResizeFromEdges( ImGuiIO * p )
+{
+   p->ConfigWindowsResizeFromEdges = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigWindowsMoveFromTitleBarOnly( ImGuiIO * p )
+{
+   p->ConfigWindowsMoveFromTitleBarOnly = hb_parl( 3 );
+}
+
+static void s_ImGuiIO_setConfigMemoryCompactTimer( ImGuiIO * p )
+{
+   p->ConfigMemoryCompactTimer = ( float ) hb_parnd( 3 );
+}
+
 static void s_ImGuiIO_getConfigFlags( ImGuiIO * p )
 {
    ImGuiConfigFlags ret = p->ConfigFlags;
@@ -8300,7 +8444,7 @@ static void s_ImGuiIO_getInputQueueCharacters( ImGuiIO * p )
    ImVector_ImWchar ret = p->InputQueueCharacters;
 }
 
-static void(*s_ImGuiIO_fields[])( ImGuiIO * ) = { s_ImGuiIO_getConfigFlags, s_ImGuiIO_getBackendFlags, s_ImGuiIO_getDisplaySize, s_ImGuiIO_getDeltaTime, s_ImGuiIO_getIniSavingRate, s_ImGuiIO_getIniFilename, s_ImGuiIO_getLogFilename, s_ImGuiIO_getMouseDoubleClickTime, s_ImGuiIO_getMouseDoubleClickMaxDist, s_ImGuiIO_getMouseDragThreshold, s_ImGuiIO_getKeyMap, s_ImGuiIO_getKeyRepeatDelay, s_ImGuiIO_getKeyRepeatRate, s_ImGuiIO_getUserData, s_ImGuiIO_getFonts, s_ImGuiIO_getFontGlobalScale, s_ImGuiIO_getFontAllowUserScaling, s_ImGuiIO_getFontDefault, s_ImGuiIO_getDisplayFramebufferScale, s_ImGuiIO_getConfigDockingNoSplit, s_ImGuiIO_getConfigDockingAlwaysTabBar, s_ImGuiIO_getConfigDockingTransparentPayload, s_ImGuiIO_getConfigViewportsNoAutoMerge, s_ImGuiIO_getConfigViewportsNoTaskBarIcon, s_ImGuiIO_getConfigViewportsNoDecoration, s_ImGuiIO_getConfigViewportsNoDefaultParent, s_ImGuiIO_getMouseDrawCursor, s_ImGuiIO_getConfigMacOSXBehaviors, s_ImGuiIO_getConfigInputTextCursorBlink, s_ImGuiIO_getConfigDragClickToInputText, s_ImGuiIO_getConfigWindowsResizeFromEdges, s_ImGuiIO_getConfigWindowsMoveFromTitleBarOnly, s_ImGuiIO_getConfigMemoryCompactTimer, s_ImGuiIO_getBackendPlatformName, s_ImGuiIO_getBackendRendererName, s_ImGuiIO_getBackendPlatformUserData, s_ImGuiIO_getBackendRendererUserData, s_ImGuiIO_getBackendLanguageUserData, s_ImGuiIO_getGetClipboardTextFn, s_ImGuiIO_getSetClipboardTextFn, s_ImGuiIO_getClipboardUserData, s_ImGuiIO_getMousePos, s_ImGuiIO_getMouseDown, s_ImGuiIO_getMouseWheel, s_ImGuiIO_getMouseWheelH, s_ImGuiIO_getMouseHoveredViewport, s_ImGuiIO_getKeyCtrl, s_ImGuiIO_getKeyShift, s_ImGuiIO_getKeyAlt, s_ImGuiIO_getKeySuper, s_ImGuiIO_getKeysDown, s_ImGuiIO_getNavInputs, s_ImGuiIO_getWantCaptureMouse, s_ImGuiIO_getWantCaptureKeyboard, s_ImGuiIO_getWantTextInput, s_ImGuiIO_getWantSetMousePos, s_ImGuiIO_getWantSaveIniSettings, s_ImGuiIO_getNavActive, s_ImGuiIO_getNavVisible, s_ImGuiIO_getFramerate, s_ImGuiIO_getMetricsRenderVertices, s_ImGuiIO_getMetricsRenderIndices, s_ImGuiIO_getMetricsRenderWindows, s_ImGuiIO_getMetricsActiveWindows, s_ImGuiIO_getMetricsActiveAllocations, s_ImGuiIO_getMouseDelta, s_ImGuiIO_getWantCaptureMouseUnlessPopupClose, s_ImGuiIO_getKeyMods, s_ImGuiIO_getKeyModsPrev, s_ImGuiIO_getMousePosPrev, s_ImGuiIO_getMouseClickedPos, s_ImGuiIO_getMouseClickedTime, s_ImGuiIO_getMouseClicked, s_ImGuiIO_getMouseDoubleClicked, s_ImGuiIO_getMouseReleased, s_ImGuiIO_getMouseDownOwned, s_ImGuiIO_getMouseDownOwnedUnlessPopupClose, s_ImGuiIO_getMouseDownWasDoubleClick, s_ImGuiIO_getMouseDownDuration, s_ImGuiIO_getMouseDownDurationPrev, s_ImGuiIO_getMouseDragMaxDistanceAbs, s_ImGuiIO_getMouseDragMaxDistanceSqr, s_ImGuiIO_getKeysDownDuration, s_ImGuiIO_getKeysDownDurationPrev, s_ImGuiIO_getNavInputsDownDuration, s_ImGuiIO_getNavInputsDownDurationPrev, s_ImGuiIO_getPenPressure, s_ImGuiIO_getAppFocusLost, s_ImGuiIO_getInputQueueSurrogate, s_ImGuiIO_getInputQueueCharacters };
+static void(*s_ImGuiIO_fields[])( ImGuiIO * ) = { s_ImGuiIO_getConfigFlags, s_ImGuiIO_getBackendFlags, s_ImGuiIO_getDisplaySize, s_ImGuiIO_getDeltaTime, s_ImGuiIO_getIniSavingRate, s_ImGuiIO_getIniFilename, s_ImGuiIO_getLogFilename, s_ImGuiIO_getMouseDoubleClickTime, s_ImGuiIO_getMouseDoubleClickMaxDist, s_ImGuiIO_getMouseDragThreshold, s_ImGuiIO_getKeyMap, s_ImGuiIO_getKeyRepeatDelay, s_ImGuiIO_getKeyRepeatRate, s_ImGuiIO_getUserData, s_ImGuiIO_getFonts, s_ImGuiIO_getFontGlobalScale, s_ImGuiIO_getFontAllowUserScaling, s_ImGuiIO_getFontDefault, s_ImGuiIO_getDisplayFramebufferScale, s_ImGuiIO_getConfigDockingNoSplit, s_ImGuiIO_getConfigDockingAlwaysTabBar, s_ImGuiIO_getConfigDockingTransparentPayload, s_ImGuiIO_getConfigViewportsNoAutoMerge, s_ImGuiIO_getConfigViewportsNoTaskBarIcon, s_ImGuiIO_getConfigViewportsNoDecoration, s_ImGuiIO_getConfigViewportsNoDefaultParent, s_ImGuiIO_getMouseDrawCursor, s_ImGuiIO_getConfigMacOSXBehaviors, s_ImGuiIO_getConfigInputTextCursorBlink, s_ImGuiIO_getConfigDragClickToInputText, s_ImGuiIO_getConfigWindowsResizeFromEdges, s_ImGuiIO_getConfigWindowsMoveFromTitleBarOnly, s_ImGuiIO_getConfigMemoryCompactTimer, s_ImGuiIO_getBackendPlatformName, s_ImGuiIO_getBackendRendererName, s_ImGuiIO_getBackendPlatformUserData, s_ImGuiIO_getBackendRendererUserData, s_ImGuiIO_getBackendLanguageUserData, s_ImGuiIO_getGetClipboardTextFn, s_ImGuiIO_getSetClipboardTextFn, s_ImGuiIO_getClipboardUserData, s_ImGuiIO_getMousePos, s_ImGuiIO_getMouseDown, s_ImGuiIO_getMouseWheel, s_ImGuiIO_getMouseWheelH, s_ImGuiIO_getMouseHoveredViewport, s_ImGuiIO_getKeyCtrl, s_ImGuiIO_getKeyShift, s_ImGuiIO_getKeyAlt, s_ImGuiIO_getKeySuper, s_ImGuiIO_getKeysDown, s_ImGuiIO_getNavInputs, s_ImGuiIO_getWantCaptureMouse, s_ImGuiIO_getWantCaptureKeyboard, s_ImGuiIO_getWantTextInput, s_ImGuiIO_getWantSetMousePos, s_ImGuiIO_getWantSaveIniSettings, s_ImGuiIO_getNavActive, s_ImGuiIO_getNavVisible, s_ImGuiIO_getFramerate, s_ImGuiIO_getMetricsRenderVertices, s_ImGuiIO_getMetricsRenderIndices, s_ImGuiIO_getMetricsRenderWindows, s_ImGuiIO_getMetricsActiveWindows, s_ImGuiIO_getMetricsActiveAllocations, s_ImGuiIO_getMouseDelta, s_ImGuiIO_getWantCaptureMouseUnlessPopupClose, s_ImGuiIO_getKeyMods, s_ImGuiIO_getKeyModsPrev, s_ImGuiIO_getMousePosPrev, s_ImGuiIO_getMouseClickedPos, s_ImGuiIO_getMouseClickedTime, s_ImGuiIO_getMouseClicked, s_ImGuiIO_getMouseDoubleClicked, s_ImGuiIO_getMouseReleased, s_ImGuiIO_getMouseDownOwned, s_ImGuiIO_getMouseDownOwnedUnlessPopupClose, s_ImGuiIO_getMouseDownWasDoubleClick, s_ImGuiIO_getMouseDownDuration, s_ImGuiIO_getMouseDownDurationPrev, s_ImGuiIO_getMouseDragMaxDistanceAbs, s_ImGuiIO_getMouseDragMaxDistanceSqr, s_ImGuiIO_getKeysDownDuration, s_ImGuiIO_getKeysDownDurationPrev, s_ImGuiIO_getNavInputsDownDuration, s_ImGuiIO_getNavInputsDownDurationPrev, s_ImGuiIO_getPenPressure, s_ImGuiIO_getAppFocusLost, s_ImGuiIO_getInputQueueSurrogate, s_ImGuiIO_getInputQueueCharacters, s_ImGuiIO_setConfigFlags, s_ImGuiIO_setBackendFlags, s_ImGuiIO_setDeltaTime, s_ImGuiIO_setIniSavingRate, s_ImGuiIO_setMouseDoubleClickTime, s_ImGuiIO_setMouseDoubleClickMaxDist, s_ImGuiIO_setMouseDragThreshold, s_ImGuiIO_setKeyMap, s_ImGuiIO_setKeyRepeatDelay, s_ImGuiIO_setKeyRepeatRate, s_ImGuiIO_setFontGlobalScale, s_ImGuiIO_setFontAllowUserScaling, s_ImGuiIO_setFontDefault, s_ImGuiIO_setDisplayFramebufferScale, s_ImGuiIO_setConfigDockingNoSplit, s_ImGuiIO_setConfigDockingAlwaysTabBar, s_ImGuiIO_setConfigDockingTransparentPayload, s_ImGuiIO_setConfigViewportsNoAutoMerge, s_ImGuiIO_setConfigViewportsNoTaskBarIcon, s_ImGuiIO_setConfigViewportsNoDecoration, s_ImGuiIO_setConfigViewportsNoDefaultParent, s_ImGuiIO_setMouseDrawCursor, s_ImGuiIO_setConfigMacOSXBehaviors, s_ImGuiIO_setConfigInputTextCursorBlink, s_ImGuiIO_setConfigDragClickToInputText, s_ImGuiIO_setConfigWindowsResizeFromEdges, s_ImGuiIO_setConfigWindowsMoveFromTitleBarOnly, s_ImGuiIO_setConfigMemoryCompactTimer };
 
 HB_FUNC( IMGUIIO_GET )
 {
@@ -8308,6 +8452,15 @@ HB_FUNC( IMGUIIO_GET )
    int n = hb_parni( 2 ) - 1;
    if( p && n >= 0 && n < 90 )
       s_ImGuiIO_fields[ n ]( p );
+}
+
+HB_FUNC( IMGUIIO_SET )
+{
+   ImGuiIO * p = ( ImGuiIO * ) hb_parptr( 1 );
+   int n = hb_parni( 2 ) - 1;
+   if( p && n >= 0 && n < 28 )
+      s_ImGuiIO_fields[ 90 + n ]( p );
+   hb_itemCopy( hb_stackReturnItem(), hb_paramError( 3 ) );
 }
 
 static void s_ImGuiStyle_setAlpha( ImGuiStyle * p )

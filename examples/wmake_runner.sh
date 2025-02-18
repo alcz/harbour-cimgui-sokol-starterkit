@@ -14,4 +14,5 @@ export LLVM_ROOT=/home/$USER/emsdk/upstream/bin
 
 # NOTE: wmake.sh uses a different --shell-file, closure, (no) exported FS
 # TODO: move these flags to .hbp
-$HB_HOST_BIN/hbmk2 -gtnul runner.hbp -ldflag="--shell-file html/runner.html -sASSERTIONS=0 -sMALLOC=emmalloc --closure 0 -sEXPORTED_RUNTIME_METHODS=['FS'] -sALLOW_MEMORY_GROWTH=1" -orunner.html
+# NOTE: with emscripten > 2.12.x withStackSave is no longer needed to be manually listed in EXPORTED_RUNTIME_METHODS
+$HB_HOST_BIN/hbmk2 -gtnul -l runner.hbp -ldflag="--shell-file html/runner.html -sASSERTIONS=0 -sMALLOC=emmalloc --closure 0 -sEXPORTED_RUNTIME_METHODS=['FS','withStackSave'] -sALLOW_MEMORY_GROWTH=1" -orunner.html

@@ -3,6 +3,43 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-02-18 12:14 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * sokol/sokol.hbp
+  + sokol/hbemfile.c
+    + additional handling of async file loading on WebAssembly platform
+      from within PROCEDURE ImDrop( <aFiles>, <nX>, <nY> )
+      you can call
+      hb_sokol_wasm_droppedFileLoad( <nFileIndex> [, <nBuffer> ][, <xCargoOrFunc> ] )
+      hb_sokol_wasm_droppedFileSize( <nFileIndex> ) -> <nSize>
+
+      <nFileIndex> - specifies file from <aFiles> list
+
+      <nBuffer>    - optional, <nSize> is assumed as file size or can be larger
+
+      <xCargoFunc> - if it is codeblock or function symbol, then result of the
+                     operation will be redirected to this routine:
+                     { |cBuffer/nErrorCode,nFileIndex| ... } -- checking type
+                     of the first parameter there is neccesary
+
+                     if <xCargoFunc> is any other value then following
+                     callbacks are assumed as defined in your code:
+                     ImAsyncFile( <cBuffer>, <nFileIndex> [, <xCargo> ] )
+                     in case of error:
+                     ImAsyncError( <nErrorCode>, <nFile> [, <xCargo>] )
+
+                     Error codes are not defined in .prg code
+                     SAPP_HTML5_FETCH_ERROR_NO_ERROR          0
+                     SAPP_HTML5_FETCH_ERROR_BUFFER_TOO_SMALL  1
+                     SAPP_HTML5_FETCH_ERROR_OTHER             2
+
+    ; this functionality needs emscripten SDK release 2.0.32 or newer
+
+  * examples/runner.prg
+    + test async load
+
+  * examples/wmake_runner.sh
+    * emscripten SDK additions and notes regarding exports needed
+
 2025-02-12 16:55 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui/hbimgui.cpp
   * cimgui/hbimstru.ch

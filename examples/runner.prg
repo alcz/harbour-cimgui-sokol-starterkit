@@ -87,6 +87,8 @@ PROCEDURE Main( cRun, cHiDPI )
 #ifdef __PLATFORM__WASM
    IF ImFrame() # NIL /* dummy calls for emscripten, to be removed when those functions are properly requested from .c code */
       ImInit()
+      ImDrop()
+      ImAsyncFile()
 #command DYNAMIC <fncs,...> => <fncs>()
 #include "cimgui.hbx"
 #include "hbcpage.hbx"
@@ -145,6 +147,28 @@ PROCEDURE ImFrame
    IG_MultiWin()
 
    RETURN
+
+PROCEDURE ImDrop( aFiles )
+   LOCAL cFile
+   FOR EACH cFile IN aFiles
+#ifdef __PLATFORM__WASM
+      IG_WinCreate( @__ErrorWindow(), "loading:" + hb_NtoS( cFile:__enumIndex ), ;
+                    { "loading async", cFile + " size: " + hb_NtoS( hb_sokol_wasm_droppedfilesize( cFile:__enumIndex ) ) } )
+      hb_sokol_wasm_droppedfileload( cFile:__enumIndex,, cFile )
+//      hb_sokol_wasm_droppedfileload( cFile:__enumIndex,, { |cBody,nIndex| IIF( hb_isString( cBody ), ImAsyncFile( cBody, nIndex, cFile + ":codeblock" ), NIL ) } )
+#endif
+   NEXT
+
+   RETURN
+
+#ifdef __PLATFORM__WASM
+PROCEDURE ImAsyncFile( cBody, nIndex, cName )
+   IG_WinDestroy( "loading:" + hb_NtoS( nIndex ) )
+   IG_WinCreate( @__ErrorWindow(), "completed:" + hb_NtoS( nIndex ), ;
+                 { "load completed", cName + " size: " + hb_NtoS( Len( cBody ) ) + hb_EoL() + Left( cBody, 16 ) + "..." } )
+
+   RETURN
+#endif
 
 PROCEDURE __ErrorWindow_Create( cTitle, cText )
    STATIC nErrCount := 0

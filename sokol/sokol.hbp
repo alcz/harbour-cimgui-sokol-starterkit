@@ -19,3 +19,4 @@
 {!darwin}sokol.c
 hbfunc_.c
 hbsokol.c
+{emcc}hbemfile.c

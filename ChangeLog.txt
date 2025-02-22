@@ -3,6 +3,17 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-02-22 22:24 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui/hbimgui.cpp
+  * cimgui-docking/hbimgui.cpp
+    * regenerated using updated version of the generator.prg
+
+    * igDockBuilderSplitNode() out parameters of type ImGuiID passed
+      as reference are now supported
+
+    * commented-out/templematized some functions that do not make
+      sense to call from .prg now
+
 2025-02-18 12:14 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * sokol/sokol.hbp
   + sokol/hbemfile.c

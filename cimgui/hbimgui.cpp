@@ -3218,6 +3218,7 @@ HB_FUNC( IGIMAGEBUTTON )
 */
 
 /* bool igImageButtonEx(ImGuiID id,ImTextureID texture_id,const ImVec2 size,const ImVec2 uv0,const ImVec2 uv1,const ImVec2 padding,const ImVec4 bg_col,const ImVec4 tint_col) */
+/* templates only, see hb_sokol_igImage() for real texture usage
 HB_FUNC( IGIMAGEBUTTONEX )
 {
    ImGuiID id = ( ImGuiID ) hb_parni( 1 );
@@ -3237,6 +3238,7 @@ HB_FUNC( IGIMAGEBUTTONEX )
    bool ret = igImageButtonEx(id,texture_id,size,uv0,uv1,padding,bg_col,tint_col);
    hb_retl( ret );
 }
+*/
 
 /* void igIndent(float indent_w) */
 HB_FUNC( IGINDENT )
@@ -5025,11 +5027,13 @@ HB_FUNC( IGSETACTIVEID )
 }
 
 /* void igSetAllocatorFunctions(void*(*alloc_func)(size_t sz,void* user_data),void(*free_func)(void* ptr,void* user_data),void* user_data) */
+/* using Harbour hb_xgrab(), etc. is a TODO, optional hb_igSetAllocatorFunction() should be made first
 HB_FUNC( IGSETALLOCATORFUNCTIONS )
 {
    void* user_data = ( void* ) hb_parptr( 3 );
    igSetAllocatorFunctions(&hb_ig_alloc_func,&hb_ig_free_func,user_data);
 }
+*/
 
 /* void igSetClipboardText(const char* text) */
 HB_FUNC( IGSETCLIPBOARDTEXT )

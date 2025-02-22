@@ -1346,6 +1346,8 @@ HB_FUNC( IGDOCKBUILDERSPLITNODE )
    ImGuiID _out_id_at_opposite_dir;
    ImGuiID* out_id_at_opposite_dir = &_out_id_at_opposite_dir;
    ImGuiID ret = igDockBuilderSplitNode(node_id,split_dir,size_ratio_for_node_at_dir,out_id_at_dir,out_id_at_opposite_dir);
+   hb_itemPutNI( hb_paramError( 4 ), ( int ) _out_id_at_dir );
+   hb_itemPutNI( hb_paramError( 5 ), ( int ) _out_id_at_opposite_dir );
    hb_retni( ( int ) ret );
 }
 
@@ -3815,6 +3817,7 @@ HB_FUNC( IGIMAGEBUTTON )
 */
 
 /* bool igImageButtonEx(ImGuiID id,ImTextureID texture_id,const ImVec2 size,const ImVec2 uv0,const ImVec2 uv1,const ImVec2 padding,const ImVec4 bg_col,const ImVec4 tint_col) */
+/* templates only, see hb_sokol_igImage() for real texture usage
 HB_FUNC( IGIMAGEBUTTONEX )
 {
    ImGuiID id = ( ImGuiID ) hb_parni( 1 );
@@ -3834,6 +3837,7 @@ HB_FUNC( IGIMAGEBUTTONEX )
    bool ret = igImageButtonEx(id,texture_id,size,uv0,uv1,padding,bg_col,tint_col);
    hb_retl( ret );
 }
+*/
 
 /* void igIndent(float indent_w) */
 HB_FUNC( IGINDENT )
@@ -5743,6 +5747,7 @@ HB_FUNC( IGSETACTIVEIDUSINGNAVANDKEYS )
 }
 
 /* void igSetAllocatorFunctions(ImGuiMemAllocFunc alloc_func,ImGuiMemFreeFunc free_func,void* user_data) */
+/* using Harbour hb_xgrab(), etc. is a TODO, optional hb_igSetAllocatorFunction() should be made first
 HB_FUNC( IGSETALLOCATORFUNCTIONS )
 {
    ImGuiMemAllocFunc alloc_func;
@@ -5750,6 +5755,7 @@ HB_FUNC( IGSETALLOCATORFUNCTIONS )
    void* user_data = ( void* ) hb_parptr( 3 );
    igSetAllocatorFunctions(alloc_func,free_func,user_data);
 }
+*/
 
 /* void igSetClipboardText(const char* text) */
 HB_FUNC( IGSETCLIPBOARDTEXT )

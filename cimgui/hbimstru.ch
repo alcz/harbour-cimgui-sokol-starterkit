@@ -41,7 +41,7 @@
 #define ImGuiIO_ConfigInputTextCursorBlink             22
 #define ImGuiIO_ConfigDragClickToInputText             23
 #define ImGuiIO_ConfigWindowsResizeFromEdges           24
-#define ImGuiIO_ConfigWindowsMoveFromTitleBarOnl       25
+#define ImGuiIO_ConfigWindowsMoveFromTitleBarOnly      25
 #define ImGuiIO_ConfigMemoryCompactTimer               26
 #define ImGuiIO_BackendPlatformName                    27
 #define ImGuiIO_BackendRendererName                    28

@@ -48,7 +48,7 @@
 #define ImGuiIO_ConfigInputTextCursorBlink             29
 #define ImGuiIO_ConfigDragClickToInputText             30
 #define ImGuiIO_ConfigWindowsResizeFromEdges           31
-#define ImGuiIO_ConfigWindowsMoveFromTitleBarOnl       32
+#define ImGuiIO_ConfigWindowsMoveFromTitleBarOnly      32
 #define ImGuiIO_ConfigMemoryCompactTimer               33
 #define ImGuiIO_BackendPlatformName                    34
 #define ImGuiIO_BackendRendererName                    35
@@ -380,6 +380,30 @@
 #xtranslate ImGuiViewport( <p> ):PlatformRequestMove => ImGuiViewport_Get( <p>, 14 )
 #xtranslate ImGuiViewport( <p> ):PlatformRequestResize => ImGuiViewport_Get( <p>, 15 )
 #xtranslate ImGuiViewport( <p> ):PlatformRequestClose => ImGuiViewport_Get( <p>, 16 )
+#define ImGuiWindowClass_ClassId                        1
+#define ImGuiWindowClass_ParentViewportId               2
+#define ImGuiWindowClass_ViewportFlagsOverrideSet       3
+#define ImGuiWindowClass_ViewportFlagsOverrideClear     4
+#define ImGuiWindowClass_TabItemFlagsOverrideSet        5
+#define ImGuiWindowClass_DockNodeFlagsOverrideSet       6
+#define ImGuiWindowClass_DockingAlwaysTabBar            7
+#define ImGuiWindowClass_DockingAllowUnclassed          8
+#xtranslate ImGuiWindowClass( <p> ):ClassId => ImGuiWindowClass_Get( <p>, 1 )
+#xtranslate ImGuiWindowClass( <p> ):ParentViewportId => ImGuiWindowClass_Get( <p>, 2 )
+#xtranslate ImGuiWindowClass( <p> ):ViewportFlagsOverrideSet => ImGuiWindowClass_Get( <p>, 3 )
+#xtranslate ImGuiWindowClass( <p> ):ViewportFlagsOverrideClear => ImGuiWindowClass_Get( <p>, 4 )
+#xtranslate ImGuiWindowClass( <p> ):TabItemFlagsOverrideSet => ImGuiWindowClass_Get( <p>, 5 )
+#xtranslate ImGuiWindowClass( <p> ):DockNodeFlagsOverrideSet => ImGuiWindowClass_Get( <p>, 6 )
+#xtranslate ImGuiWindowClass( <p> ):DockingAlwaysTabBar => ImGuiWindowClass_Get( <p>, 7 )
+#xtranslate ImGuiWindowClass( <p> ):DockingAllowUnclassed => ImGuiWindowClass_Get( <p>, 8 )
+#xtranslate ImGuiWindowClass( <p> ):ClassId := <v> => ImGuiWindowClass_Set( <p>, 1, <v> )
+#xtranslate ImGuiWindowClass( <p> ):ParentViewportId := <v> => ImGuiWindowClass_Set( <p>, 2, <v> )
+#xtranslate ImGuiWindowClass( <p> ):ViewportFlagsOverrideSet := <v> => ImGuiWindowClass_Set( <p>, 3, <v> )
+#xtranslate ImGuiWindowClass( <p> ):ViewportFlagsOverrideClear := <v> => ImGuiWindowClass_Set( <p>, 4, <v> )
+#xtranslate ImGuiWindowClass( <p> ):TabItemFlagsOverrideSet := <v> => ImGuiWindowClass_Set( <p>, 5, <v> )
+#xtranslate ImGuiWindowClass( <p> ):DockNodeFlagsOverrideSet := <v> => ImGuiWindowClass_Set( <p>, 6, <v> )
+#xtranslate ImGuiWindowClass( <p> ):DockingAlwaysTabBar := <v> => ImGuiWindowClass_Set( <p>, 7, <v> )
+#xtranslate ImGuiWindowClass( <p> ):DockingAllowUnclassed := <v> => ImGuiWindowClass_Set( <p>, 8, <v> )
 #xtranslate ImGuiIO( <p> ):AddFocusEvent( [ <args,...> ] ) => ImGuiIO_AddFocusEvent( <p>[, <args> ] )
 #xtranslate ImGuiIO( <p> ):AddInputCharacter( [ <args,...> ] ) => ImGuiIO_AddInputCharacter( <p>[, <args> ] )
 #xtranslate ImGuiIO( <p> ):AddInputCharacterUTF16( [ <args,...> ] ) => ImGuiIO_AddInputCharacterUTF16( <p>[, <args> ] )
@@ -394,3 +418,4 @@
 #xtranslate ImGuiStyle( <p> ):ScaleAllSizes( [ <args,...> ] ) => ImGuiStyle_ScaleAllSizes( <p>[, <args> ] )
 #xtranslate ImGuiStyle( <p> ):destroy( [ <args,...> ] ) => ImGuiStyle_destroy( <p>[, <args> ] )
 #xtranslate ImGuiViewport( <p> ):destroy( [ <args,...> ] ) => ImGuiViewport_destroy( <p>[, <args> ] )
+#xtranslate ImGuiWindowClass( <p> ):destroy( [ <args,...> ] ) => ImGuiWindowClass_destroy( <p>[, <args> ] )

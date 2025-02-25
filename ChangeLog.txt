@@ -3,6 +3,18 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-02-25 17:50 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * cimgui-docking/hbimgui.cpp
+  * cimgui-docking/hbimstru.ch
+    + ImGuiWindowClassStruct struct, available here with
+      ImGui 1.85+, seems useful with advanced docking window
+      setups
+
+  * cimgui/hbimstru.ch
+  * cimgui-docking/hbimstru.ch
+    ! correct ImGuiIO_ConfigWindowsMoveFromTitleBarOnly identifier,
+      last character was missing
+
 2025-02-22 22:24 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui/hbimgui.cpp
   * cimgui-docking/hbimgui.cpp

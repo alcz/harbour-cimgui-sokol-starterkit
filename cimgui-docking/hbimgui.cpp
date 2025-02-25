@@ -48,6 +48,18 @@ HB_FUNC( IMGUILISTCLIPPER_DESTROY )
    ImGuiListClipper_destroy(pOut);
 }
 
+HB_FUNC( IMGUIWINDOWCLASS_IMGUIWINDOWCLASS )
+{
+   hb_retptr( ImGuiWindowClass_ImGuiWindowClass() );
+}
+
+/* void ImGuiWindowClass_destroy(ImGuiWindowClass* self) */
+HB_FUNC( IMGUIWINDOWCLASS_DESTROY )
+{
+   ImGuiWindowClass* pOut = ( ImGuiWindowClass* ) hb_parptr( 1 );
+   ImGuiWindowClass_destroy(pOut);
+}
+
 /* const ImGuiPayload* igAcceptDragDropPayload(const char* type,ImGuiDragDropFlags flags) */
 HB_FUNC( IGACCEPTDRAGDROPPAYLOAD )
 {
@@ -9116,5 +9128,112 @@ HB_FUNC( IMGUIVIEWPORT_GET )
    int n = hb_parni( 2 ) - 1;
    if( p && n >= 0 && n < 16 )
       s_ImGuiViewport_fields[ n ]( p );
+}
+
+static void s_ImGuiWindowClass_setClassId( ImGuiWindowClass * p )
+{
+   p->ClassId = ( ImGuiID ) hb_parni( 3 );
+}
+
+static void s_ImGuiWindowClass_setParentViewportId( ImGuiWindowClass * p )
+{
+   p->ParentViewportId = ( ImGuiID ) hb_parni( 3 );
+}
+
+static void s_ImGuiWindowClass_setViewportFlagsOverrideSet( ImGuiWindowClass * p )
+{
+   p->ViewportFlagsOverrideSet = ( ImGuiViewportFlags ) hb_parni( 3 );
+}
+
+static void s_ImGuiWindowClass_setViewportFlagsOverrideClear( ImGuiWindowClass * p )
+{
+   p->ViewportFlagsOverrideClear = ( ImGuiViewportFlags ) hb_parni( 3 );
+}
+
+static void s_ImGuiWindowClass_setTabItemFlagsOverrideSet( ImGuiWindowClass * p )
+{
+   p->TabItemFlagsOverrideSet = ( ImGuiTabItemFlags ) hb_parni( 3 );
+}
+
+static void s_ImGuiWindowClass_setDockNodeFlagsOverrideSet( ImGuiWindowClass * p )
+{
+   p->DockNodeFlagsOverrideSet = ( ImGuiDockNodeFlags ) hb_parni( 3 );
+}
+
+static void s_ImGuiWindowClass_setDockingAlwaysTabBar( ImGuiWindowClass * p )
+{
+   p->DockingAlwaysTabBar = hb_parl( 3 );
+}
+
+static void s_ImGuiWindowClass_setDockingAllowUnclassed( ImGuiWindowClass * p )
+{
+   p->DockingAllowUnclassed = hb_parl( 3 );
+}
+
+static void s_ImGuiWindowClass_getClassId( ImGuiWindowClass * p )
+{
+   ImGuiID ret = p->ClassId;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiWindowClass_getParentViewportId( ImGuiWindowClass * p )
+{
+   ImGuiID ret = p->ParentViewportId;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiWindowClass_getViewportFlagsOverrideSet( ImGuiWindowClass * p )
+{
+   ImGuiViewportFlags ret = p->ViewportFlagsOverrideSet;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiWindowClass_getViewportFlagsOverrideClear( ImGuiWindowClass * p )
+{
+   ImGuiViewportFlags ret = p->ViewportFlagsOverrideClear;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiWindowClass_getTabItemFlagsOverrideSet( ImGuiWindowClass * p )
+{
+   ImGuiTabItemFlags ret = p->TabItemFlagsOverrideSet;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiWindowClass_getDockNodeFlagsOverrideSet( ImGuiWindowClass * p )
+{
+   ImGuiDockNodeFlags ret = p->DockNodeFlagsOverrideSet;
+   hb_retni( ( int ) ret );
+}
+
+static void s_ImGuiWindowClass_getDockingAlwaysTabBar( ImGuiWindowClass * p )
+{
+   bool ret = p->DockingAlwaysTabBar;
+   hb_retl( ret );
+}
+
+static void s_ImGuiWindowClass_getDockingAllowUnclassed( ImGuiWindowClass * p )
+{
+   bool ret = p->DockingAllowUnclassed;
+   hb_retl( ret );
+}
+
+static void(*s_ImGuiWindowClass_fields[])( ImGuiWindowClass * ) = { s_ImGuiWindowClass_getClassId, s_ImGuiWindowClass_getParentViewportId, s_ImGuiWindowClass_getViewportFlagsOverrideSet, s_ImGuiWindowClass_getViewportFlagsOverrideClear, s_ImGuiWindowClass_getTabItemFlagsOverrideSet, s_ImGuiWindowClass_getDockNodeFlagsOverrideSet, s_ImGuiWindowClass_getDockingAlwaysTabBar, s_ImGuiWindowClass_getDockingAllowUnclassed, s_ImGuiWindowClass_setClassId, s_ImGuiWindowClass_setParentViewportId, s_ImGuiWindowClass_setViewportFlagsOverrideSet, s_ImGuiWindowClass_setViewportFlagsOverrideClear, s_ImGuiWindowClass_setTabItemFlagsOverrideSet, s_ImGuiWindowClass_setDockNodeFlagsOverrideSet, s_ImGuiWindowClass_setDockingAlwaysTabBar, s_ImGuiWindowClass_setDockingAllowUnclassed };
+
+HB_FUNC( IMGUIWINDOWCLASS_GET )
+{
+   ImGuiWindowClass * p = ( ImGuiWindowClass * ) hb_parptr( 1 );
+   int n = hb_parni( 2 ) - 1;
+   if( p && n >= 0 && n < 8 )
+      s_ImGuiWindowClass_fields[ n ]( p );
+}
+
+HB_FUNC( IMGUIWINDOWCLASS_SET )
+{
+   ImGuiWindowClass * p = ( ImGuiWindowClass * ) hb_parptr( 1 );
+   int n = hb_parni( 2 ) - 1;
+   if( p && n >= 0 && n < 8 )
+      s_ImGuiWindowClass_fields[ 8 + n ]( p );
+   hb_itemCopy( hb_stackReturnItem(), hb_paramError( 3 ) );
 }
 

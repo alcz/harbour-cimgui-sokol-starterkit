@@ -5,7 +5,7 @@
 
     license is MIT, see ../LICENSE
 
-    Copyright (c) 2022 Aleksander Czajczynski
+    Copyright (c) 2022-2025 Aleksander Czajczynski
 */
 
 #include "hbimenum.ch"
@@ -42,8 +42,12 @@ FUNCTION hb_igDatePicker( cLabel, dDate, nWidth, nStartOfWeek, aState )
 
       igAlignTextToFramePadding()
 
+      IF dDate == 0d0
+         dDate := Date()
+      ENDIF
+
       // ROW
-      IF igButton( "<##" + cLabel + "year", _Y_BTN_SIZE )
+      IF igButton( "<##x" + cLabel + "year", _Y_BTN_SIZE )
          dNew := hb_date( Year( dDate ) - 1, Month( dDate ), Day( dDate ) )
          IF ! Empty( dNew )
             // stick to end-of-month
@@ -60,7 +64,7 @@ FUNCTION hb_igDatePicker( cLabel, dDate, nWidth, nStartOfWeek, aState )
          ENDIF
       ENDIF
       igSameLine()
-      IF igButton( ">##" + cLabel + "year", _Y_BTN_SIZE )
+      IF igButton( ">##x" + cLabel + "year", _Y_BTN_SIZE )
          dNew := hb_date( Year( dDate ) + 1, Month( dDate ), Day( dDate ) )
          IF ! Empty( dNew )
             // stick to end-of-month
@@ -80,7 +84,7 @@ FUNCTION hb_igDatePicker( cLabel, dDate, nWidth, nStartOfWeek, aState )
       igText( hb_NtoS( Year( dDate ) ) )
 
       // ROW
-      IF igButton( "<##" + cLabel + "month", _Y_BTN_SIZE )
+      IF igButton( "<##x" + cLabel + "month", _Y_BTN_SIZE )
          dNew := hb_date( Year( dDate ), Month( dDate ) - 1, Day( dDate ) )
          IF ! Empty( dNew )
             // stick to end-of-month
@@ -101,7 +105,7 @@ FUNCTION hb_igDatePicker( cLabel, dDate, nWidth, nStartOfWeek, aState )
          ENDIF
       ENDIF
       igSameLine()
-      IF igButton( ">##" + cLabel + "month", _Y_BTN_SIZE )
+      IF igButton( ">##x" + cLabel + "month", _Y_BTN_SIZE )
          dNew := hb_date( Year( dDate ), Month( dDate ) + 1, Day( dDate ) )
          IF ! Empty( dNew )
             // stick to end-of-month
@@ -124,7 +128,7 @@ FUNCTION hb_igDatePicker( cLabel, dDate, nWidth, nStartOfWeek, aState )
       igSameLine( 75.00 )
       igText( CMonth( dDate ) )
 
-      IF igBeginTable( "##" + cLabel + "day", 7, ImGuiTableFlags_Borders + ImGuiTableFlags_SizingStretchSame )
+      IF igBeginTable( "##x" + cLabel + "day", 7, ImGuiTableFlags_Borders + ImGuiTableFlags_SizingStretchSame )
          IF ! HB_IsNumeric( nStartOfWeek ) .OR. nStartOfWeek <= 1
             FOR i := 1 TO 7
                igTableSetupColumn( Left( hb_cday( i ), 3 ) )
@@ -186,7 +190,7 @@ FUNCTION hb_igDatePicker( cLabel, dDate, nWidth, nStartOfWeek, aState )
             igTableNextColumn()
             IF ( dNew := Eval( bSelector ) ) # NIL
                dDate := dNew
-               lRet := .T.
+               lRet := .T. /* consider returning when year/month buttons are clicked */
             ENDIF
          NEXT
       NEXT

@@ -63,6 +63,7 @@ PROCEDURE Main( cRun, cHiDPI )
       ENDIF
    ELSEIF cRun == "+" /* instead enable runtime adding of .hrb files using OS open file dialog and/or drag-and-drop */
       lDynAddFiles := .T.
+      lLoad := .F.
    ENDIF
 
    IF lLoad
@@ -150,12 +151,16 @@ PROCEDURE ImFrame
 
 PROCEDURE ImDrop( aFiles )
    LOCAL cFile
+
    FOR EACH cFile IN aFiles
 #ifdef __PLATFORM__WASM
       IG_WinCreate( @__ErrorWindow(), "loading:" + hb_NtoS( cFile:__enumIndex ), ;
                     { "loading async", cFile + " size: " + hb_NtoS( hb_sokol_wasm_droppedfilesize( cFile:__enumIndex ) ) } )
       hb_sokol_wasm_droppedfileload( cFile:__enumIndex,, cFile )
 //      hb_sokol_wasm_droppedfileload( cFile:__enumIndex,, { |cBody,nIndex| IIF( hb_isString( cBody ), ImAsyncFile( cBody, nIndex, cFile + ":codeblock" ), NIL ) } )
+#else
+      IG_WinCreate( @__ErrorWindow(), "loading:" + hb_NtoS( cFile:__enumIndex ), ;
+                    { "local file", cFile } )
 #endif
    NEXT
 

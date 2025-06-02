@@ -205,6 +205,16 @@ HB_FUNC( SAPP_DPI_SCALE )
    hb_retnd( sapp_dpi_scale() );
 }
 
+HB_FUNC( SAPP_IS_FULLSCREEN )
+{
+   hb_retl( sapp_is_fullscreen() );
+}
+
+HB_FUNC( SAPP_TOGGLE_FULLSCREEN )
+{
+   sapp_toggle_fullscreen();
+}
+
 HB_FUNC( SAPP_RUN_DEFAULT )
 { 
    sapp_desc s = hb_sokol_main( hb_parcx( 1 ), hb_parnidef( 2, 800 ), hb_parnidef( 3, 600 ),

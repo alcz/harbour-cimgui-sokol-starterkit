@@ -3,6 +3,28 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-06-02 12:07 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  + examples/edit1.prg
+    + .dbf table/grid editing example with Dear Imgui widgets
+
+  * cimgui-common/hbctcalw.prg
+    ! hb_igDatePicker() fix: with empty date in supplied variable
+      start picking today, not on year 0
+
+    ! hb_igDatePicker( <cLabel> ) fix for non printable labels
+      starting with "##", causing "+" igButton's contained in this
+      widget to stop working
+
+  * examples/runner.prg
+    * on startup don't try to load a file with drag-and-drop mode enable
+    ; work-in-progress: they are not really loaded at all
+
+  * sokol/hbsokol.c
+    + SAPP_IS_FULLSCREEN() -> <lFull>, SAPP_TOGGLE_FULLSCREEN()
+
+  * ChangeLog.txt
+    - removed a TODO (done)
+
 2025-02-25 17:50 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * cimgui-docking/hbimgui.cpp
   * cimgui-docking/hbimstru.ch
@@ -216,8 +238,6 @@
       To handle dropped files, add PROCEDURE ImDrop( aFiles, nMouseX, nMouseY )
       to your application source. <aFiles> elements should contain full paths to
       the files.
-
-      TODO: HTML5/emscripten needs additional handling - async recv of files
 
 2025-02-02 23:10 UTC+0100 Aleksander Czajczynski (hb fki.pl)
    + examples/emcc_uncool.ch

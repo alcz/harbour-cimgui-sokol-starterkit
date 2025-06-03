@@ -5,7 +5,7 @@
 
     license is MIT, see ../LICENSE
 
-    Copyright (c) 2023 Aleksander Czajczynski
+    Copyright (c) 2023-2025 Aleksander Czajczynski
 */
 
 #include "hbimenum.ch"
@@ -13,9 +13,11 @@
 #ifdef IMGUI_1_89_OR_GREATER
 
 /* based on C++ snippet by @ocornut */
-PROCEDURE hb_igComboText( cName, cVar, nLen, aComplete, lAll, nFlags )
+PROCEDURE hb_igComboText( cName, cVar, nLen, aComplete, lAll, nFlags, cHint )
    THREAD STATIC a1 := {0,0}, a2 := {0,0}
-   LOCAL lEnterPressed := igInputText( cName, @cVar, @nLen, HB_BitOr( IIF( nFlags == NIL, 0, nFlags ), ImGuiInputTextFlags_EnterReturnsTrue ) )
+   LOCAL lEnterPressed := IIF( HB_IsString( cHint ), ;
+                               igInputText( cName, @cVar, @nLen, HB_BitOr( IIF( nFlags == NIL, 0, nFlags ), ImGuiInputTextFlags_EnterReturnsTrue ), ), ;
+                               igInputTextWithHint( cName, cHint, @cVar, @nLen, HB_BitOr( IIF( nFlags == NIL, 0, nFlags ), ImGuiInputTextFlags_EnterReturnsTrue ), ) )
    LOCAL lActive := igIsItemActive()
    LOCAL lActivated := igIsItemActivated()
 
@@ -53,14 +55,18 @@ PROCEDURE hb_igComboText( cName, cVar, nLen, aComplete, lAll, nFlags )
 #else
 
 /* based on C++ snippet by @rokups */
-PROCEDURE hb_igComboText( cName, cVar, nLen, aComplete, lAll, nFlags, lOpen )
+PROCEDURE hb_igComboText( cName, cVar, nLen, aComplete, lAll, nFlags, cHint, lOpen )
    LOCAL lIsFocused, i
    THREAD STATIC a1 := {0,0}, a2 := {0,0}
 
    /* keyboard navigation does not work on the suggestions :-( */
 
    /* return value is possible here, .T. after the text is modified, but incompatible with later version... */
-   igInputText( cName, @cVar, @nLen, nFlags )
+   IF HB_IsString( cHint )
+      igInputTextWithHint( cName, cHint, @cVar, @nLen, nFlags )
+   ELSE
+      igInputText( cName, @cVar, @nLen, nFlags )
+   ENDIF
 // igSameLine()
 
    IF ! HB_IsLogical( lOpen )

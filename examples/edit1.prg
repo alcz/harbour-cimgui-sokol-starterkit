@@ -104,7 +104,7 @@ STATIC PROCEDURE DBEditor( lFit, lAppend )
 
    LOCAL nFieldValue, fFieldValue, cFieldValue, lFieldValue
 
-   STATIC aNewFocus := NIL, cDatePickerOpenKey := NIL, aPickerState := { NIL }, dFieldValue, lScrollBottom := .F.
+   STATIC aNewFocus := NIL, cDatePickerOpenKey := NIL, aPickerState := { NIL }, dFieldValue
 
    IF nTextBHeight == NIL
       ImGui::CalcTextSize( @nTextBHeight, "A" ) // -> {x,y}
@@ -278,8 +278,13 @@ STATIC PROCEDURE __EditInFocus( aNewFocus, nF, pClip )
 
 STATIC PROCEDURE __Commit( nF, x )
    /* real/responsive app should collect pending operations waiting for lock */
-   IF RLock()
-      FieldPut( nF, x )
+   BEGIN SEQUENCE WITH { || Break() }
+      /* stock inputInt, inputDouble widgets do not have min/max params, data width error possible */
+      IF RLock()
+         FieldPut( nF, x )
+         DBUnlock()
+      ENDIF
+   RECOVER
       DBUnlock()
-   ENDIF
+   END SEQUENCE
    RETURN

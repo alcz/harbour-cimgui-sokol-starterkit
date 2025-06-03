@@ -3,6 +3,16 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-06-02 11:50 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * examples/edit1.prg
+    ! inputInt, inputDouble have no min/max value defined,
+      width of the control does not prevent this (Data width
+      error possible)
+
+  * cimgui-common/hbcombow.prg
+    + extended hb_igComboText() editable combo box input widget
+      variant with optional hint message
+
 2025-06-02 12:07 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   + examples/edit1.prg
     + .dbf table/grid editing example with Dear Imgui widgets

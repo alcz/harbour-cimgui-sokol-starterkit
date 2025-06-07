@@ -48,6 +48,14 @@ HB_FUNC( IMGUILISTCLIPPER_DESTROY )
    ImGuiListClipper_destroy(pOut);
 }
 
+/* void ImGuiStyle_ScaleAllSizes(ImGuiStyle* self,float scale_factor) */
+HB_FUNC( IMGUISTYLE_SCALEALLSIZES )
+{
+   ImGuiStyle* pOut = ( ImGuiStyle* ) hb_parptr( 1 );
+   float scale_factor = ( float ) hb_parnd( 2 );
+   ImGuiStyle_ScaleAllSizes(pOut,scale_factor);
+}
+
 HB_FUNC( IMGUIWINDOWCLASS_IMGUIWINDOWCLASS )
 {
    hb_retptr( ImGuiWindowClass_ImGuiWindowClass() );

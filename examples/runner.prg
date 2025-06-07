@@ -30,7 +30,9 @@ STATIC s_pHRB, s_symImFrame
 
 PROCEDURE Main( cRun, cHiDPI )
    LOCAL aScriptHost, cBuf, nRead, lLoad := .T., lDynAddFiles := .F.
-
+#ifndef __PLATFORM__WASM
+   LOCAL nWait
+#endif
    hb_cdpSelect("UTF8EX")
 
    IG_MultiWin_Init()
@@ -43,7 +45,7 @@ PROCEDURE Main( cRun, cHiDPI )
       IF ( nRead := hb_pread( hb_getStdIn(), @cBuf, 4, 5000 ) ) < 4
          __ErrorWindow_Create( "STDIN error", "runner " + cRun + " parameter passed, but didn't get valid .hrb on STDIN, read " + hb_ntos( nRead ) + " bytes" )
          lLoad := .F.
-      ELSEIF ! cBuf == hb_BChar( 0xC0 ) + "HRB" .AND. ! Left( cBuf, 1 ) == "*"
+      ELSEIF ! cBuf == hb_BChar( 0xC0 ) + "HRB" .AND. ! hb_BLeft( cBuf, 1 ) == "*"
          /* .html#![...] in address bar of a browser denotes urlized .prg code
             .html#*[...] in address bar of a browser denotes urlized .hrb body
             STDIN of this example runner is only capable of "*" -> .hrb, as
@@ -54,10 +56,24 @@ PROCEDURE Main( cRun, cHiDPI )
       ELSE
          cRun := cBuf
          cBuf := Space( 32768 )
+
+#ifdef __PLATFORM__WASM
+         /* emscripten's preloaded STDIN needs no wait, at least the way we're using it */
          DO WHILE ( nRead := hb_pread( hb_getStdIn(), @cBuf, 32768 ) ) > 0
-            cRun += hb_BLeft( cBuf, nRead )
+               cRun += hb_BLeft( cBuf, nRead )
          ENDDO
-         IF Left( cRun, 1 ) == "*"
+#else
+         nWait := 200
+         DO WHILE ( nRead := hb_pread( hb_getStdIn(), @cBuf, 32768, nWait ) ) > 0 /* .hrb file seem to end with 0x07 */
+            cRun += hb_BLeft( cBuf, nRead )
+            IF ! hb_BLeft( cRun, 1 ) == "*" .AND. ! hb_BRight( cRun, 1 ) == hb_BChar( 0x07 )
+               nWait := 2000
+            ELSE
+               nWait := 200
+            ENDIF
+         ENDDO
+#endif
+         IF hb_BLeft( cRun, 1 ) == "*"
             cRun := __unhbz( SubStr( cRun, 2 ) )
          ENDIF
       ENDIF

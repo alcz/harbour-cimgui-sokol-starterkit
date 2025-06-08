@@ -9,7 +9,9 @@
 #include "implot/implot_internal.h"
 #include "cimplot.h"
 
+HB_EXTERN_BEGIN
 float _paf( PHB_ITEM p, HB_SIZE nIndex );
+HB_EXTERN_END
 
 /* void ImPlotAlignmentData_Begin(ImPlotAlignmentData* self) */
 HB_FUNC( IMPLOTALIGNMENTDATA_BEGIN )

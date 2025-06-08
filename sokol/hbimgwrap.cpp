@@ -22,7 +22,9 @@
 #include "cimgui.h"
 #include "sokol_imgui.h"
 
+HB_EXTERN_BEGIN
 float _paf( PHB_ITEM p, HB_SIZE nIndex );
+HB_EXTERN_END
 
 /* these wrappers make sokol compatible ImTextureID parameter from hb_parni()
    Comparing hb_sokol_igImage() to plain igImage(), etc. is that those plain

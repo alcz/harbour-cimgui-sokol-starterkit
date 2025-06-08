@@ -4,6 +4,15 @@
    See license at the end of file. */
 
 2025-06-07 14:56 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * cimplot/hbimplot.cpp
+   * sokol/hbimgwrap.cpp
+     ! extern "C" {} missing for single function imported from .c
+     ; it's also in cimgui-common/hbimgui.h ...
+
+   * sokol/sokolimg.hbc
+     * make libs listing the same as sokol.hbc
+
+2025-06-07 14:56 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * examples/runner.prg
     ! fix "type file.hrb | runner -" pipe starting too slow
       on some Windows machine, always truncated on 4176 bytes,

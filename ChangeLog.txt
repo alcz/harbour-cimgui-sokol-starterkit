@@ -3,6 +3,39 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+
+2025-06-09 17:07 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * cimgui-docking/cimgui.cpp               
+   * cimgui-docking/cimgui.h                 
+   * cimgui-docking/cimgui.hbx               
+   * cimgui-docking/hbimenum.ch              
+   * cimgui-docking/hbimgui.cpp              
+   * cimgui-docking/hbimstru.ch              
+   * cimgui-docking/imgui/LICENSE.txt        
+   * cimgui-docking/imgui/imconfig.h         
+   * cimgui-docking/imgui/imgui.cpp          
+   * cimgui-docking/imgui/imgui.h            
+   * cimgui-docking/imgui/imgui_demo.cpp     
+   * cimgui-docking/imgui/imgui_draw.cpp     
+   * cimgui-docking/imgui/imgui_internal.h   
+   * cimgui-docking/imgui/imgui_tables.cpp   
+   * cimgui-docking/imgui/imgui_widgets.cpp  
+   * cimgui-docking/imgui/imstb_rectpack.h   
+   * cimgui-docking/imgui/imstb_textedit.h   
+   * cimgui-docking/imgui/imstb_truetype.h   
+     * updated Dear ImGui docking branch + cimgui + our wrapper
+       to 1.86
+
+     ; IncludeItemsByIndex() ImGuiListClipper member backported name
+       is also included, as we supposedly have high interest in this
+       call
+
+   * checkout-imgui-185-docking.bat
+     * final commit id of 1.85 docking stored branch here
+
+   * cimgui-common/hbhlp.c                   
+     + stub of compare_func callback called by igImQsort()
+
 2025-06-09 11:18 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * LICENSE
      * '25

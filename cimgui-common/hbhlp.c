@@ -59,6 +59,12 @@ void hb_ig_free_func( void* ptr,void* user_data )
 {
 }
 
+//    int(*compare_func)(void const*,void const*));
+int hb_ig_compare_func( const void* ptr, const void* ptr2 )
+{
+   return 0;
+}
+
 int hb_ig_text_cb( ImGuiInputTextCallbackData * data )
 {
    char * buf_old;

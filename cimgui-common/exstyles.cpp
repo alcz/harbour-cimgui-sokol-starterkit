@@ -284,3 +284,54 @@ HB_FUNC( HB_IGBUTTONROUNDED )
    ImGui::PopStyleVar( 1 );
    hb_retl( ret );
 }
+
+/* by @ocornut https://github.com/ocornut/imgui/issues/7024#issuecomment-2802152220
+   saved for reference
+
+static void RenderTextAlignedClipped(const char* text, const char* text_end = NULL, const ImVec2* p_text_size_if_avail = NULL, float align_x = 1.0f)
+{
+    using namespace ImGui;
+    ImGuiContext& g = *GImGui;
+    ImGuiWindow * window = g.CurrentWindow;
+
+    if( ! text_end )
+       text_end = text + ImStrlen( text );
+
+    const ImVec2 text_size = p_text_size_if_avail ? *p_text_size_if_avail : CalcTextSize( text, text_end );
+    const ImVec2 avail = GetContentRegionAvail();
+
+    ImVec2 pos = window->DC.CursorPos;
+    ImVec2 pos_max( pos.x + avail.x, window->ClipRect.Max.y );
+    window->DC.CursorMaxPos.x = ImMax( window->DC.CursorMaxPos.x, pos.x + text_size.x );
+    window->DC.IdealMaxPos.x = ImMax( window->DC.IdealMaxPos.x, pos.x + text_size.x );
+
+    if( align_x > 0.0f && text_size.x < avail.x )
+    {
+       pos.x += ImTrunc( ( avail.x - text_size.x ) * align_x );
+       window->DC.CursorPos = pos;
+    }
+    RenderTextEllipsis( window->DrawList, pos, pos_max, pos_max.x, text, text_end, &text_size );
+
+    const ImVec2 backup_max_pos = window->DC.CursorMaxPos;
+    Dummy( ImVec2( ImMin( avail.x, text_size.x ), text_size.y ) );
+    //DebugDrawItemRect();
+    window->DC.CursorMaxPos.x = backup_max_pos.x; // Cancel out extending content size because alignment will mess it up.
+
+    if( avail.x < text_size.x && IsItemHovered( ImGuiHoveredFlags_AllowWhenDisabled ) )
+        SetItemTooltip("%.*s", (int)(text_end - text), text);
+}
+
+HB_FUNC( HB_RENDERTEXTALIGNEDCLIPPED )
+{
+   const char* label = hb_parcx( 1 );
+   PHB_ITEM psize = hb_param( 2, HB_IT_ARRAY );
+   ImVec2 size;
+   float align_x = ( float ) hb_parnd( 3 );
+   if( psize )
+      size = ImVec2{ ( float ) hb_arrayGetND( psize, 1 ), ( float ) hb_arrayGetND( psize, 2 ) };
+   else
+      size = ImVec2{ 0, 0 };
+   RenderTextAlignedClipped( label, NULL, &size, align_x );
+}
+
+*/

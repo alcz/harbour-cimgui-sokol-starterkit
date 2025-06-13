@@ -12,6 +12,8 @@
 REQUEST HB_CODEPAGE_UTF8EX
 REQUEST HB_MEMIO
 
+STATIC s_lEnterAdvances := .T.
+
 PROCEDURE MAIN
 
 #ifdef __PLATFORM__WASM
@@ -79,7 +81,12 @@ PROCEDURE ImFrame
       lAppend := .T.
    ENDIF
    ImGui::SameLine( 370 )
-   ImGui::Text("Tab and Shift-Tab jumps visible columns")
+   IF ImGui::GetVersion() <= "1.85"
+      ImGui::Text("Tab and Shift-Tab jumps visible columns")
+   ELSE
+      ImGui::Text("Tab and Shift-Tab jumps all columns")
+   ENDIF
+   ImGui::CheckBox("Enter after editing advances to next cell", @s_lEnterAdvances )
 
    DBEditor( lFit, lAppend )
 
@@ -183,20 +190,24 @@ STATIC PROCEDURE DBEditor( lFit, lAppend )
                      IF FieldDec( nF ) > 0
                         fFieldValue := x
                         cFormat := "%." + hb_NtoS( FieldDec( nF ) ) + "f" /* adjust precision */
-                        IF ImGui::InputDouble( WIDGET_KEY, @fFieldValue, 0.01, 1.0, cFormat )
+                        /* these numeric widgets also return TRUE when clicked, testing in 1.86, cannot tell the difference between Enter and mouseclick */
+                        IF ImGui::InputDouble( WIDGET_KEY, @fFieldValue, 0.01, 1.0, cFormat /*, retest _EnterReturnTrue in future versions */ )
                            __Commit( nF, fFieldValue ) /* commit change */
+                           // __AdvanceOnEnter( nF, @aNewFocus )
                         ENDIF
                      ELSE
                         nFieldValue := x
-                        IF ImGui::InputInt( WIDGET_KEY, @nFieldValue )
+                        IF ImGui::InputInt( WIDGET_KEY, @nFieldValue,,/*, retest _EnterReturnTrue in future versions */ )
                            __Commit( nF, nFieldValue ) /* commit change */
+                           // __AdvanceOnEnter( nF, @aNewFocus )
                         ENDIF
                      ENDIF
                      EXIT
                   CASE "C"
                      cFieldValue := x
-                     IF ImGui::InputText( WIDGET_KEY, @cFieldValue )
+                     IF ImGui::InputText( WIDGET_KEY, @cFieldValue,, ImGuiInputTextFlags_EnterReturnsTrue )
                         __Commit( nF, cFieldValue ) /* commit change */
+                        __AdvanceOnEnter( nF, @aNewFocus )
                      ENDIF
                      EXIT
                   CASE "L"
@@ -212,8 +223,9 @@ STATIC PROCEDURE DBEditor( lFit, lAppend )
                         IF dFieldValue <> x
                            __Commit( nF, dFieldValue ) /* commit change */
                         ENDIF
-                     ELSEIF ImGui::InputText( WIDGET_KEY, @cFieldValue )
+                     ELSEIF ImGui::InputText( WIDGET_KEY, @cFieldValue,, ImGuiInputTextFlags_EnterReturnsTrue )
                         __Commit( nF, CtoD( cFieldValue ) ) /* commit change */
+                        __AdvanceOnEnter( nF, @aNewFocus )
                      ENDIF
                      IF ImGui::IsItemHovered() .AND. ImGui::IsMouseDoubleClicked( 0 )
                         IF ! cDatePickerOpenKey == WIDGET_KEY
@@ -288,3 +300,17 @@ STATIC PROCEDURE __Commit( nF, x )
       DBUnlock()
    END SEQUENCE
    RETURN
+
+STATIC PROCEDURE __AdvanceOnEnter( nF, aNewFocus )
+   IF ! s_lEnterAdvances
+      RETURN
+   ENDIF
+   IF nF == FCount()
+      IF RecNo() < RecCount()
+         aNewFocus := { RecNo() + 1, 1 }
+      ENDIF
+   ELSE
+      aNewFocus := { RecNo(), nF + 1 }
+   ENDIF
+   RETURN
+

@@ -4,6 +4,18 @@
    See license at the end of file. */
 
 
+2025-06-15 20:24 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * cimgui-docking/hbimgui.cpp
+   * cimgui/hbimgui.cpp
+     % cleanup the usage of text_end kind of pointers in function
+       that read string parameters. Now ImGui won't rely on scanning
+       \0 terminator, but rather get real string length from Harbour
+       item [INCOMPATIBLE]. Though text_end = NULL may still have
+       more sense in Multi-Threading applications, in a way that
+       to current solution have to guarantee atomicity between
+       *len() and C pointer getting call, that is kind of cost too
+       versus scanning for \0.
+
 2025-06-13 12:40 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * examples/edit1.prg
     * expose some difference in Tab to switch controls

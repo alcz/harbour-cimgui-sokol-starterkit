@@ -598,8 +598,9 @@ HB_FUNC( IGCALCTEXTSIZE )
 {
    PHB_ITEM pOutItem = hb_param( 1, HB_IT_ANY );
    ImVec2 pOut;
+   HB_SIZE text_siz = hb_parclen( 2 );
    const char* text = hb_parcx( 2 );
-   const char* text_end = NULL;
+   const char* text_end = text + text_siz;
    bool hide_text_after_double_hash = hb_parldef( 3, 0 );
    float wrap_width = ( float ) ( ! HB_ISNUM( 4 ) ? -1.0 : hb_parnd( 4 ) );
    igCalcTextSize(&pOut,text,text_end,hide_text_after_double_hash,wrap_width);
@@ -1118,8 +1119,9 @@ HB_FUNC( IGDEBUGHOOKIDINFO )
 {
    ImGuiID id = ( ImGuiID ) hb_parni( 1 );
    ImGuiDataType data_type = ( ImGuiDataType ) hb_parni( 2 );
+   HB_SIZE data_id_siz = hb_parclen( 3 );
    const void* data_id = ( const void* ) hb_parptr( 3 );
-   const void* data_id_end = ( const void* ) hb_parptr( 4 );
+   const void* data_id_end = data_id + data_id_siz;
    igDebugHookIdInfo(id,data_type,data_id,data_id_end);
 }
 
@@ -2007,8 +2009,9 @@ HB_FUNC( IGFINDORCREATEWINDOWSETTINGS )
 /* const char* igFindRenderedTextEnd(const char* text,const char* text_end) */
 HB_FUNC( IGFINDRENDEREDTEXTEND )
 {
+   HB_SIZE text_siz = hb_parclen( 1 );
    const char* text = hb_parcx( 1 );
-   const char* text_end = NULL;
+   const char* text_end = text + text_siz;
    const char* ret = igFindRenderedTextEnd(text,text_end);
    hb_retc( ret );
 }
@@ -2455,8 +2458,9 @@ HB_FUNC( IGGETIDSTR )
 /* ImGuiID igGetID_StrStr(const char* str_id_begin,const char* str_id_end) */
 HB_FUNC( IGGETIDSTRSTR )
 {
+   HB_SIZE str_id_begin_siz = hb_parclen( 1 );
    const char* str_id_begin = hb_parcx( 1 );
-   const char* str_id_end = hb_parcx( 2 );
+   const char* str_id_end = str_id_begin + str_id_begin_siz;
    ImGuiID ret = igGetID_StrStr(str_id_begin,str_id_end);
    hb_retni( ( int ) ret );
 }
@@ -2472,9 +2476,10 @@ HB_FUNC( IGGETIDPTR )
 /* ImGuiID igGetIDWithSeed(const char* str_id_begin,const char* str_id_end,ImGuiID seed) */
 HB_FUNC( IGGETIDWITHSEED )
 {
+   HB_SIZE str_id_begin_siz = hb_parclen( 1 );
    const char* str_id_begin = hb_parcx( 1 );
-   const char* str_id_end = hb_parcx( 2 );
-   ImGuiID seed = ( ImGuiID ) hb_parni( 3 );
+   const char* str_id_end = str_id_begin + str_id_begin_siz;
+   ImGuiID seed = ( ImGuiID ) hb_parni( 2 );
    ImGuiID ret = igGetIDWithSeed(str_id_begin,str_id_end,seed);
    hb_retni( ( int ) ret );
 }
@@ -3649,8 +3654,9 @@ HB_FUNC( IGIMSTRBOLW )
 /* const char* igImStrchrRange(const char* str_begin,const char* str_end,char c) */
 HB_FUNC( IGIMSTRCHRRANGE )
 {
+   HB_SIZE str_begin_siz = hb_parclen( 1 );
    const char* str_begin = hb_parcx( 1 );
-   const char* str_end = hb_parcx( 2 );
+   const char* str_end = str_begin + str_begin_siz;
    char c;
    const char* ret = igImStrchrRange(str_begin,str_end,c);
    hb_retc( ret );
@@ -3681,8 +3687,9 @@ HB_FUNC( IGIMSTRDUPCPY )
 /* const char* igImStreolRange(const char* str,const char* str_end) */
 HB_FUNC( IGIMSTREOLRANGE )
 {
+   HB_SIZE str_siz = hb_parclen( 1 );
    const char* str = hb_parcx( 1 );
-   const char* str_end = hb_parcx( 2 );
+   const char* str_end = str + str_siz;
    const char* ret = igImStreolRange(str,str_end);
    hb_retc( ret );
 }
@@ -3699,10 +3706,12 @@ HB_FUNC( IGIMSTRICMP )
 /* const char* igImStristr(const char* haystack,const char* haystack_end,const char* needle,const char* needle_end) */
 HB_FUNC( IGIMSTRISTR )
 {
+   HB_SIZE haystack_siz = hb_parclen( 1 );
    const char* haystack = hb_parcx( 1 );
-   const char* haystack_end = hb_parcx( 2 );
-   const char* needle = hb_parcx( 3 );
-   const char* needle_end = hb_parcx( 4 );
+   const char* haystack_end = haystack + haystack_siz;
+   HB_SIZE needle_siz = hb_parclen( 2 );
+   const char* needle = hb_parcx( 2 );
+   const char* needle_end = needle + needle_siz;
    const char* ret = igImStristr(haystack,haystack_end,needle,needle_end);
    hb_retc( ret );
 }
@@ -3741,8 +3750,9 @@ HB_FUNC( IGIMTEXTCHARFROMUTF8 )
 {
    unsigned int _out_char;
    unsigned int* out_char = &_out_char;
+   HB_SIZE in_text_siz = hb_parclen( 2 );
    const char* in_text = hb_parcx( 2 );
-   const char* in_text_end = hb_parcx( 3 );
+   const char* in_text_end = in_text + in_text_siz;
    int ret = igImTextCharFromUtf8(out_char,in_text,in_text_end);
    hb_retni( ret );
 }
@@ -3759,8 +3769,9 @@ HB_FUNC( IGIMTEXTCHARTOUTF8 )
 /* int igImTextCountCharsFromUtf8(const char* in_text,const char* in_text_end) */
 HB_FUNC( IGIMTEXTCOUNTCHARSFROMUTF8 )
 {
+   HB_SIZE in_text_siz = hb_parclen( 1 );
    const char* in_text = hb_parcx( 1 );
-   const char* in_text_end = hb_parcx( 2 );
+   const char* in_text_end = in_text + in_text_siz;
    int ret = igImTextCountCharsFromUtf8(in_text,in_text_end);
    hb_retni( ret );
 }
@@ -3768,8 +3779,9 @@ HB_FUNC( IGIMTEXTCOUNTCHARSFROMUTF8 )
 /* int igImTextCountUtf8BytesFromChar(const char* in_text,const char* in_text_end) */
 HB_FUNC( IGIMTEXTCOUNTUTF8BYTESFROMCHAR )
 {
+   HB_SIZE in_text_siz = hb_parclen( 1 );
    const char* in_text = hb_parcx( 1 );
-   const char* in_text_end = hb_parcx( 2 );
+   const char* in_text_end = in_text + in_text_siz;
    int ret = igImTextCountUtf8BytesFromChar(in_text,in_text_end);
    hb_retni( ret );
 }
@@ -3777,8 +3789,9 @@ HB_FUNC( IGIMTEXTCOUNTUTF8BYTESFROMCHAR )
 /* int igImTextCountUtf8BytesFromStr(const ImWchar* in_text,const ImWchar* in_text_end) */
 HB_FUNC( IGIMTEXTCOUNTUTF8BYTESFROMSTR )
 {
+   HB_SIZE in_text_siz = hb_parclen( 1 );
    const ImWchar* in_text = ( const ImWchar* ) hb_parptr( 1 );
-   const ImWchar* in_text_end = ( const ImWchar* ) hb_parptr( 2 );
+   const ImWchar* in_text_end = in_text + in_text_siz;
    int ret = igImTextCountUtf8BytesFromStr(in_text,in_text_end);
    hb_retni( ret );
 }
@@ -3789,9 +3802,10 @@ HB_FUNC( IGIMTEXTSTRFROMUTF8 )
    ImWchar _out_buf;
    ImWchar* out_buf = &_out_buf;
    int out_buf_size = hb_parni( 2 );
+   HB_SIZE in_text_siz = hb_parclen( 3 );
    const char* in_text = hb_parcx( 3 );
-   const char* in_text_end = hb_parcx( 4 );
-   const char** in_remaining = ( const char** ) hb_parptr( 5 );
+   const char* in_text_end = in_text + in_text_siz;
+   const char** in_remaining = ( const char** ) hb_parptr( 4 );
    int ret = igImTextStrFromUtf8(out_buf,out_buf_size,in_text,in_text_end,in_remaining);
    hb_retni( ret );
 }
@@ -3802,8 +3816,9 @@ HB_FUNC( IGIMTEXTSTRTOUTF8 )
    char _out_buf;
    char* out_buf = &_out_buf;
    int out_buf_size = hb_parni( 2 );
+   HB_SIZE in_text_siz = hb_parclen( 3 );
    const ImWchar* in_text = ( const ImWchar* ) hb_parptr( 3 );
-   const ImWchar* in_text_end = ( const ImWchar* ) hb_parptr( 4 );
+   const ImWchar* in_text_end = in_text + in_text_siz;
    int ret = igImTextStrToUtf8(out_buf,out_buf_size,in_text,in_text_end);
    hb_itemPutC( hb_paramError( 1 ), out_buf );
    hb_xfree( out_buf );
@@ -4880,8 +4895,9 @@ HB_FUNC( IGLOGFINISH )
 HB_FUNC( IGLOGRENDEREDTEXT )
 {
    const ImVec2* ref_pos = ( const ImVec2* ) hb_parptr( 1 );
+   HB_SIZE text_siz = hb_parclen( 2 );
    const char* text = hb_parcx( 2 );
-   const char* text_end = NULL;
+   const char* text_end = text + text_siz;
    igLogRenderedText(ref_pos,text,text_end);
 }
 
@@ -5350,8 +5366,9 @@ HB_FUNC( IGPUSHIDSTR )
 /* void igPushID_StrStr(const char* str_id_begin,const char* str_id_end) */
 HB_FUNC( IGPUSHIDSTRSTR )
 {
+   HB_SIZE str_id_begin_siz = hb_parclen( 1 );
    const char* str_id_begin = hb_parcx( 1 );
-   const char* str_id_end = hb_parcx( 2 );
+   const char* str_id_end = str_id_begin + str_id_begin_siz;
    igPushID_StrStr(str_id_begin,str_id_end);
 }
 
@@ -5636,8 +5653,9 @@ HB_FUNC( IGRENDERTEXT )
 {
    PHB_ITEM ppos = hb_param( 1, HB_IT_ARRAY );
    ImVec2 pos = ImVec2{ _paf( ppos, 1 ), _paf( ppos, 2 ) };
+   HB_SIZE text_siz = hb_parclen( 2 );
    const char* text = hb_parcx( 2 );
-   const char* text_end = NULL;
+   const char* text_end = text + text_siz;
    bool hide_text_after_hash = hb_parldef( 3, 1 );
    igRenderText(pos,text,text_end,hide_text_after_hash);
 }
@@ -5649,8 +5667,9 @@ HB_FUNC( IGRENDERTEXTCLIPPED )
    const ImVec2 pos_min = ImVec2{ _paf( ppos_min, 1 ), _paf( ppos_min, 2 ) };
    PHB_ITEM ppos_max = hb_param( 2, HB_IT_ARRAY );
    const ImVec2 pos_max = ImVec2{ _paf( ppos_max, 1 ), _paf( ppos_max, 2 ) };
+   HB_SIZE text_siz = hb_parclen( 3 );
    const char* text = hb_parcx( 3 );
-   const char* text_end = NULL;
+   const char* text_end = text + text_siz;
    const ImVec2* text_size_if_known = ( const ImVec2* ) hb_parptr( 4 );
    PHB_ITEM palign = hb_param( 5, HB_IT_ARRAY );
    const ImVec2 align = ImVec2{ _paf( palign, 1 ), _paf( palign, 2 ) };
@@ -5666,8 +5685,9 @@ HB_FUNC( IGRENDERTEXTCLIPPEDEX )
    const ImVec2 pos_min = ImVec2{ _paf( ppos_min, 1 ), _paf( ppos_min, 2 ) };
    PHB_ITEM ppos_max = hb_param( 3, HB_IT_ARRAY );
    const ImVec2 pos_max = ImVec2{ _paf( ppos_max, 1 ), _paf( ppos_max, 2 ) };
+   HB_SIZE text_siz = hb_parclen( 4 );
    const char* text = hb_parcx( 4 );
-   const char* text_end = NULL;
+   const char* text_end = text + text_siz;
    const ImVec2* text_size_if_known = ( const ImVec2* ) hb_parptr( 5 );
    PHB_ITEM palign = hb_param( 6, HB_IT_ARRAY );
    const ImVec2 align = ImVec2{ _paf( palign, 1 ), _paf( palign, 2 ) };
@@ -5685,8 +5705,9 @@ HB_FUNC( IGRENDERTEXTELLIPSIS )
    const ImVec2 pos_max = ImVec2{ _paf( ppos_max, 1 ), _paf( ppos_max, 2 ) };
    float clip_max_x = ( float ) hb_parnd( 4 );
    float ellipsis_max_x = ( float ) hb_parnd( 5 );
+   HB_SIZE text_siz = hb_parclen( 6 );
    const char* text = hb_parcx( 6 );
-   const char* text_end = NULL;
+   const char* text_end = text + text_siz;
    const ImVec2* text_size_if_known = ( const ImVec2* ) hb_parptr( 7 );
    igRenderTextEllipsis(draw_list,pos_min,pos_max,clip_max_x,ellipsis_max_x,text,text_end,text_size_if_known);
 }
@@ -5696,8 +5717,9 @@ HB_FUNC( IGRENDERTEXTWRAPPED )
 {
    PHB_ITEM ppos = hb_param( 1, HB_IT_ARRAY );
    ImVec2 pos = ImVec2{ _paf( ppos, 1 ), _paf( ppos, 2 ) };
+   HB_SIZE text_siz = hb_parclen( 2 );
    const char* text = hb_parcx( 2 );
-   const char* text_end = NULL;
+   const char* text_end = text + text_siz;
    float wrap_width = ( float ) hb_parnd( 3 );
    igRenderTextWrapped(pos,text,text_end,wrap_width);
 }
@@ -7436,8 +7458,9 @@ HB_FUNC( IGTEXTDISABLEDV )
 /* void igTextEx(const char* text,const char* text_end,ImGuiTextFlags flags) */
 HB_FUNC( IGTEXTEX )
 {
+   HB_SIZE text_siz = hb_parclen( 1 );
    const char* text = hb_parcx( 1 );
-   const char* text_end = NULL;
+   const char* text_end = text + text_siz;
    ImGuiTextFlags flags = ( ImGuiTextFlags ) hb_parni( 2 );
    igTextEx(text,text_end,flags);
 }
@@ -7445,8 +7468,9 @@ HB_FUNC( IGTEXTEX )
 /* void igTextUnformatted(const char* text,const char* text_end) */
 HB_FUNC( IGTEXTUNFORMATTED )
 {
+   HB_SIZE text_siz = hb_parclen( 1 );
    const char* text = hb_parcx( 1 );
-   const char* text_end = NULL;
+   const char* text_end = text + text_siz;
    igTextUnformatted(text,text_end);
 }
 
@@ -7513,8 +7537,9 @@ HB_FUNC( IGTREENODEBEHAVIOR )
 {
    ImGuiID id = ( ImGuiID ) hb_parni( 1 );
    ImGuiTreeNodeFlags flags = ( ImGuiTreeNodeFlags ) hb_parni( 2 );
+   HB_SIZE label_siz = hb_parclen( 3 );
    const char* label = hb_parcx( 3 );
-   const char* label_end = hb_parcx( 4 );
+   const char* label_end = label + label_siz;
    bool ret = igTreeNodeBehavior(id,flags,label,label_end);
    hb_retl( ret );
 }

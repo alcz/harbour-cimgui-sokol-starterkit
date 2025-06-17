@@ -4,6 +4,10 @@
    See license at the end of file. */
 
 
+2025-06-17 11:57 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * examples/yadbu/yadbu.prg
+     % access array elements by definition
+
 2025-06-17 11:06 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * examples/yadbu/yadbu.prg
      * navigation toolbox working (a demo of ImGuiListClipper capability

@@ -44,6 +44,21 @@ REQUEST HB_CODEPAGE_UTF8EX
 #define ATLAS_CDPLIST { "PL852", "EL737", "UA866", "PT850", "PT860", "ES850", "EE775", "DE858", "IS861", "TR857", "HE862" }
 REQUEST DBFCDX, HB_MEMIO
 
+#define _WA_ID        1
+#define _WA_ALIAS     2
+#define _WA_RDD       3
+#define _WA_FULLPATH  4
+#define _WA_ORDERS    5
+#define _WA_HIDDEN    6
+#define _WA_GOINGTO   7
+
+#define _OO_SEQ       1
+#define _OO_NAME      2
+#define _OO_SIZE      3
+#define _OO_PATH      4
+#define _OO_LOAD      5
+#define _OO_ALIAS     6
+
 THREAD STATIC s_nTBSize := TB_SIZE
 THREAD STATIC s_aAliases := { }, s_nActive := 0
 // THREAD STATIC l_AutoOpenDropped := .F.
@@ -159,14 +174,14 @@ PROCEDURE PrepFiles( aFiles )
       aTmp := { }
       FOR EACH a IN aTable
 #ifdef __PLATFORM__WASM
-         a[ 3 ] := hb_sokol_wasm_droppedfilesize( a:__enumIndex )
-         a[ 4 ] := ""
+         a[ _OO_SIZE ] := hb_sokol_wasm_droppedfilesize( a:__enumIndex )
+         a[ _OO_PATH ] := ""
 #else
-         a[ 3 ] := hb_FSize( a[ 2 ] )
-         a[ 4 ] := hb_FNameDir( a[ 2 ] )
-         a[ 2 ] := hb_FNameNameExt( a[ 2 ] )
+         a[ _OO_SIZE ] := hb_FSize( a[ _OO_NAME ] )
+         a[ _OO_PATH ] := hb_FNameDir( a[ _OO_NAME ] )
+         a[ _OO_NAME ] := hb_FNameNameExt( a[ _OO_NAME ] )
 #endif
-         IF a[ 3 ] == 0 /* ignore empty or folder for now */
+         IF a[ _OO_SIZE ] == 0 /* ignore empty or folder for now */
             AAdd( aTmp, a:__enumIndex )
          ENDIF
       NEXT
@@ -207,9 +222,9 @@ PROCEDURE AskToLoad( aTable, cMode )
       FOR EACH a IN aTable
          ImGui::TableNextRow()
          ImGui::TableNextColumn()
-         ImGui::Checkbox( "##askf" + hb_NtoS( a[ 1 ] ), @a[ 5 ] )
+         ImGui::Checkbox( "##askf" + hb_NtoS( a[ _OO_SEQ ] ), @a[ _OO_LOAD ] )
          ImGui::TableNextColumn()
-         ImGui::SelectableBool( IIF( ! KnownExt( a[ 2 ] ), ( lWarnExt := .T., ICON_FA_CIRCLE_EXCLAMATION + " " ), "" ) + a[ 2 ] )
+         ImGui::SelectableBool( IIF( ! KnownExt( a[ _OO_NAME ] ), ( lWarnExt := .T., ICON_FA_CIRCLE_EXCLAMATION + " " ), "" ) + a[ _OO_NAME ] )
          IF ImGui::IsItemActive() .AND. ! ImGui::IsItemHovered() // .AND. ! HB_IsArray( aTmp )
             /* you can reorder index files up and down to match (follow) the database */
             ImGui::GetMouseDragDelta( @aDragDelta, 0 )
@@ -230,12 +245,12 @@ PROCEDURE AskToLoad( aTable, cMode )
          ImGui::PopFont()
          ImGui::TableNextColumn()
          ImGui::PushItemWidth( 100 )
-         ImGui::InputText( "##askalias" + hb_NtoS( a[ 1 ] ), @a[ 6 ],, ImGuiInputTextFlags_CharsUppercase )
+         ImGui::InputText( "##askalias" + hb_NtoS( a[ _OO_SEQ ] ), @a[ _OO_ALIAS ],, ImGuiInputTextFlags_CharsUppercase )
          ImGui::PopItemWidth()
          ImGui::TableNextColumn()
-         ImGui::Text( a[ 4 ] )
+         ImGui::Text( a[ _OO_PATH ] )
          IF ImGui::IsItemHovered()
-            ImGui::SetTooltip( a[ 4 ] )
+            ImGui::SetTooltip( a[ _OO_PATH ] )
          ENDIF
 
       NEXT
@@ -257,14 +272,14 @@ PROCEDURE AskToLoad( aTable, cMode )
 #ifndef __PLATFORM__WASM
    IF ImGui::Button("Copy to MEM: and Open")
       FOR EACH a IN aTable
-         IF ! a[ 5 ]
+         IF ! a[ _OO_LOAD ]
             LOOP
          ENDIF
-         hb_vfCopyFile( a[ 4 ] + a[ 2 ], "mem:" + a[ 2 ] )
-         IF Lower( hb_FNameExt( a[ 2 ] ) ) == ".dbf"
-            hb_vfCopyFile( a[ 4 ] + hb_FNameName( a[ 2 ] ) + ".dbt", "mem:" + hb_FNameName( a[ 2 ] ) + ".dbt" )
-            hb_vfCopyFile( a[ 4 ] + hb_FNameName( a[ 2 ] ) + ".fpt", "mem:" + hb_FNameName( a[ 2 ] ) + ".fpt" )
-            hb_vfCopyFile( a[ 4 ] + hb_FNameName( a[ 2 ] ) + ".smt", "mem:" + hb_FNameName( a[ 2 ] ) + ".smt" )
+         hb_vfCopyFile( a[ _OO_PATH ] + a[ _OO_NAME ], "mem:" + a[ _OO_NAME ] )
+         IF Lower( hb_FNameExt( a[ _OO_NAME ] ) ) == ".dbf"
+            hb_vfCopyFile( a[ _OO_PATH ] + hb_FNameName( a[ _OO_NAME ] ) + ".dbt", "mem:" + hb_FNameName( a[ _OO_NAME ] ) + ".dbt" )
+            hb_vfCopyFile( a[ _OO_PATH ] + hb_FNameName( a[ _OO_NAME ] ) + ".fpt", "mem:" + hb_FNameName( a[ _OO_NAME ] ) + ".fpt" )
+            hb_vfCopyFile( a[ _OO_PATH ] + hb_FNameName( a[ _OO_NAME ] ) + ".smt", "mem:" + hb_FNameName( a[ _OO_NAME ] ) + ".smt" )
          ENDIF
          a[ 4 ] := "mem:"
       NEXT
@@ -280,14 +295,14 @@ PROCEDURE AskToLoad( aTable, cMode )
    ImGui::SameLine()
    IF ImGui::Button("Copy to MEM:")
       FOR EACH a IN aTable
-         IF ! a[ 5 ]
+         IF ! a[ _OO_LOAD ]
             LOOP
          ENDIF
-         hb_vfCopyFile( a[ 4 ] + a[ 2 ], "mem:" + a[ 2 ] )
-         IF Lower( hb_FNameExt( a[ 2 ] ) ) == ".dbf"
-            hb_vfCopyFile( a[ 4 ] + hb_FNameName( a[ 2 ] ) + ".dbt", "mem:" + hb_FNameName( a[ 2 ] ) + ".dbt" )
-            hb_vfCopyFile( a[ 4 ] + hb_FNameName( a[ 2 ] ) + ".fpt", "mem:" + hb_FNameName( a[ 2 ] ) + ".fpt" )
-            hb_vfCopyFile( a[ 4 ] + hb_FNameName( a[ 2 ] ) + ".smt", "mem:" + hb_FNameName( a[ 2 ] ) + ".smt" )
+         hb_vfCopyFile( a[ _OO_PATH ] + a[ _OO_NAME ], "mem:" + a[ _OO_NAME ] )
+         IF Lower( hb_FNameExt( a[ _OO_NAME ] ) ) == ".dbf"
+            hb_vfCopyFile( a[ _OO_PATH ] + hb_FNameName( a[ _OO_NAME ] ) + ".dbt", "mem:" + hb_FNameName( a[ _OO_NAME ] ) + ".dbt" )
+            hb_vfCopyFile( a[ _OO_PATH ] + hb_FNameName( a[ _OO_NAME ] ) + ".fpt", "mem:" + hb_FNameName( a[ _OO_NAME ] ) + ".fpt" )
+            hb_vfCopyFile( a[ _OO_PATH ] + hb_FNameName( a[ _OO_NAME ] ) + ".smt", "mem:" + hb_FNameName( a[ _OO_NAME ] ) + ".smt" )
          ENDIF
          IG_WinDestroy()
       NEXT
@@ -322,31 +337,31 @@ FUNCTION OpenFromDisk( aTable, lShared, lReadOnly )
    ENDIF
 
    FOR EACH a IN aTable
-      IF ! a[ 5 ]
+      IF ! a[ _OO_LOAD ]
          LOOP
       ENDIF
-      IF ( c := Lower( hb_FNameExt( a[ 2 ] ) ) ) == ".dbf" .OR. ;
-         ! KnownExt( a[ 2 ] )
+      IF ( c := Lower( hb_FNameExt( a[ _OO_NAME ] ) ) ) == ".dbf" .OR. ;
+         ! KnownExt( a[ _OO_NAME ] )
 
-         c := a[ 6 ]
+         c := a[ _OO_ALIAS ]
          IF Empty( c )
-            c := Upper( hb_FNameName( a[ 2 ] ) )
+            c := Upper( hb_FNameName( a[ _OO_NAME ] ) )
          ENDIF /* something to prevent duplicate aliases */
          IF Select( c ) > 0
             FOR i := 1 TO 999
                IF Select( c + hb_NtoS( i ) ) == 0
-                  a[ 6 ] := c + hb_NtoS( i )
+                  a[ _OO_ALIAS ] := c + hb_NtoS( i )
                   EXIT
                ENDIF
             NEXT
          ENDIF
 
-         DBUseArea( .T., s_cRDD, a[ 4 ] + a[ 2 ], IIF( ! Empty( a[ 6 ] ), a[ 6 ], NIL ), lShared, lReadOnly, IIF( hb_cdpExists( s_cCodePage ), s_cCodePage, "EN" ) )
+         DBUseArea( .T., s_cRDD, a[ _OO_PATH ] + a[ _OO_NAME ], IIF( ! Empty( a[ _OO_ALIAS ] ), a[ _OO_ALIAS ], NIL ), lShared, lReadOnly, IIF( hb_cdpExists( s_cCodePage ), s_cCodePage, "EN" ) )
 
       ELSEIF Used()
          IF c == ".cdx" .OR. c == ".ntx" .OR. c == ".nsx"
 
-            OrdListAdd( a[ 4 ] + a[ 2 ], IIF( ! Empty( a[ 6 ] ), a[ 6 ], NIL ) /* only specific order from file */ )
+            OrdListAdd( a[ _OO_PATH ] + a[ _OO_NAME ], IIF( ! Empty( a[ _OO_ALIAS ] ), a[ _OO_ALIAS ], NIL ) /* only specific order from file */ )
 
          ENDIF
       ENDIF
@@ -740,16 +755,16 @@ STATIC PROCEDURE __TabBar()
 
           lOpen := .T.
 
-          IF ImGui::BeginTabItem( ICON_FA_DATABASE + " " + aWA[ 2 ], ;
+          IF ImGui::BeginTabItem( ICON_FA_DATABASE + " " + aWA[ _WA_ALIAS ], ;
                                   @lOpen, ;
-                                  IIF( s_nActive == aWA[ 1 ], ImGuiTabItemFlags_SetSelected, ImGuiTabItemFlags_NoCloseButton ) )
+                                  IIF( s_nActive == aWA[ _WA_ID ], ImGuiTabItemFlags_SetSelected, ImGuiTabItemFlags_NoCloseButton ) )
              IF ! lOpen
-                DBSelectArea( aWA[ 1 ] )
+                DBSelectArea( aWA[ _WA_ID ] )
                 DBCloseArea()
                 ReloadAliases()
              ELSEIF ImGui::IsItemFocused()
-                s_nActive := aWA[ 1 ]
-                ImGui::SetWindowFocusStr( aWA[ 2 ] )
+                s_nActive := aWA[ _WA_ID ]
+                ImGui::SetWindowFocusStr( aWA[ _WA_ALIAS ] )
              ENDIF
              ImGui::EndTabItem()
           ENDIF
@@ -757,7 +772,7 @@ STATIC PROCEDURE __TabBar()
        NEXT
 
        // IF ImGui::IsItemHovered( ImGuiHoveredFlags_DelayNormal )
-       //    SetTooltip( cFileName + " " + aWA[ 1 ] )
+       //    SetTooltip( cFileName + " " + aWA[ _WA_ID ] )
        // ENDIF
 
        ImGui::EndTabBar()
@@ -948,16 +963,16 @@ STATIC PROCEDURE __Areas()
    LOCAL aWA, lOpen := .T.
    FOR EACH aWA in s_aAliases
       ImGui::SetNextWindowSize( {600, 350}, ImGuiCond_Once )
-      IF ImGui::Begin( aWA[ 2 ], @lOpen )
-         DBSelectArea( aWA[ 1 ] )
+      IF ImGui::Begin( aWA[ _WA_ALIAS ], @lOpen )
+         DBSelectArea( aWA[ _WA_ID ] )
          IF ImGui::IsWindowFocused( ImGuiFocusedFlags_ChildWindows )
-            s_nActive := aWA[ 1 ] 
+            s_nActive := aWA[ _WA_ID ]
          ENDIF
          IF ! lOpen
             DBCloseArea()
             ReloadAliases()
          ELSE
-            Browser( .T., @aWA[ 7 ] )
+            Browser( .T., @aWA[ _WA_GOINGTO ] )
          ENDIF
       ENDIF
       ImGui::End()
@@ -1110,7 +1125,7 @@ FUNCTION SelectActiveInUI()
       IF s_nActive > Len( s_aAliases )
          s_nActive := Len( s_aAliases )
       ENDIF
-      DBSelectArea( s_aAliases[ s_nActive ][ 1 ] )
+      DBSelectArea( s_aAliases[ s_nActive ][ _WA_ID ] )
       RETURN .T.
    ENDIF
    RETURN .F.
@@ -1129,20 +1144,20 @@ PROCEDURE ToolBox()
    IF ImGui::Begin("Toolbox")
       AEval( s_aToolOpCodes, { |x, n| IIF( n > 1, ImGui::SameLine(), NIL ), ;
                                       IIF( ImGui::SmallButton( x ) .AND. s_nActive > 0, ;
-                                           ToolOp( x, @s_aAliases[ s_nActive ][ 7 ] ), ;
+                                           ToolOp( x, @s_aAliases[ s_nActive ][ _WA_GOINGTO ] ), ;
                                            IIF( ImGui::IsItemActive(), nOpRepeat := x , NIL ) ) } )
       IF ImGui::InputText( "##goto", @s_cGoTo,, ImGuiInputTextFlags_CharsDecimal + ;
                                                 ImGuiInputTextFlags_CharsNoBlank + ;
                                                 ImGuiInputTextFlags_EnterReturnsTrue )
          IF SelectActiveInUI()
-            DBGoTo( s_aAliases[ s_nActive ][ 7 ] := Val( s_cGoTo ) )
+            DBGoTo( s_aAliases[ s_nActive ][ _WA_GOINGTO ] := Val( s_cGoTo ) )
          ENDIF
       ENDIF
       IF nOpRepeat <> NIL .AND. s_nActive > 0
          IF nOpRepeat == ICON_FA_BACKWARD .OR. ;
             nOpRepeat == ICON_FA_FORWARD /* make skipping repeatable while Shift is being held */
             IF ImGuiIO( igGetIO() ):KeyShift
-               ToolOp( nOpRepeat, @s_aAliases[ s_nActive ][ 7 ] )
+               ToolOp( nOpRepeat, @s_aAliases[ s_nActive ][ _WA_GOINGTO ] )
             ENDIF
          ENDIF
       ENDIF

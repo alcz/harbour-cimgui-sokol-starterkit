@@ -4,6 +4,17 @@
    See license at the end of file. */
 
 
+2025-06-17 11:06 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * examples/yadbu/yadbu.prg
+     * navigation toolbox working (a demo of ImGuiListClipper capability
+       of table scrolling to a record that is currently invisible)
+
+     * records shown in read&only browser are now hoverable and selectable
+
+     ! fix dragging files up and down when opening multiple
+
+     * other minor changes/fixes/updates
+
 2025-06-15 20:24 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * cimgui-docking/hbimgui.cpp
    * cimgui/hbimgui.cpp

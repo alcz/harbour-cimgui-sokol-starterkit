@@ -10,6 +10,8 @@
 #include "hbimenum.ch"
 #include "hbimstru.ch"
 
+/* example requires Dear ImGui version 1.86+ */
+
 #define TB_SIZE  40
 #define TB_FLAGS ImGuiWindowFlags_NoDocking + ImGuiWindowFlags_NoTitleBar + ImGuiWindowFlags_NoResize + ImGuiWindowFlags_NoMove + ImGuiWindowFlags_NoScrollbar // + ImGuiWindowFlags_NoNavInputs
 #define BTN_SIZE 30
@@ -17,6 +19,7 @@
 
 #ifndef ImGuiHoveredFlags_DelayNormal
 #define ImGuiHoveredFlags_DelayNormal 0
+#xtranslate ImGui::Shortcut( <v>, <r> ) => .F.
 #endif
 
 #ifndef ImGuiDockNodeFlags_NoDockingOverCentralNode
@@ -45,6 +48,8 @@ THREAD STATIC s_nTBSize := TB_SIZE
 THREAD STATIC s_aAliases := { }, s_nActive := 0
 // THREAD STATIC l_AutoOpenDropped := .F.
 THREAD STATIC s_cRDD := "DBFNTX", s_cCodepage := ""
+// THREAD STATIC s_nGoTo := 0
+THREAD STATIC s_hFontNumOnly
 
 PROCEDURE MAIN
    LOCAL i, hFiles := { => }
@@ -64,7 +69,7 @@ PROCEDURE MAIN
    NEXT
 
    IF Len( hFiles ) > 0
-      IG_WinCreate( @AskToLoad(), "asktoloadcmd", , PrepFiles( hb_hKeys( hFiles ), .F. /* implement to skip emscriten parts */ ), "from command-line" )
+      IG_WinCreate( @AskToLoad(), "asktoloadcmd", , PrepFiles( hb_hKeys( hFiles ), .F. /* implement to skip emscrpiten parts */ ), "from command-line" )
    ENDIF
 
 #ifndef __PLATFORM__WASM
@@ -91,9 +96,14 @@ PROCEDURE ImInit
    hb_igAddFontFromMemoryTTF( cFontBuf, 18.0, , ATLAS_CDPLIST, .T., .F. )
 #pragma __binarystreaminclude "../fonts/fa-solid-900.ttf"|cFontABuf := %s
    hb_igAddFontFromMemoryTTF( cFontABuf, 18.0 * ( 3 / 4 ), , { ICON_MIN_FA, ICON_MAX_FA, 0 }, .F., .T. )
+   s_hFontNumOnly := hb_igAddFontFromMemoryTTF( cFontABuf, 18.0 * ( 3 / 4 ), , { Asc("0"), Asc("9"), 0 }, .F., .F. )
+   hb_igAddFontFromMemoryTTF( cFontBuf, 38.0, , { 32, 32, 0 }, .F., .T. )
+   /* fixed with font for numbers (something better? icon font doesn't even have a space, therefore a hack) */
 #else
    hb_igAddFontFromFileTTF( "OpenSans-Regular.ttf", 18.0, , ATLAS_CDPLIST, .T., .F. )
    hb_igAddFontFromFileTTF( "fonts/fa-solid-900.ttf", 18.0 * ( 3 / 4 ), , { ICON_MIN_FA, ICON_MAX_FA, 0 }, .F., .T. )
+   s_hFontNumOnly := hb_igAddFontFromFileTTF( "fonts/fa-solid-900.ttf", 18.0 * ( 3 / 4 ), , { Asc("0"), Asc("9"), 0 }, .F., .F. )
+   hb_igAddFontFromFileTTF( "OpenSans-Regular.ttf", 38.0, , { 32, 32, 0 }, .F., .T. )
 #endif
 
    hb_sokol_imguiFont2Texture()
@@ -112,6 +122,7 @@ PROCEDURE ImFrame
    __OverviewUI()
    __Areas()
    IG_MultiWin()
+   Toolbox()
    RETURN
 
 PROCEDURE ImDrop( aFiles )
@@ -173,7 +184,7 @@ PROCEDURE PrepFiles( aFiles )
 
 PROCEDURE AskToLoad( aTable, cMode )
    STATIC a, aDragDelta := {0, 0}
-   STATIC nTableFlags := ImGuiTableFlags_Resizable + ImGuiTableFlags_RowBg + ImGuiTableFlags_SizingFixedFit
+   STATIC nTableFlags := ImGuiTableFlags_Resizable + ImGuiTableFlags_RowBg + ImGuiTableFlags_SizingFixedFit + ImGuiTableFlags_NoBordersInBody
    STATIC lShared := .T., lReadOnly := .T.
    LOCAL aTmp, lWarnExt := .F.
 
@@ -182,7 +193,7 @@ PROCEDURE AskToLoad( aTable, cMode )
    ENDIF
 
    ImGui::SetNextWindowSize( {400, 250}, ImGuiCond_Once )
-   ImGui::Begin( "Confirm opening " + cMode )
+   ImGui::Begin( "Confirm opening " + cMode,, ImGuiWindowFlags_AlwaysAutoResize )
 
    IF ImGui::BeginTable( "TLoad", 5, nTableFlags )
 
@@ -190,7 +201,7 @@ PROCEDURE AskToLoad( aTable, cMode )
       ImGui::TableSetupColumn( "Name", ImGuiTableColumnFlags_NoHide )
       ImGui::TableSetupColumn( "Size" )
       ImGui::TableSetupColumn( "Alias" )
-      ImGui::TableSetupColumn( "Path", ImGuiTableColumnFlags_NoHide )
+      ImGui::TableSetupColumn( "Path",, 128 )
       ImGui::TableHeadersRow()
 
       FOR EACH a IN aTable
@@ -199,25 +210,33 @@ PROCEDURE AskToLoad( aTable, cMode )
          ImGui::Checkbox( "##askf" + hb_NtoS( a[ 1 ] ), @a[ 5 ] )
          ImGui::TableNextColumn()
          ImGui::SelectableBool( IIF( ! KnownExt( a[ 2 ] ), ( lWarnExt := .T., ICON_FA_CIRCLE_EXCLAMATION + " " ), "" ) + a[ 2 ] )
-         IF ImGui::IsItemActive() .AND. ! ImGui::IsItemHovered()
-            /* you can reorder index files up and down to match database */
+         IF ImGui::IsItemActive() .AND. ! ImGui::IsItemHovered() // .AND. ! HB_IsArray( aTmp )
+            /* you can reorder index files up and down to match (follow) the database */
             ImGui::GetMouseDragDelta( @aDragDelta, 0 )
-            nNext := a:__enumIndex + IIF( aDragDelta[ 2 ] < 0.0, -1, 1 )
-            IF nNext >= 1 .AND. nNext <= Len( aTable )
-               aTmp := a
-               a := aTable[ nNext ]
-               aTable[ nNext ] := aTmp
+            IF Abs( aDragDelta[ 2 ] ) >= 6 /* compensate padding, which this code does not expect (should read style padding px?) */
+              nNext := a:__enumIndex + IIF( aDragDelta[ 2 ] < 0.0, -1, 1 )
+              IF nNext >= 1 .AND. nNext <= Len( aTable )
+                 aTmp := AClone( aTable )
+                 aTmp[ a:__enumIndex ] := aTable[ nNext ]
+                 aTmp[ nNext ] := aTable[ a:__enumIndex ]
+                 ImGui::ResetMouseDragDelta()
+              ENDIF
             ENDIF
          ENDIF
 
          ImGui::TableNextColumn()
+         ImGui::PushFont( s_hFontNumOnly )
          ImGui::Text( Transform( a[ 3 ], "999 999 999 999" ) )
+         ImGui::PopFont()
          ImGui::TableNextColumn()
          ImGui::PushItemWidth( 100 )
          ImGui::InputText( "##askalias" + hb_NtoS( a[ 1 ] ), @a[ 6 ],, ImGuiInputTextFlags_CharsUppercase )
          ImGui::PopItemWidth()
          ImGui::TableNextColumn()
          ImGui::Text( a[ 4 ] )
+         IF ImGui::IsItemHovered()
+            ImGui::SetTooltip( a[ 4 ] )
+         ENDIF
 
       NEXT
       ImGui::EndTable()
@@ -225,9 +244,6 @@ PROCEDURE AskToLoad( aTable, cMode )
    IF lWarnExt
       ImGui::Text( "some of the files have unrecognized extensions" )
    ENDIF
-   ImGui::Checkbox( "Shared", @lShared )
-   ImGui::SameLine()
-   ImGui::Checkbox( "Read Only", @lReadOnly )
 #ifndef __PLATFORM__WASM
    IF ImGui::Button("Open")
       IF OpenFromDisk( aTable, lShared, lReadOnly )
@@ -282,7 +298,15 @@ PROCEDURE AskToLoad( aTable, cMode )
       IG_WinDestroy()
    ENDIF
 
+   ImGui::Checkbox( "Shared", @lShared )
+   ImGui::SameLine()
+   ImGui::Checkbox( "Read Only", @lReadOnly )
+
    ImGui::End()
+
+   IF HB_IsArray( aTmp )
+      aTable := aTmp
+   ENDIF
 
    RETURN
 
@@ -429,12 +453,12 @@ STATIC PROCEDURE __Toolbar()
    ImGui::SetNextWindowViewport( ImGuiViewport( pMV ):ID )
 
    ImGui::PushStyleVarFloat( ImGuiStyleVar_WindowBorderSize, 0 )
-   ImGui::Begin( "TOOLBAR",, TB_FLAGS )
+   ImGui::Begin( "Toolbar",, TB_FLAGS )
    ImGui::PopStyleVar( 1 )
 
-    IF ImGui::Button( ICON_FA_FILE + " " + ICON_FA_CARET_DOWN ) 
-       // .AND. ImGui::Shortcut( ImGuiMod_Ctrl + ImGuiKey_N, ImGuiInputFlags_RouteGlobal )
-        ImGui::OpenPopup("NewMenu")
+    IF ImGui::Button( ICON_FA_FILE + " " + ICON_FA_CARET_DOWN ) ;
+       .OR. ImGui::Shortcut( ImGuiMod_Ctrl + ImGuiKey_N, ImGuiInputFlags_RouteGlobal )
+       ImGui::OpenPopup("NewMenu")
     ENDIF
     IF ImGui::IsItemHovered( ImGuiHoveredFlags_DelayNormal )
        ImGui::SetTooltip("New File (Ctrl+N)")
@@ -462,20 +486,20 @@ STATIC PROCEDURE __Toolbar()
     ImGui::PopStyleVar( 1 )
 
     ImGui::SameLine()
-    IF ImGui::Button( ICON_FA_FOLDER_OPEN )
-       // .AND. ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiKey_O, ImGuiInputFlags_RouteGlobal))
+    IF ImGui::Button( ICON_FA_FOLDER_OPEN ) ;
+       .OR. ImGui::Shortcut( ImGuiMod_Ctrl + ImGuiKey_O, ImGuiInputFlags_RouteGlobal )
        OpenFile()
     ENDIF
     IF ImGui::IsItemHovered( ImGuiHoveredFlags_DelayNormal )
-       ImGui::SetTooltip("Open File (Ctrl+O)" + hb_EoL() + "(Shift) opens multiselection window")
+       ImGui::SetTooltip("Open File (Ctrl+O)" + hb_EoL() + "multiselection" + hb_EoL() + "drag and drop to open file" + hb_EoL() + "are supported" )
     ENDIF
 
     ImGui::BeginDisabled( s_nActive < 1 )
 
     ImGui::SameLine()
     nCX := ImGui::GetCursorPosX()
-    IF ImGui::Button( ICON_FA_FLOPPY_DISK )
-       // .AND. ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiKey_S, ImGuiInputFlags_RouteGlobal))
+    IF ImGui::Button( ICON_FA_FLOPPY_DISK ) ;
+       .OR. ImGui::Shortcut( ImGuiMod_Ctrl + ImGuiKey_S, ImGuiInputFlags_RouteGlobal )
         SaveFile(.F.)
     ENDIF
     IF ImGui::IsItemHovered( ImGuiHoveredFlags_DelayNormal )
@@ -507,7 +531,7 @@ STATIC PROCEDURE __Toolbar()
     ENDIF
 
 /*
-    if (ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiMod_Shift | ImGuiKey_S, ImGuiInputFlags_RouteGlobal))
+    IF ImGui::Shortcut( ImGuiMod_Ctrl + ImGuiMod_Shift + ImGuiKey_S, ImGuiInputFlags_RouteGlobal )
         SaveAll()
 */
 
@@ -597,9 +621,9 @@ STATIC PROCEDURE __Toolbar()
     ImGui::EndDisabled()
     ImGui::SameLine()
     ImGui::BeginDisabled( /* */ )
-    IF ImGui::Button( ICON_FA_BOLT )  // ICON_FA_BOLT, ICON_FA_RIGHT_TO_BRACKET) ||
-        // .AND. ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiKey_P, ImGuiInputFlags_RouteGlobal))
-        ShowCode()
+    IF ImGui::Button( ICON_FA_BOLT ) ; // ICON_FA_BOLT, ICON_FA_RIGHT_TO_BRACKET) ||
+       .OR. ImGui::Shortcut( ImGuiMod_Ctrl + ImGuiKey_P, ImGuiInputFlags_RouteGlobal )
+       ShowCode()
     ENDIF
     IF ImGui::IsItemHovered( ImGuiHoveredFlags_DelayNormal )
        ImGui::SetTooltip("Preview Code (Ctrl+P)")
@@ -923,7 +947,7 @@ STATIC PROCEDURE __OverviewUI()
 STATIC PROCEDURE __Areas() 
    LOCAL aWA, lOpen := .T.
    FOR EACH aWA in s_aAliases
-      igSetNextWindowSize( {600, 350}, ImGuiCond_Once )
+      ImGui::SetNextWindowSize( {600, 350}, ImGuiCond_Once )
       IF ImGui::Begin( aWA[ 2 ], @lOpen )
          DBSelectArea( aWA[ 1 ] )
          IF ImGui::IsWindowFocused( ImGuiFocusedFlags_ChildWindows )
@@ -933,13 +957,13 @@ STATIC PROCEDURE __Areas()
             DBCloseArea()
             ReloadAliases()
          ELSE
-            Browser( .T. )
+            Browser( .T., @aWA[ 7 ] )
          ENDIF
       ENDIF
       ImGui::End()
    NEXT
 
-STATIC PROCEDURE Browser( lFit )
+STATIC PROCEDURE Browser( lFit, nGoTo )
    STATIC nTableFlags := ImGuiTableFlags_BordersV + ImGuiTableFlags_BordersOuterH + ;
                          ImGuiTableFlags_Resizable + ImGuiTableFlags_RowBg + ;
                          ImGuiTableFlags_NoBordersInBody + ImGuiTableFlags_ScrollX + ;
@@ -948,9 +972,9 @@ STATIC PROCEDURE Browser( lFit )
 
    STATIC nTextBHeight := NIL
 
-   STATIC a
+   STATIC a, aColor
 
-   LOCAL pClip, i, nF, x
+   LOCAL pClip, i, nF, x, nOldRec := RecNo()
 
    IF nTextBHeight == NIL
       ImGui::CalcTextSize( @nTextBHeight, "A" ) // -> {x,y}
@@ -981,6 +1005,10 @@ STATIC PROCEDURE Browser( lFit )
 
       ImGuiListClipper( pClip ):Begin( RecCount() )
 
+      IF nGoTo > 0
+         ImGuiListClipper( pClip ):IncludeItemsByIndex( nGoTo - 1, nGoTo )
+      ENDIF
+
       DO WHILE ImGuiListClipper( pClip ):Step()
 
          FOR i := ImGuiListClipper( pClip ):DisplayStart + 1 ;
@@ -992,10 +1020,27 @@ STATIC PROCEDURE Browser( lFit )
                EXIT
             ENDIF
 
+            IF i == nOldRec
+               aColor := hb_igGetStyleColorVec4( @aColor, ImGuiCol_PlotHistogram )
+               ImGui::PushStyleColorVec4( ImGuiCol_Text, aColor )
+               lPop := .T.
+            ELSE
+               lPop := .F.
+            ENDIF
+
             ImGui::TableNextRow( ImGuiTableRowFlags_None /*, row_min_height */ )
 
             ImGui::TableNextColumn()
-            ImGui::Text( Str( RecNo() ) )
+
+//            ImGui::Text( Str( RecNo() ) )
+            IF ImGui::SelectableBool( Str( RecNo() ) + "##sel" + Alias(), .F., ImGuiSelectableFlags_SpanAllColumns )
+               nOldRec := RecNo()
+            ENDIF
+
+            IF nGoTo == i
+               nGoTo := 0
+               ImGui::SetScrollHereY( 0.5 )
+            ENDIF
 
             FOR nF := 1 TO FCount()
                //ImGui::TableSetColumnIndex( nF - 1 /* zero based, be careful */ )
@@ -1010,15 +1055,35 @@ STATIC PROCEDURE Browser( lFit )
                      EXIT
                   CASE "L"
                      /* TOFIX: in-table CheckBox could be smaller */
-                     ImGui::CheckBox( "##" + FieldName( nF ), x )
+//                     ImGui::CheckBox( "##" + FieldName( nF ), x )
+                     IF x
+                        ImGui::Text( ICON_FA_CHECK )
+                     ENDIF
                      EXIT
                   CASE "C"
                      ImGui::Text( RTrim( x ) )
                      EXIT
                ENDSWITCH
             NEXT
+
+            IF lPop
+               ImGui::PopStyleColor()
+            ENDIF
+
          NEXT
       ENDDO
+
+      IF nGoTo == -1 /* page up */
+         nGoTo := ImGuiListClipper( pClip ):DisplayStart - 1
+         IF nGoTo < 0 .OR. nGoTo > RecCount()
+            nGoTo := 0
+         ENDIF
+      ELSEIF nGoTo == -2 /* page down */
+         nGoTo := ImGuiListClipper( pClip ):DisplayEnd + 1
+         IF nGoTo < 0 .OR. nGoTo > RecCount()
+            nGoTo := 0
+         ENDIF
+      ENDIF
 
       ImGuiListClipper( pClip ):destroy() /* TODO: GC collectible pointer */
 
@@ -1026,51 +1091,103 @@ STATIC PROCEDURE Browser( lFit )
 
    ENDIF
 
+   DBGoTo( nOldRec )
+
    RETURN
 
 #include "dbinfo.ch"
 
 FUNCTION ReloadAliases()
    LOCAL i := 0
-   hb_WAEval( { |a| a := { Select(), Alias(), RDDName(), DBInfo( DBI_FULLPATH ), ReloadIndexes(), .F. /* show/hide */ }, ;
+   hb_WAEval( { |a| a := { Select(), Alias(), RDDName(), DBInfo( DBI_FULLPATH ), ReloadIndexes(), .F. /* show/hide */, 0 /* goto */ }, ;
                            IIF( Len( s_aAliases ) >= ++i, s_aAliases[ i ] := a, AAdd( s_aAliases, a ) ) } )
    ASize( s_aAliases, i )
    s_nActive := 0
+   RETURN s_aAliases
 
-PROCEDURE SelectActiveInUI()
+FUNCTION SelectActiveInUI()
    IF s_nActive > 0
       IF s_nActive > Len( s_aAliases )
          s_nActive := Len( s_aAliases )
       ENDIF
       DBSelectArea( s_aAliases[ s_nActive ][ 1 ] )
+      RETURN .T.
    ENDIF
-   RETURN
+   RETURN .F.
 
 FUNCTION ReloadIndexes()
    RETURN {}
 
 PROCEDURE ToolBox()
-   IF ImGui::SmallButton( ICON_FA_BACKWARD_STEP )
+   STATIC s_cGoTo := "        "
+   STATIC s_aToolOpCodes := { ICON_FA_BACKWARD_STEP, ICON_FA_BACKWARD, ICON_FA_FORWARD, ;
+                              ICON_FA_FORWARD_STEP, ICON_FA_CARET_UP, ICON_FA_CARET_DOWN, ;
+                              ICON_FA_PLUS, ICON_FA_MINUS, ICON_FA_CHECK, ;
+                              ICON_FA_RECYCLE } /* use UCodes of the icons as opcode, because why not */
+   LOCAL nOpRepeat
+
+   IF ImGui::Begin("Toolbox")
+      AEval( s_aToolOpCodes, { |x, n| IIF( n > 1, ImGui::SameLine(), NIL ), ;
+                                      IIF( ImGui::SmallButton( x ) .AND. s_nActive > 0, ;
+                                           ToolOp( x, @s_aAliases[ s_nActive ][ 7 ] ), ;
+                                           IIF( ImGui::IsItemActive(), nOpRepeat := x , NIL ) ) } )
+      IF ImGui::InputText( "##goto", @s_cGoTo,, ImGuiInputTextFlags_CharsDecimal + ;
+                                                ImGuiInputTextFlags_CharsNoBlank + ;
+                                                ImGuiInputTextFlags_EnterReturnsTrue )
+         IF SelectActiveInUI()
+            DBGoTo( s_aAliases[ s_nActive ][ 7 ] := Val( s_cGoTo ) )
+         ENDIF
+      ENDIF
+      IF nOpRepeat <> NIL .AND. s_nActive > 0
+         IF nOpRepeat == ICON_FA_BACKWARD .OR. ;
+            nOpRepeat == ICON_FA_FORWARD /* make skipping repeatable while Shift is being held */
+            IF ImGuiIO( igGetIO() ):KeyShift
+               ToolOp( nOpRepeat, @s_aAliases[ s_nActive ][ 7 ] )
+            ENDIF
+         ENDIF
+      ENDIF
+//      ImGui::Text( HB_NtoS( s_nGoTo ) )
    ENDIF
-   ImGui::SameLine()
-   IF ImGui::SmallButton( ICON_FA_BACKWARD )
+   ImGui::End()
+   RETURN
+
+PROCEDURE ToolOp( nCode, nGoTo )
+   IF ! SelectActiveInUI()
+      RETURN
    ENDIF
-   ImGui::SameLine()
-   IF ImGui::SmallButton( ICON_FA_FORWARD )
-   ENDIF
-   ImGui::SameLine()
-   IF ImGui::SmallButton( ICON_FA_FORWARD_STEP )
-   ENDIF
-   ImGui::SameLine()
-   IF ImGui::SmallButton( ICON_FA_PLUS )
-   ENDIF
-   ImGui::SameLine()
-   IF ImGui::SmallButton( ICON_FA_MINUS )
-   ENDIF
-   ImGui::SameLine()
-   IF ImGui::SmallButton( ICON_FA_CHECK )
-   ENDIF
-   ImGui::SameLine()
-   IF ImGui::SmallButton( ICON_FA_RECYCLE )
-   ENDIF
+   SWITCH nCode
+      CASE ICON_FA_BACKWARD_STEP
+         IF RecCount() >= 1
+            nGoTo := 1
+            DBGoto( nGoTo )
+         ENDIF
+         EXIT
+      CASE ICON_FA_BACKWARD
+         nGoTo := RecNo() - 1
+         DBGoto( nGoTo )
+         EXIT
+      CASE ICON_FA_FORWARD
+         nGoTo := RecNo() + 1
+         DBGoto( nGoTo )
+         EXIT
+      CASE ICON_FA_PLUS
+         DBAppend()
+      CASE ICON_FA_FORWARD_STEP
+         nGoTo := RecCount()
+         DBGoto( nGoTo )
+         EXIT
+      CASE ICON_FA_MINUS
+         DBDelete()
+         EXIT
+      CASE ICON_FA_CARET_UP
+         nGoTo := -1
+         EXIT
+      CASE ICON_FA_CARET_DOWN
+         nGoTo := -2
+         EXIT
+      CASE ICON_FA_CHECK
+         /* commit */
+      CASE ICON_FA_RECYCLE
+         /* rollback */
+   END SWITCH
    RETURN

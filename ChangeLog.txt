@@ -4,6 +4,15 @@
    See license at the end of file. */
 
 
+2025-06-18 23:37 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * examples/yadbu/yadbu.prg
+     * renamed _WA_GOINGTO -> _WA_SCROLLTO (makes more sense?)
+
+     * reordered navigation buttons in toolbox, caret with single
+       triangle glyph seem better for single record skip
+
+     + added record goto button
+
 2025-06-17 11:57 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * examples/yadbu/yadbu.prg
      % access array elements by definition

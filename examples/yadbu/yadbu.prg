@@ -50,7 +50,7 @@ REQUEST DBFCDX, HB_MEMIO
 #define _WA_FULLPATH  4
 #define _WA_ORDERS    5
 #define _WA_HIDDEN    6
-#define _WA_GOINGTO   7
+#define _WA_SCROLLTO  7
 
 #define _OO_SEQ       1
 #define _OO_NAME      2
@@ -63,7 +63,6 @@ THREAD STATIC s_nTBSize := TB_SIZE
 THREAD STATIC s_aAliases := { }, s_nActive := 0
 // THREAD STATIC l_AutoOpenDropped := .F.
 THREAD STATIC s_cRDD := "DBFNTX", s_cCodepage := ""
-// THREAD STATIC s_nGoTo := 0
 THREAD STATIC s_hFontNumOnly
 
 PROCEDURE MAIN
@@ -347,6 +346,7 @@ FUNCTION OpenFromDisk( aTable, lShared, lReadOnly )
          IF Empty( c )
             c := Upper( hb_FNameName( a[ _OO_NAME ] ) )
          ENDIF /* something to prevent duplicate aliases */
+         c := AllTrim( c )
          IF Select( c ) > 0
             FOR i := 1 TO 999
                IF Select( c + hb_NtoS( i ) ) == 0
@@ -972,7 +972,7 @@ STATIC PROCEDURE __Areas()
             DBCloseArea()
             ReloadAliases()
          ELSE
-            Browser( .T., @aWA[ _WA_GOINGTO ] )
+            Browser( .T., @aWA[ _WA_SCROLLTO ] )
          ENDIF
       ENDIF
       ImGui::End()
@@ -1135,8 +1135,8 @@ FUNCTION ReloadIndexes()
 
 PROCEDURE ToolBox()
    STATIC s_cGoTo := "        "
-   STATIC s_aToolOpCodes := { ICON_FA_BACKWARD_STEP, ICON_FA_BACKWARD, ICON_FA_FORWARD, ;
-                              ICON_FA_FORWARD_STEP, ICON_FA_CARET_UP, ICON_FA_CARET_DOWN, ;
+   STATIC s_aToolOpCodes := { ICON_FA_BACKWARD_STEP, ICON_FA_BACKWARD, ICON_FA_CARET_LEFT, ;
+                              ICON_FA_CARET_RIGHT, ICON_FA_FORWARD, ICON_FA_FORWARD_STEP, ;
                               ICON_FA_PLUS, ICON_FA_MINUS, ICON_FA_CHECK, ;
                               ICON_FA_RECYCLE } /* use UCodes of the icons as opcode, because why not */
    LOCAL nOpRepeat
@@ -1144,20 +1144,22 @@ PROCEDURE ToolBox()
    IF ImGui::Begin("Toolbox")
       AEval( s_aToolOpCodes, { |x, n| IIF( n > 1, ImGui::SameLine(), NIL ), ;
                                       IIF( ImGui::SmallButton( x ) .AND. s_nActive > 0, ;
-                                           ToolOp( x, @s_aAliases[ s_nActive ][ _WA_GOINGTO ] ), ;
+                                           ToolOp( x, @s_aAliases[ s_nActive ][ _WA_SCROLLTO ] ), ;
                                            IIF( ImGui::IsItemActive(), nOpRepeat := x , NIL ) ) } )
       IF ImGui::InputText( "##goto", @s_cGoTo,, ImGuiInputTextFlags_CharsDecimal + ;
                                                 ImGuiInputTextFlags_CharsNoBlank + ;
                                                 ImGuiInputTextFlags_EnterReturnsTrue )
-         IF SelectActiveInUI()
-            DBGoTo( s_aAliases[ s_nActive ][ _WA_GOINGTO ] := Val( s_cGoTo ) )
-         ENDIF
+         UIGoto( Val( s_cGoTo ) )
+      ENDIF
+      ImGui::SameLine()
+      IF ImGui::Button("Goto")
+         UIGoto( Val( s_cGoTo ) )
       ENDIF
       IF nOpRepeat <> NIL .AND. s_nActive > 0
-         IF nOpRepeat == ICON_FA_BACKWARD .OR. ;
-            nOpRepeat == ICON_FA_FORWARD /* make skipping repeatable while Shift is being held */
+         IF nOpRepeat == ICON_FA_CARET_LEFT .OR. ;
+            nOpRepeat == ICON_FA_CARET_RIGHT /* make skipping repeatable while Shift is being held */
             IF ImGuiIO( igGetIO() ):KeyShift
-               ToolOp( nOpRepeat, @s_aAliases[ s_nActive ][ _WA_GOINGTO ] )
+               ToolOp( nOpRepeat, @s_aAliases[ s_nActive ][ _WA_SCROLLTO ] )
             ENDIF
          ENDIF
       ENDIF
@@ -1177,11 +1179,11 @@ PROCEDURE ToolOp( nCode, nGoTo )
             DBGoto( nGoTo )
          ENDIF
          EXIT
-      CASE ICON_FA_BACKWARD
+      CASE ICON_FA_CARET_LEFT
          nGoTo := RecNo() - 1
          DBGoto( nGoTo )
          EXIT
-      CASE ICON_FA_FORWARD
+      CASE ICON_FA_CARET_RIGHT
          nGoTo := RecNo() + 1
          DBGoto( nGoTo )
          EXIT
@@ -1194,10 +1196,10 @@ PROCEDURE ToolOp( nCode, nGoTo )
       CASE ICON_FA_MINUS
          DBDelete()
          EXIT
-      CASE ICON_FA_CARET_UP
+      CASE ICON_FA_BACKWARD
          nGoTo := -1
          EXIT
-      CASE ICON_FA_CARET_DOWN
+      CASE ICON_FA_FORWARD
          nGoTo := -2
          EXIT
       CASE ICON_FA_CHECK
@@ -1205,4 +1207,10 @@ PROCEDURE ToolOp( nCode, nGoTo )
       CASE ICON_FA_RECYCLE
          /* rollback */
    END SWITCH
+   RETURN
+
+STATIC PROCEDURE UIGoto( nGoto )
+   IF SelectActiveInUI()
+      DBGoto( s_aAliases[ s_nActive ][ _WA_SCROLLTO ] := nGoto )
+   ENDIF
    RETURN

@@ -4,6 +4,32 @@
    See license at the end of file. */
 
 
+2025-06-22 00:49 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * cimgui-docking/hbimenum.ch
+     + define FLT_MIN, FLT_MAX here, they are used as special
+       kind of arguments across the library, for example
+       to -FLT_MIN is to make widget width 100% of the parent
+       instead of the pixels
+
+   * cimgui-docking/hbimenum.cpp
+     * ConfigDockingWithShift is now exposed as settable
+       ImGuiIO( igGetIO() ):ConfigDockingWithShift := .T.
+
+   * examples/yadbu/yadbu.prg
+     * docked the toolbox (maybe not final placement)
+
+     * changed the window docking to require shift key, the default
+       which can dock on any window movement is a bit overwhelming
+
+   * examples/yadbu/yadbu.prg
+   + examples/yadbu/tabstru.prg
+     + added db struct designer, first window layout and
+       basic activities were coded by Copilot after introducing
+       in chat how the Harbour+cimgui wrapper looks like. But this
+       is many-many fixes and improvements later.
+
+     ; can now create new .dbf database!
+
 2025-06-18 23:37 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * examples/yadbu/yadbu.prg
      * renamed _WA_GOINGTO -> _WA_SCROLLTO (makes more sense?)

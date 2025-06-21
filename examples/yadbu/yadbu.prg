@@ -44,6 +44,7 @@ REQUEST HB_CODEPAGE_UTF8EX
 #define ATLAS_CDPLIST { "PL852", "EL737", "UA866", "PT850", "PT860", "ES850", "EE775", "DE858", "IS861", "TR857", "HE862" }
 REQUEST DBFCDX, HB_MEMIO
 
+/* redacted array of workareas */
 #define _WA_ID        1
 #define _WA_ALIAS     2
 #define _WA_RDD       3
@@ -52,6 +53,7 @@ REQUEST DBFCDX, HB_MEMIO
 #define _WA_HIDDEN    6
 #define _WA_SCROLLTO  7
 
+/* array of files opened by multi-selection or drag'n'drop */
 #define _OO_SEQ       1
 #define _OO_NAME      2
 #define _OO_SIZE      3
@@ -126,7 +128,9 @@ PROCEDURE ImInit
 #ifdef ImGuiConfigFlags_DockingEnable
    hb_igConfigFlagsAdd( ImGuiConfigFlags_DockingEnable )
 #endif
-
+#ifdef ImGuiIO_ConfigDockingWithShift
+   ImGuiIO( igGetIO() ):ConfigDockingWithShift := .T.
+#endif
    RETURN
 
 PROCEDURE ImFrame
@@ -414,7 +418,10 @@ PROCEDURE __ErrorWindow( cTitle, cText )
    ImGui::End()
    RETURN
 
-PROCEDURE NEWFILE()
+PROCEDURE NEWFILE( cRDD )
+   FieldDesigner_Create( cRDD )
+   RETURN
+
 PROCEDURE OPENFILE()
 #ifdef __PLATFORM__WINDOWS
    LOCAL xFile
@@ -461,7 +468,7 @@ STATIC PROCEDURE __Toolbar()
                          { "ImGui classic", { || s_nTBSize := 40, ImGui::StyleColorsClassic( ImGui::GetStyle() ) } } ;
                        }
 
-   STATIC s_cStyle := "default", s_lCodePageOpen := .F., s_lCodePageDirty := .F., s_nQuickScale := 1.0
+   STATIC s_cStyle := "default", s_lCodePageOpen := .F., s_lCodePageDirty := .F., s_nQuickScale := 1.0, s_lShiftDock := .T.
 
    ImGui::SetNextWindowPos( ImGuiViewport( pMV ):Pos )
    ImGui::SetNextWindowSize( { ImGuiViewport( pMV ):Size[ 1 ], s_nTBSize * s_nQuickScale } )
@@ -476,7 +483,7 @@ STATIC PROCEDURE __Toolbar()
        ImGui::OpenPopup("NewMenu")
     ENDIF
     IF ImGui::IsItemHovered( ImGuiHoveredFlags_DelayNormal )
-       ImGui::SetTooltip("New File (Ctrl+N)")
+       ImGui::SetTooltip("New File (Ctrl+N)" + IIF( s_nActive > 0, HB_EoL() + "use Shift to copy current DB struct", "" ) )
     ENDIF
 
     ImGui::SetNextWindowPos( ImGui::GetCursorPos( @a ) )
@@ -671,6 +678,11 @@ STATIC PROCEDURE __Toolbar()
        IF ImGui::Button( IIF( sapp_is_fullscreen(), "Exit", "Enter" ) + " full screen" )
           sapp_toggle_fullscreen()
        ENDIF
+#ifdef ImGuiIO_ConfigDockingWithShift
+       IF ImGui::Checkbox( "docking a window requires shift key", @s_lShiftDock )
+          ImGuiIO( igGetIO() ):ConfigDockingWithShift := s_lShiftDock
+       ENDIF
+#endif
        ImGui::EndPopup()
     ENDIF
 
@@ -680,7 +692,7 @@ STATIC PROCEDURE __Toolbar()
 
 STATIC PROCEDURE __DockSpace()
    LOCAL pMV := ImGui::GetMainViewPort(), nCX, nDSID
-   LOCAL nDRight, nDLeft, nDRight1, nDRight2, nDTop, nVH
+   LOCAL nDRight, nDLeft, nDRight1, nDRight2, nDLeft1, nDLeft2, nDTop, nVH
    STATIC a := { 0.0, 0.0 }, s_lInit := .F.
 
    ImGui::SetNextWindowPos( { ImGuiViewport( pMV ):Pos[ 1 ], ImGuiViewport( pMV ):Pos[ 2 ] + s_nTBSize /* TB_SIZE */ } )
@@ -712,10 +724,12 @@ STATIC PROCEDURE __DockSpace()
 
         nVH := ImGuiViewport( pMV ):Size[ 2 ] - s_nTBSize /* TB_SIZE */
         ImGui::DockBuilderSplitNode( nDRight, ImGuiDir_Up, 230.0 / nVH, @nDRight1, @nDRight2 )
+        ImGui::DockBuilderSplitNode( nDLeft, ImGuiDir_Down, 100.0 / nVH, @nDLeft1, @nDLeft2 )
         nDTop := ImGui::DockBuilderSplitNode( nDSID, ImGuiDir_Up, TAB_SIZE / nVH, NIL, @nDSID )
 
         ImGui::DockBuilderDockWindow( "FileTabs", nDTop )
-        ImGui::DockBuilderDockWindow( "Overview", nDLeft )
+        ImGui::DockBuilderDockWindow( "Overview", nDLeft2 )
+        ImGui::DockBuilderDockWindow( "Toolbox", nDLeft1 )
         ImGui::DockBuilderDockWindow( "Widgets", nDRight1 )
 //        ImGui::DockBuilderDockWindow( "Properties", nDRight2 )
 //        ImGui::DockBuilderDockWindow( "Events", nDRight2 )
@@ -1214,3 +1228,12 @@ STATIC PROCEDURE UIGoto( nGoto )
       DBGoto( s_aAliases[ s_nActive ][ _WA_SCROLLTO ] := nGoto )
    ENDIF
    RETURN
+
+FUNCTION OnShiftRetStruct()
+   IF ImGuiIO( igGetIO() ):KeyShift .AND. SelectActiveInUI()
+      RETURN DBStruct()
+   ENDIF
+   RETURN NIL
+
+FUNCTION UIDBCreate( cFile, aStruct, cAlias )
+   RETURN DBCreate( cFile, aStruct, s_cRDD, .T., cAlias,, IIF( hb_cdpExists( s_cCodePage ), s_cCodePage, "EN" ) )

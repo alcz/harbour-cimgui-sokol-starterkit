@@ -5,6 +5,14 @@
 
 #xtranslate ImGui:: => ig
 
+#ifndef FLT_MIN /* -FLT_MIN is used by ImGui to make to widget width 100% of the parent area */
+#define FLT_MIN 2^(-149)
+#endif
+
+#ifndef FLT_MAX
+#define FLT_MAX 0.9999998 * 2^127
+#endif
+
 #define ImDrawFlags_None                                                0 /* 0 */
 #define ImDrawFlags_Closed                                              1 /* 1 << 0 */
 #define ImDrawFlags_RoundCornersTopLeft                                16 /* 1 << 4 */

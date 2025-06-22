@@ -3,6 +3,32 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-06-22 19:40 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * examples/yadbu/tabstru.prg
+     ! fix control id clash when DBStruct() is imported
+       in field designer, not created from scratch
+
+   * examples/yadbu/yadbu.prg
+     * wire up Shift key to open database in read only mode
+       in places where there are no confirmation popups:
+       tree view MEMIO double clicking and Windows open file
+       dialog single selection
+
+     * display caret near record number
+
+     * read-only and editable workareas will now use different
+       "browsers"
+
+   * examples/yadbu/ebrowse.prg
+     + added editable browser implementation with emphasis on
+       keyboard navigation while editing. Only Enter key updates
+       field contents. Sometimes having Tab and Arrow keys commiting
+       is desirable - but that needs implementation which does not
+       rely on bulit-in Dear ImGui flags.
+
+   * examples/yadbu/ebrowseidx.prg
+     + EBrowseIdx() variant that rewires RecNo() -> OrdKeyNo(),
+       etc. using preprocessor
 
 2025-06-22 00:49 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * cimgui-docking/hbimenum.ch

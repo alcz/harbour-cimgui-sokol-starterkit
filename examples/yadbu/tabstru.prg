@@ -33,12 +33,13 @@ STATIC aDataTypes := { "Numeric", "Character", "Date", "Logical", "Memo", "Integ
 
 PROCEDURE FieldDesigner_Create()
    STATIC nSeq := 0
-   LOCAL aFields, nSelectedField, cDataTypes, cAlias := PadR( "NEW", 32 ), lMem := .T.
+   LOCAL aFields, nSelectedField, cDataTypes, cAlias := PadR( "NEW", 32 ), lMem := .T., nSeqField := 0
 
    aFields := OnShiftRetStruct() /* press Shift Key to copy structure of currently focused workarea */
 
    IF ! aFields == NIL
       aFields := DBStructToFields( aFields )
+      nSeqField := Len( aFields )
    ELSE
       aFields := {} 
    ENDIF
@@ -48,17 +49,17 @@ PROCEDURE FieldDesigner_Create()
 
    AEval( aDataTypes, { |x| cDataTypes += x + hb_BChar( 0 ) } )
 
-   IG_WinCreate( @FieldDesigner(), "fdcreate:" + HB_NtoS( ++nSeq ), { aFields, nSelectedField, cDataTypes, .F., cAlias, lMem } )
+   IG_WinCreate( @FieldDesigner(), "fdcreate:" + HB_NtoS( ++nSeq ), { aFields, nSelectedField, cDataTypes, .F., cAlias, lMem, nSeqField } )
 
    RETURN
 
-FUNCTION FieldDesigner( aFields, nSelectedField, cDataTypes, lModStru, cAlias, lMem )
+FUNCTION FieldDesigner( aFields, nSelectedField, cDataTypes, lModStru, cAlias, lMem, nSeq )
    LOCAL nTableFlags    := ImGuiTableFlags_Borders + ImGuiTableFlags_RowBg
    LOCAL leftPanelWidth := 300
    LOCAL nNext, cTmp, aTmp, lOpen := .T.
    LOCAL hField, hNewField, nCurrentType, nIdx, nI
    STATIC aDragDelta := { 0, 0 }
-   STATIC a, lHasDup := .F., nSeq := 0, lInMemory := .T.
+   STATIC a, lHasDup := .F., lInMemory := .T.
 
    ImGui::SetNextWindowSize( { 600, 400 }, ImGuiCond_Once )
    ImGui::SetNextWindowSizeConstraints( { 500, 300 }, { FLT_MAX, FLT_MAX } )

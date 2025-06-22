@@ -51,7 +51,9 @@ REQUEST DBFCDX, HB_MEMIO
 #define _WA_FULLPATH  4
 #define _WA_ORDERS    5
 #define _WA_HIDDEN    6
-#define _WA_SCROLLTO  7
+#define _WA_SCROLLTO  7 /* scroll visible area to this record ( RecNo() remains unaltered ) */
+#define _WA_READONLY  8
+/* FIX repositioning on indexed areas */
 
 /* array of files opened by multi-selection or drag'n'drop */
 #define _OO_SEQ       1
@@ -424,8 +426,13 @@ PROCEDURE NEWFILE( cRDD )
 
 PROCEDURE OPENFILE()
 #ifdef __PLATFORM__WINDOWS
+#include "hbwin.ch"
    LOCAL xFile
-   LOCAL nFlags := NIL
+   LOCAL nFlags := WIN_OFN_EXPLORER + WIN_OFN_ALLOWMULTISELECT + WIN_OFN_NOCHANGEDIR
+   IF ImGuiIO( igGetIO() ):KeyShift /* convincing Win to show read-only checkbox needs pre-Vista style,
+                                      WIN_OFN_ENABLEHOOK seems to force it */
+      nFlags += WIN_OFN_ENABLEHOOK + WIN_OFN_READONLY
+   ENDIF
    xFile := win_GetOpenFileName( @nFlags, "Open database or index",, "*.dbf", ;
                                   { { "DBF database", "*.dbf" }, ;
                                     { "NTX index",    "*.ntx" }, ;
@@ -444,7 +451,7 @@ PROCEDURE OPENFILE()
    IF hb_IsArray( xFile )
       IG_WinCreate( @AskToLoad(), "asktoloadofn", , PrepFiles( xFile, .F. ), "from multple selection" )
    ELSEIF File( xFile )
-      IF OpenFromDisk( xFile, .T., .T. )
+      IF OpenFromDisk( xFile, .T., hb_bitAnd( nFlags, WIN_OFN_READONLY ) == WIN_OFN_READONLY )
          ReloadAliases()
       ENDIF
    ENDIF
@@ -902,7 +909,7 @@ STATIC PROCEDURE __OverviewUI()
                                                                     ImGuiTreeNodeFlags_NoTreePushOnOpen + ;
                                                                     ImGuiTreeNodeFlags_SpanFullWidth )
             IF ImGui::IsItemHovered() .AND. ImGui::IsMouseDoubleClicked( 0 )
-               IF OpenFromDisk( "mem:" + cTmp, .T., .T. )
+               IF OpenFromDisk( "mem:" + cTmp, .T., ImGuiIO( igGetIO() ):KeyShift )
                   ReloadAliases()
                ENDIF
             ENDIF  
@@ -985,8 +992,10 @@ STATIC PROCEDURE __Areas()
          IF ! lOpen
             DBCloseArea()
             ReloadAliases()
-         ELSE
+         ELSEIF aWA[ _WA_READONLY ]
             Browser( .T., @aWA[ _WA_SCROLLTO ] )
+         ELSE
+            EBrowser( .T., @aWA[ _WA_SCROLLTO ] )
          ENDIF
       ENDIF
       ImGui::End()
@@ -1023,7 +1032,7 @@ STATIC PROCEDURE Browser( lFit, nGoTo )
 
       pClip := ImGuiListClipper_ImGuiListClipper()
 
-      ImGui::TableSetupColumn( "RECNO()" )
+      ImGui::TableSetupColumn( "  RECNO()" )
 
       FOR i := 1 TO FCount()
          ImGui::TableSetupColumn( FieldName( i ) )
@@ -1049,19 +1058,21 @@ STATIC PROCEDURE Browser( lFit, nGoTo )
                EXIT
             ENDIF
 
-            IF i == nOldRec
-               aColor := hb_igGetStyleColorVec4( @aColor, ImGuiCol_PlotHistogram )
-               ImGui::PushStyleColorVec4( ImGuiCol_Text, aColor )
-               lPop := .T.
-            ELSE
-               lPop := .F.
-            ENDIF
-
             ImGui::TableNextRow( ImGuiTableRowFlags_None /*, row_min_height */ )
 
             ImGui::TableNextColumn()
 
-//            ImGui::Text( Str( RecNo() ) )
+            IF i == nOldRec .AND. nGoTo == 0
+               aColor := hb_igGetStyleColorVec4( @aColor, ImGuiCol_PlotHistogram )
+               ImGui::PushStyleColorVec4( ImGuiCol_Text, aColor )
+               ImGui::Text( ICON_FA_CARET_RIGHT )
+               lPop := .T.
+            ELSE
+               ImGui::Dummy()
+               lPop := .F.
+            ENDIF
+
+            ImGui::SameLine( 10 )
             IF ImGui::SelectableBool( Str( RecNo() ) + "##sel" + Alias(), .F., ImGuiSelectableFlags_SpanAllColumns )
                nOldRec := RecNo()
             ENDIF
@@ -1128,8 +1139,9 @@ STATIC PROCEDURE Browser( lFit, nGoTo )
 
 FUNCTION ReloadAliases()
    LOCAL i := 0
-   hb_WAEval( { |a| a := { Select(), Alias(), RDDName(), DBInfo( DBI_FULLPATH ), ReloadIndexes(), .F. /* show/hide */, 0 /* goto */ }, ;
-                           IIF( Len( s_aAliases ) >= ++i, s_aAliases[ i ] := a, AAdd( s_aAliases, a ) ) } )
+   hb_WAEval( { |a| a := { Select(), Alias(), RDDName(), DBInfo( DBI_FULLPATH ), ReloadIndexes(), .F. /* show/hide */, 0 /* goto */,;
+                           DBInfo( DBI_ISREADONLY ) }, ;
+                    IIF( Len( s_aAliases ) >= ++i, s_aAliases[ i ] := a, AAdd( s_aAliases, a ) ) } )
    ASize( s_aAliases, i )
    s_nActive := 0
    RETURN s_aAliases
@@ -1182,7 +1194,7 @@ PROCEDURE ToolBox()
    ImGui::End()
    RETURN
 
-PROCEDURE ToolOp( nCode, nGoTo )
+PROCEDURE ToolOp( nCode, nGoTo  )
    IF ! SelectActiveInUI()
       RETURN
    ENDIF
@@ -1203,6 +1215,8 @@ PROCEDURE ToolOp( nCode, nGoTo )
          EXIT
       CASE ICON_FA_PLUS
          DBAppend()
+         nGoTo := RecNo()
+         EXIT
       CASE ICON_FA_FORWARD_STEP
          nGoTo := RecCount()
          DBGoto( nGoTo )

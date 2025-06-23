@@ -2,6 +2,7 @@ yadbu/yadbu.prg
 yadbu/infos.prg
 yadbu/tabstru.prg
 yadbu/ebrowse.prg
+yadbu/ebrowseidx.prg
 ig_winlist.prg
 hbct.hbc
 {win}hbwin.hbc

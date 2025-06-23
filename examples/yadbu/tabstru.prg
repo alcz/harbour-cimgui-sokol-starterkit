@@ -369,9 +369,9 @@ STATIC FUNCTION DBStructToFields( aStruct )
       cBase     := aTokens[ 1 ]
 
       // detect flags in remaining tokens
-      lUnicode  := AScan( aTokens, { |x| At( "U", aTokens ) > 0 }, 2 ) > 0
-      lBinary   := AScan( aTokens, { |x| At( "B", aTokens ) > 0 }, 2 ) > 0
-      lNullable := AScan( aTokens, { |x| At( "N", aTokens ) > 0 }, 2 ) > 0
+      lUnicode  := AScan( aTokens, { |x| At( "U", x ) > 0 }, 2 ) > 0
+      lBinary   := AScan( aTokens, { |x| At( "B", x ) > 0 }, 2 ) > 0
+      lNullable := AScan( aTokens, { |x| At( "N", x ) > 0 }, 2 ) > 0
 
       // lengths/decimals
       nLen      := IIF( HB_IsNumeric( aDef[ 3 ] ), aDef[ 3 ], 0 )

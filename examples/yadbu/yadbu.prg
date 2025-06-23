@@ -67,7 +67,7 @@ THREAD STATIC s_nTBSize := TB_SIZE
 THREAD STATIC s_aAliases := { }, s_nActive := 0
 // THREAD STATIC l_AutoOpenDropped := .F.
 THREAD STATIC s_cRDD := "DBFNTX", s_cCodepage := ""
-THREAD STATIC s_hFontNumOnly
+THREAD STATIC s_hFontNumOnly, s_lKeepRec := .T.
 
 PROCEDURE MAIN
    LOCAL i, hFiles := { => }
@@ -476,6 +476,7 @@ STATIC PROCEDURE __Toolbar()
                        }
 
    STATIC s_cStyle := "default", s_lCodePageOpen := .F., s_lCodePageDirty := .F., s_nQuickScale := 1.0, s_lShiftDock := .T.
+   STATIC s_lEnterAdvances := .T.
 
    ImGui::SetNextWindowPos( ImGuiViewport( pMV ):Pos )
    ImGui::SetNextWindowSize( { ImGuiViewport( pMV ):Size[ 1 ], s_nTBSize * s_nQuickScale } )
@@ -520,7 +521,11 @@ STATIC PROCEDURE __Toolbar()
        OpenFile()
     ENDIF
     IF ImGui::IsItemHovered( ImGuiHoveredFlags_DelayNormal )
-       ImGui::SetTooltip("Open File (Ctrl+O)" + hb_EoL() + "multiselection" + hb_EoL() + "drag and drop to open file" + hb_EoL() + "are supported" )
+#ifdef __PLATFORM__WINDOWS
+       ImGui::SetTooltip("Open File (Ctrl+O)" + hb_EoL() + "supported: multiple selection" + hb_EoL() + "drag and drop here to open" )
+#else
+       ImGui::SetTooltip("Open File (Ctrl+O)" + hb_EoL() + "drag and drop files here to open" + hb_EoL() + hb_EoL() + "system file open dialog is not supported yet on this platform" )
+#endif
     ENDIF
 
     ImGui::BeginDisabled( s_nActive < 1 )
@@ -690,6 +695,12 @@ STATIC PROCEDURE __Toolbar()
           ImGuiIO( igGetIO() ):ConfigDockingWithShift := s_lShiftDock
        ENDIF
 #endif
+       IF ImGui::Checkbox( "enter advances to next column after editing", @s_lEnterAdvances )
+          ToggleEBrowserEnter( s_lEnterAdvances )
+          ToggleEBrowserIdxEnter( s_lEnterAdvances )
+       ENDIF
+       ImGui::Checkbox( "track record and scroll table when order changes", @s_lKeepRec )
+
        ImGui::EndPopup()
     ENDIF
 
@@ -832,6 +843,15 @@ STATIC PROCEDURE __OverviewUI()
          ImGui::TreeNodeExStr( "Current DB focus: " + Alias(), ImGuiTreeNodeFlags_Leaf + ;
                                                       ImGuiTreeNodeFlags_NoTreePushOnOpen + ;
                                                       ImGuiTreeNodeFlags_SpanFullWidth )
+         IF IndexOrd() > 0
+            ImGui::TreeNodeExStr( "Current index: " + OrdSetFocus(), ImGuiTreeNodeFlags_Leaf + ;
+                                                      ImGuiTreeNodeFlags_NoTreePushOnOpen + ;
+                                                      ImGuiTreeNodeFlags_SpanFullWidth )
+         ELSEIF OrdCount() > 0
+            ImGui::TreeNodeExStr( "Workarea is indexed", ImGuiTreeNodeFlags_Leaf + ;
+                                                         ImGuiTreeNodeFlags_NoTreePushOnOpen + ;
+                                                         ImGuiTreeNodeFlags_SpanFullWidth )
+         ENDIF
       ENDIF
 
       IF Len( s_aAliases ) > 0
@@ -860,7 +880,7 @@ STATIC PROCEDURE __OverviewUI()
             IF lOpen
                DBSelectArea( uValue[ 1 ] )
                aStruct := DBStruct()
-               IF !Empty( aStruct )
+               IF ! Empty( aStruct )
                   IF ImGui::TreeNodeExStr("Struct", ImGuiTreeNodeFlags_SpanFullWidth )
                      FOR EACH a IN aStruct
                          cTmp := a[ 1 ] + " (" + a[ 2 ] + ")"
@@ -879,7 +899,108 @@ STATIC PROCEDURE __OverviewUI()
                      NEXT
                      ImGui::TreePop() /* Close the Struct node */
                   ENDIF
-               ENDIF  
+               ENDIF
+               IF ! Empty( uValue[ _WA_ORDERS ] )
+                  IF ImGui::TreeNodeExStr("Orders", ImGuiTreeNodeFlags_SpanFullWidth )
+                     ImGui::TreeNodeExStr( ICON_FA_SORT + "Natural Order", ImGuiTreeNodeFlags_Leaf + ;
+                                                                        /* ImGuiTreeNodeFlags_Bullet + */ ;
+                                                                           ImGuiTreeNodeFlags_NoTreePushOnOpen ;
+                                                                        /* ImGuiTreeNodeFlags_SpanFullWidth */ )
+                     ImGui::SameLine()
+                     IF IndexOrd() > 0
+                        IF ImGui::SmallButton("Select##waord" + HB_NtoS( Select() ) )
+                           OrdSetFocus( 0 )
+                           IF s_lKeepRec
+                              UIGoto( RecNo() )
+                           ENDIF
+                        ENDIF
+                     ELSE
+                        ImGui::BeginDisabled()
+                        ImGui::SmallButton( "Current" )
+                        ImGui::EndDisabled()
+                     ENDIF
+
+                     FOR EACH a IN uValue[ _WA_ORDERS ]
+                        IF ! Empty( a[ 2 ] )
+                           cTmp := "tag " + a[ 2 ] //  + IIF( ! Empty( a[ 1 ] ), " in " + a[ 1 ], "" )
+                        ELSEIF ! Empty( a[ 1 ] )
+                           cTmp := "file " + a[ 1 ]
+                        ELSE
+                           cTmp := HB_NtoS( a:__enumIndex )
+                        ENDIF
+
+                        IF ImGui::TreeNodeExStr( ICON_FA_SORT + " " + cTmp )
+                           ImGui::SameLine()
+                           IF IndexOrd() == a:__enumIndex
+                              ImGui::BeginDisabled()
+                              ImGui::SmallButton( "Current" )
+                              ImGui::EndDisabled()
+                           ELSE
+                              IF ImGui::SmallButton("Select##waord" + HB_NtoS( Select() ) + ":" + HB_NtoS( a:__enumIndex ) )
+                                 OrdSetFocus( a:__enumIndex )
+                                 IF s_lKeepRec
+                                    UIGoto( OrdKeyNo() )
+                                 ENDIF
+                              ENDIF
+                           ENDIF
+                           IF ! Empty( a[ 1 ] ) .AND. ! Empty( a[ 2 ] )
+                              ImGui::Text("in file " + a[ 2 ])
+                           ENDIF
+                           IF ImGui::InputText("##waseek" + HB_NtoS( Select() ) + ":" + HB_NtoS( a:__enumIndex ), ;
+                                               @a[ 5 ], @a[ 6 ], ImGuiInputTextFlags_EnterReturnsTrue + ;
+                                                                 ImGuiInputTextFlags_CallbackResize )
+                              nKey := IndexOrd()
+                              OrdSetFocus( a:__enumIndex )
+                              IF DBSeek( a[ 5 ] ) /* add capability for a non string-key seek */
+                                 IF nKey == 0 /* let's do while display order is different than seek order */
+                                    UIGoTo( RecNo() )
+                                 ELSE
+                                    OrdSetFocus( nKey )
+                                    UIGoTo( OrdKeyNo() )
+                                 ENDIF
+                              ENDIF
+                              OrdSetFocus( nKey )
+                           ENDIF
+                           IF ImGui::SmallButton("Seek")
+                              nKey := IndexOrd()
+                              OrdSetFocus( a:__enumIndex )
+                              IF DBSeek( a[ 5 ] ) /* add capability for a non string-key seek */
+                                 IF nKey == 0 /* let's support for other display order than seek order */
+                                    UIGoTo( RecNo() )
+                                 ELSE
+                                    OrdSetFocus( nKey )
+                                    UIGoTo( OrdKeyNo() )
+                                 ENDIF
+                              ENDIF
+                              OrdSetFocus( nKey )
+                           ENDIF
+                           IF ! Empty( a[ 5 ] )
+                              ImGui::SameLine()
+                              ImGui::Text( HB_NtoS( Len( a[ 5 ] ) ) + " chars entered" )
+                              /* the counter should look up for the length key element, allow some auto padding */
+                           ENDIF
+                           ImGui::Text("key " + HB_EoL() + StrTran( a[ 3 ], "+", "+" + HB_EoL() ) )
+                           ImGui::TreePop() // Close the order node
+                        ELSE
+                           ImGui::SameLine()
+                           IF IndexOrd() == a:__enumIndex
+                              ImGui::BeginDisabled()
+                              ImGui::SmallButton( "Current" )
+                              ImGui::EndDisabled()
+                           ELSE
+                              IF ImGui::SmallButton("Select##waord" + HB_NtoS( Select() ) + ":" + HB_NtoS( a:__enumIndex ) )
+                                 OrdSetFocus( a:__enumIndex )
+                                 IF s_lKeepRec
+                                    UIGoto( OrdKeyNo() )
+                                 ENDIF
+                              ENDIF
+                           ENDIF
+                        ENDIF
+                     NEXT
+                     ImGui::TreePop() /* Close the Struct node */
+                  ENDIF
+               ENDIF
+
                ImGui::TreePop() /* Close the Workarea node */
             ENDIF
 
@@ -994,6 +1115,8 @@ STATIC PROCEDURE __Areas()
             ReloadAliases()
          ELSEIF aWA[ _WA_READONLY ]
             Browser( .T., @aWA[ _WA_SCROLLTO ] )
+         ELSEIF IndexOrd() > 0
+            EBrowserIdx( .T., @aWA[ _WA_SCROLLTO ] )
          ELSE
             EBrowser( .T., @aWA[ _WA_SCROLLTO ] )
          ENDIF
@@ -1157,6 +1280,14 @@ FUNCTION SelectActiveInUI()
    RETURN .F.
 
 FUNCTION ReloadIndexes()
+   LOCAL aRet, i
+   IF OrdCount() > 0
+      aRet := Array( OrdCount() )
+      FOR i := 1 TO OrdCount()
+         aRet[ i ] := { OrdBagName( i ), OrdName( i ), OrdKey( i ), OrdCustom( i ), "" /* seek keyword buffer */, 0 }
+      NEXT
+      RETURN aRet
+   ENDIF
    RETURN {}
 
 PROCEDURE ToolBox()
@@ -1175,11 +1306,11 @@ PROCEDURE ToolBox()
       IF ImGui::InputText( "##goto", @s_cGoTo,, ImGuiInputTextFlags_CharsDecimal + ;
                                                 ImGuiInputTextFlags_CharsNoBlank + ;
                                                 ImGuiInputTextFlags_EnterReturnsTrue )
-         UIGoto( Val( s_cGoTo ) )
+         GotoClicked( s_cGoto )
       ENDIF
       ImGui::SameLine()
       IF ImGui::Button("Goto")
-         UIGoto( Val( s_cGoTo ) )
+         GotoClicked(  s_cGoto )
       ENDIF
       IF nOpRepeat <> NIL .AND. s_nActive > 0
          IF nOpRepeat == ICON_FA_CARET_LEFT .OR. ;
@@ -1195,34 +1326,40 @@ PROCEDURE ToolBox()
    RETURN
 
 PROCEDURE ToolOp( nCode, nGoTo  )
+   LOCAL symGoTo := @DBGoto(), symRecNo := @RecNo()
    IF ! SelectActiveInUI()
       RETURN
+   ENDIF
+   IF IndexOrd() > 0
+      symGoTo  := @OrdKeyGoto()
+      symRecNo := @OrdKeyNo()
    ENDIF
    SWITCH nCode
       CASE ICON_FA_BACKWARD_STEP
          IF RecCount() >= 1
-            nGoTo := 1
-            DBGoto( nGoTo )
+            symGoTo:Exec( nGoTo := 1 )
          ENDIF
          EXIT
       CASE ICON_FA_CARET_LEFT
-         nGoTo := RecNo() - 1
-         DBGoto( nGoTo )
+         IF symRecNo:Exec() > 1
+            symGoTo:Exec( nGoTo := symRecNo:Exec() - 1 )
+         ENDIF
          EXIT
       CASE ICON_FA_CARET_RIGHT
-         nGoTo := RecNo() + 1
-         DBGoto( nGoTo )
+         symGoTo:Exec( nGoTo := symRecNo:Exec() + 1 )
          EXIT
       CASE ICON_FA_PLUS
          DBAppend()
-         nGoTo := RecNo()
+         nGoTo := symRecNo:Exec()
          EXIT
       CASE ICON_FA_FORWARD_STEP
-         nGoTo := RecCount()
-         DBGoto( nGoTo )
+         DBGoto( nGoTo := RecCount() )
          EXIT
       CASE ICON_FA_MINUS
-         DBDelete()
+         IF RLock()
+            DBDelete()
+            DBUnlock()
+         ENDIF
          EXIT
       CASE ICON_FA_BACKWARD
          nGoTo := -1
@@ -1239,7 +1376,20 @@ PROCEDURE ToolOp( nCode, nGoTo  )
 
 STATIC PROCEDURE UIGoto( nGoto )
    IF SelectActiveInUI()
-      DBGoto( s_aAliases[ s_nActive ][ _WA_SCROLLTO ] := nGoto )
+      IF IndexOrd() > 0
+         OrdKeyGoto( s_aAliases[ s_nActive ][ _WA_SCROLLTO ] := nGoto )
+      ELSE
+         DBGoto( s_aAliases[ s_nActive ][ _WA_SCROLLTO ] := nGoto )
+     ENDIF
+   ENDIF
+   RETURN
+
+STATIC PROCEDURE GotoClicked( cGoto )
+   IF SelectActiveInUI() .AND. IndexOrd() > 0
+      DBGoTo( Val( cGoTo ) )
+      s_aAliases[ s_nActive ][ _WA_SCROLLTO ] := OrdKeyNo()
+   ELSE
+      UIGoto( Val( cGoTo ) )
    ENDIF
    RETURN
 

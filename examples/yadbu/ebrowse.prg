@@ -49,8 +49,10 @@ PROCEDURE EBrowser( lFit, nGoTo )
                          nTableFlags, a /* widget size */ )
 
       pClip := ImGuiListClipper_ImGuiListClipper()
-
-      ImGui::TableSetupColumn( "  RECNO()" )
+#ifndef FIRST_COLUMN_TITLE
+#define FIRST_COLUMN_TITLE "  RECNO()"
+#endif
+      ImGui::TableSetupColumn( FIRST_COLUMN_TITLE )
 
       FOR i := 1 TO FCount()
          ImGui::TableSetupColumn( FieldName( i ) )
@@ -85,17 +87,20 @@ PROCEDURE EBrowser( lFit, nGoTo )
 
             ImGui::TableNextColumn()
 
+#ifndef FIRST_COLUMN_EXPR
+#define FIRST_COLUMN_EXPR Str( RecNo() )
+#endif
             IF i == nOldRec .AND. nGoTo == 0
                aColor := hb_igGetStyleColorVec4( @aColor, ImGuiCol_PlotHistogram )
                ImGui::PushStyleColorVec4( ImGuiCol_Text, aColor )
                ImGui::Text( ICON_FA_CARET_RIGHT )
                ImGui::SameLine( 10 )
-               ImGui::Text( Str( RecNo() ) )
+               ImGui::Text( FIRST_COLUMN_EXPR )
                ImGui::PopStyleColor()
             ELSE
                ImGui::Dummy()
                ImGui::SameLine( 10 )
-               ImGui::Text( Str( RecNo() ) )
+               ImGui::Text( FIRST_COLUMN_EXPR )
             ENDIF
 
 /*          something like this could be desirable too,
@@ -141,19 +146,19 @@ PROCEDURE EBrowser( lFit, nGoTo )
                         cFormat := "%." + hb_NtoS( FieldDec( nF ) ) + "f" /* adjust precision */
                         IF ImGui::InputDouble( WIDGET_KEY, @fFieldValue, 0.0, 0.0, cFormat, ImGuiInputTextFlags_EnterReturnsTrue )
                            __Commit( nF, fFieldValue ) /* commit change */
-                           __AdvanceOnEnter( nF, @aNewFocus )
+                           __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
                         ELSEIF ImGui::IsItemDeactivated() /* AfterEdit() */ .AND. ImGui::IsKeyDown( ImGuiIO( igGetIO() ):KeyMap[ ImGuiKey_Enter + 1 /* offset BUG */ ] )
                            /* these do not return .T. on unchanged (confirmed) value, unlike plain InputText(), which does @ 1.86 */
-                           __AdvanceOnEnter( nF, @aNewFocus )
+                           __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
                         ENDIF
                      ELSE
                         nFieldValue := x
                         IF ImGui::InputInt( WIDGET_KEY, @nFieldValue, 0, 0, ImGuiInputTextFlags_EnterReturnsTrue )
                            __Commit( nF, nFieldValue ) /* commit change */
-                           __AdvanceOnEnter( nF, @aNewFocus )
+                           __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
                         ELSEIF ImGui::IsItemDeactivated() /* AfterEdit() */ .AND. ImGui::IsKeyDown( ImGuiIO( igGetIO() ):KeyMap[ ImGuiKey_Enter + 1 /* offset BUG */ ] )
                            /* these do not return .T. on unchanged (confirmed) value, unlike plain InputText(), which does @ 1.86 */
-                           __AdvanceOnEnter( nF, @aNewFocus )
+                           __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
                         ENDIF
                      ENDIF
                      EXIT
@@ -161,7 +166,7 @@ PROCEDURE EBrowser( lFit, nGoTo )
                      cFieldValue := x
                      IF ImGui::InputText( WIDGET_KEY, @cFieldValue,, ImGuiInputTextFlags_EnterReturnsTrue )
                         __Commit( nF, cFieldValue ) /* commit change */
-                        __AdvanceOnEnter( nF, @aNewFocus )
+                        __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
                      ENDIF
                      EXIT
                      /* add a popup for multiline memos in similar fashion to date picker */
@@ -175,7 +180,7 @@ PROCEDURE EBrowser( lFit, nGoTo )
                      IF ImGui::InputText( WIDGET_KEY, @cFieldValue, 1, ImGuiInputTextFlags_EnterReturnsTrue )
                         lFieldValue := ( Upper( cFieldValue ) == "T" .OR. Upper( cFieldValue ) == "Y" .OR. IsAffirm( cFieldValue ) )
                         __Commit( nF, lFieldValue ) /* commit change */
-                        __AdvanceOnEnter( nF, @aNewFocus )
+                        __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
                      ENDIF
                      EXIT
                   CASE "D"
@@ -187,7 +192,7 @@ PROCEDURE EBrowser( lFit, nGoTo )
                         ENDIF
                      ELSEIF ImGui::InputText( WIDGET_KEY, @cFieldValue,, ImGuiInputTextFlags_EnterReturnsTrue )
                         __Commit( nF, CtoD( cFieldValue ) ) /* commit change */
-                        __AdvanceOnEnter( nF, @aNewFocus )
+                        __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
                      ENDIF
                      IF ImGui::IsItemHovered() .AND. ImGui::IsMouseDoubleClicked( 0 )
                         IF ! cDatePickerOpenKey == WIDGET_KEY
@@ -282,7 +287,12 @@ STATIC PROCEDURE __Commit( nF, x )
    END SEQUENCE
    RETURN
 
+#ifdef NEED_SCROLL_AFTER_EDIT
+STATIC PROCEDURE __AdvanceOnEnter( nF, aNewFocus, nOldRec, nGoTo )
+   NEED_SCROLL_AFTER_EDIT
+#else
 STATIC PROCEDURE __AdvanceOnEnter( nF, aNewFocus )
+#endif
    IF ! s_lEnterAdvances
       RETURN
    ENDIF
@@ -294,3 +304,6 @@ STATIC PROCEDURE __AdvanceOnEnter( nF, aNewFocus )
       aNewFocus := { RecNo(), nF + 1 }
    ENDIF
    RETURN
+
+FUNCTION ToggleEBrowserEnter( l )
+   RETURN s_lEnterAdvances := l

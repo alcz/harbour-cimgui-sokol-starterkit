@@ -17,6 +17,8 @@ cimgui.cpp
 -I../cimgui-common/
 -I./
 hbimgui.cpp
+hbimcontext.cpp
+hbimplatform.cpp
 ../cimgui-common/hbcombow.prg
 ../cimgui-common/hbctcalw.prg
 ../cimgui-common/hbfunc.prg

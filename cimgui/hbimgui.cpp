@@ -2428,7 +2428,7 @@ HB_FUNC( IGIMBITARRAYTESTBIT )
 /* bool igImCharIsBlankA(char c) */
 HB_FUNC( IGIMCHARISBLANKA )
 {
-   char c;
+   char c = hb_parcx( 1 )[0];
    bool ret = igImCharIsBlankA(c);
    hb_retl( ret );
 }
@@ -2594,7 +2594,7 @@ HB_FUNC( IGIMFONTATLASBUILDRENDER1BPPRECTFROMSTRING )
    int w = hb_parni( 4 );
    int h = hb_parni( 5 );
    const char* in_str = hb_parcx( 6 );
-   char in_marker_char;
+   char in_marker_char = hb_parcx( 7 )[0];
    unsigned char in_marker_pixel_value;
    igImFontAtlasBuildRender1bppRectFromString(atlas,atlas_x,atlas_y,w,h,in_str,in_marker_char,in_marker_pixel_value);
 }
@@ -2968,7 +2968,7 @@ HB_FUNC( IGIMSTRCHRRANGE )
    HB_SIZE str_begin_siz = hb_parclen( 1 );
    const char* str_begin = hb_parcx( 1 );
    const char* str_end = str_begin + str_begin_siz;
-   char c;
+   char c = hb_parcx( 2 )[0];
    const char* ret = igImStrchrRange(str_begin,str_end,c);
    hb_retc( ret );
 }

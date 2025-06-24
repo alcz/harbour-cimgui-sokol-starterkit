@@ -32,6 +32,36 @@
    * cimgui/hbimstru.ch
      * regenerated with recent changes evaluated in docking branch
 
+2025-06-23 20:27 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * yadbu/ebrowse.prg
+     + added more #ifdef based hooks, for inheriting the code using
+       preprocessor tricks
+
+   * yadbu/ebrowseidx.prg
+     * updated to reposition browser if field changes influence record
+       order
+
+   * yadbu/tabstru.prg
+     ! fixed copy/paste bug
+
+   * yadbu/yadbu.hbp
+   * yadbu/yadbu.prg
+     + added toggle checkboxes:
+       - disable/enable focusing next control in table on Enter
+       - disable/enable scrolling of the table when order is changed
+
+     + overview tree now lists indexes/orders/tags, allows to select them
+       or seek
+
+     * enabled indexing variant of the browser
+
+     * changed toolbox to use OrdKeyNo()/OrdKeyGoTo() if order is selected
+
+     ; due to nature of ImGui tables with ImGuiListClipper, only absolute
+       navigation is used here. "dbskipper" and handling deleted records
+       likely needs an individual implementation of browser (TBrowse,
+       XBPBrowse clone).
+
 2025-06-22 19:40 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * examples/yadbu/tabstru.prg
      ! fix control id clash when DBStruct() is imported

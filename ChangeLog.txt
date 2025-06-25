@@ -3,6 +3,17 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-06-25 16:06 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * README.md
+    * reflect some more of what is in the repo
+
+  + img/playground-code.png
+  + img/playground.png
+  + img/yadbu-debian.png
+  + img/yadbu-firefox.png
+  + img/yadbu-win64.png
+    + screenshots for README.md
+
 2025-06-25 13:01 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * examples/yadbu/yadbu.prg
     * use BEGIN SEQUENCE in db opening routine

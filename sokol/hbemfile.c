@@ -144,5 +144,5 @@ HB_FUNC( HB_SOKOL_WASM_DROPPEDFILELOAD )
 
 HB_FUNC( HB_SOKOL_WASM_DROPPEDFILESIZE )
 {
-    hb_retns( ( HB_SIZE ) sapp_html5_get_dropped_file_size( hb_parni( 1 ) ) );
+    hb_retns( ( HB_SIZE ) sapp_html5_get_dropped_file_size( hb_parnidef( 1, 1 ) - 1 ) );
 }

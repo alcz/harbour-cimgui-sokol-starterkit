@@ -53,7 +53,6 @@ REQUEST DBFCDX, HB_MEMIO
 #define _WA_HIDDEN    6
 #define _WA_SCROLLTO  7 /* scroll visible area to this record ( RecNo() remains unaltered ) */
 #define _WA_READONLY  8
-/* FIX repositioning on indexed areas */
 
 /* array of files opened by multi-selection or drag'n'drop */
 #define _OO_SEQ       1
@@ -101,7 +100,10 @@ PROCEDURE MAIN
 #ifdef __PLATFORM__WASM
    IF ImFrame() # NIL /* dummy calls for emscripten, to be removed when those functions are properly requested from .c code */
       ImInit()
+      DBFNTX()
       DBFCDX()
+      DBFFPT()
+      DBFBLOB()
       HB_MEMIO()
    ENDIF
 #endif
@@ -147,18 +149,13 @@ PROCEDURE ImFrame
 
 PROCEDURE ImDrop( aFiles )
    LOCAL cFile
-   FOR EACH cFile IN aFiles
-#ifdef __PLATFORM__WASM
-      IG_WinCreate( @__ErrorWindow(), "loading:" + hb_NtoS( cFile:__enumIndex ), ;
-                    { "loading async", cFile + " size: " + hb_NtoS( hb_sokol_wasm_droppedfilesize( cFile:__enumIndex ) ) } )
-      hb_sokol_wasm_droppedfileload( cFile:__enumIndex,, cFile )
-//    hb_sokol_wasm_droppedfileload( cFile:__enumIndex,, { |cBody,nIndex| IIF( hb_isString( cBody ), ImAsyncFile( cBody, nIndex, cFile + ":codeblock" ), NIL ) } )
-#elseif __PLATFORM__WINDOWS
+//   FOR EACH cFile IN aFiles
+#ifdef __PLATFORM__WINDOWS
       // use NETDISK() to detect and open a networked file in some buffered way
-      IF Left( c, 2 ) == "\\" .OR. ( SubStr( c, 2, 1 ) == ":" .AND. NetDisk( Left( c, 1 ) )
-      ENDIF
+      // IF Left( c, 2 ) == "\\" .OR. ( SubStr( c, 2, 1 ) == ":" .AND. NetDisk( Left( c, 1 ) )
+      // ENDIF
 #endif
-   NEXT
+//   NEXT
 
    IG_WinCreate( @AskToLoad(), "asktoload", , PrepFiles( aFiles ) )
 
@@ -166,7 +163,7 @@ PROCEDURE ImDrop( aFiles )
 
    RETURN
 
-PROCEDURE PrepFiles( aFiles )
+FUNCTION PrepFiles( aFiles )
    LOCAL aTable, aTmp, a
 
    IF HB_IsArray( aFiles )
@@ -190,13 +187,13 @@ PROCEDURE PrepFiles( aFiles )
             AAdd( aTmp, a:__enumIndex )
          ENDIF
       NEXT
-      FOR EACH a IN aTmp
+      FOR EACH a IN aTmp DESCEND /* yes, DESCEND is important here while deleting those empty/folders */
          hb_ADel( aTable, a, .T. )
       NEXT
       IF Len( aTable ) == 0
          __ErrorWindow_Create( "dropped files", "all dropped files were 0 bytes in size or were folders" )
          IG_WinDestroy("asktoload")
-         RETURN
+         RETURN /* FIXME return-value */
       ENDIF
    ENDIF
 
@@ -288,17 +285,24 @@ PROCEDURE AskToLoad( aTable, cMode )
          ENDIF
          a[ 4 ] := "mem:"
       NEXT
-#else
-   IF ImGui::Button("Open")
-#endif
       IF OpenFromDisk( aTable, lShared, lReadOnly )
          ReloadAliases()
          IG_WinDestroy()
       ENDIF
    ENDIF
+#else
+   IF ImGui::Button("Open")
+      ImDropToMem( aTable, lShared, lReadOnly, .T. )
+      IG_WinDestroy()
+   ENDIF
+#endif
 
    ImGui::SameLine()
    IF ImGui::Button("Copy to MEM:")
+#ifdef __PLATFORM__WASM
+      ImDropToMem( aTable, lShared, lReadOnly, .F. )
+      IG_WinDestroy()
+#else
       FOR EACH a IN aTable
          IF ! a[ _OO_LOAD ]
             LOOP
@@ -309,11 +313,12 @@ PROCEDURE AskToLoad( aTable, cMode )
             hb_vfCopyFile( a[ _OO_PATH ] + hb_FNameName( a[ _OO_NAME ] ) + ".fpt", "mem:" + hb_FNameName( a[ _OO_NAME ] ) + ".fpt" )
             hb_vfCopyFile( a[ _OO_PATH ] + hb_FNameName( a[ _OO_NAME ] ) + ".smt", "mem:" + hb_FNameName( a[ _OO_NAME ] ) + ".smt" )
          ENDIF
-         IG_WinDestroy()
       NEXT
+      IG_WinDestroy()
+#endif
    ENDIF
 
-   ImGui::SameLine()                                                                                     
+   ImGui::SameLine()
    IF ImGui::Button("Discard")
       IG_WinDestroy()
    ENDIF
@@ -330,12 +335,43 @@ PROCEDURE AskToLoad( aTable, cMode )
 
    RETURN
 
+#ifdef __PLATFORM__WASM
+PROCEDURE ImDropToMem( aTable, lShared, lReadOnly, lOpen )
+   LOCAL a, nToLoad := 0, nLoaded := 0
+
+   FOR EACH a IN aTable
+      IF ! a[ _OO_LOAD ]
+         LOOP
+      ENDIF
+      /* lowercase extensions of the files, to make RDD memo/index auto-loading happy */
+      a[ _OO_NAME ] := "mem:" + HB_FNameName( a[ _OO_NAME ] ) + Lower( HB_FNameExt( a[ _OO_NAME ] ) )
+      nToLoad++ /* activate OpenFrom* procedure only after all files have been (async) loaded,
+                   index/memo will likely precede database itself */
+   NEXT
+
+   FOR EACH a IN aTable
+      IF ! a[ _OO_LOAD ]
+         LOOP
+      ENDIF
+      hb_sokol_wasm_droppedfileload( a[ _OO_SEQ ],, ;
+                                     { |cBody,nIndex|
+                                       IF HB_IsString( cBody )
+                                          nLoaded++
+                                          HB_MemoWrit( aTable[ nIndex ][ _OO_NAME ], cBody )
+                                          IF lOpen .AND. nLoaded == nToLoad
+                                             OpenFromDisk( aTable, lShared, lReadOnly )
+                                             ReloadAliases()
+                                          ENDIF
+                                       ENDIF
+                                       RETURN
+                                     } )
+   NEXT
+
+   RETURN
+#endif
+
 FUNCTION OpenFromDisk( aTable, lShared, lReadOnly )
    LOCAL a, c, i
-
-#ifdef __PLATFORM__WASM
-   lShared := .F.
-#endif
 
    IF ! HB_IsArray( aTable )
       aTable := { { 1, aTable, 0, "", .T., } }
@@ -980,7 +1016,7 @@ STATIC PROCEDURE __OverviewUI()
                               /* the counter should look up for the length key element, allow some auto padding */
                            ENDIF
                            ImGui::Text("key " + HB_EoL() + StrTran( a[ 3 ], "+", "+" + HB_EoL() ) )
-                           ImGui::TreePop() // Close the order node
+                           ImGui::TreePop() /* Close the order node */
                         ELSE
                            ImGui::SameLine()
                            IF IndexOrd() == a:__enumIndex
@@ -1310,7 +1346,7 @@ PROCEDURE ToolBox()
       ENDIF
       ImGui::SameLine()
       IF ImGui::Button("Goto")
-         GotoClicked(  s_cGoto )
+         GotoClicked( s_cGoto )
       ENDIF
       IF nOpRepeat <> NIL .AND. s_nActive > 0
          IF nOpRepeat == ICON_FA_CARET_LEFT .OR. ;
@@ -1325,7 +1361,7 @@ PROCEDURE ToolBox()
    ImGui::End()
    RETURN
 
-PROCEDURE ToolOp( nCode, nGoTo  )
+PROCEDURE ToolOp( nCode, nGoTo )
    LOCAL symGoTo := @DBGoto(), symRecNo := @RecNo()
    IF ! SelectActiveInUI()
       RETURN
@@ -1401,3 +1437,4 @@ FUNCTION OnShiftRetStruct()
 
 FUNCTION UIDBCreate( cFile, aStruct, cAlias )
    RETURN DBCreate( cFile, aStruct, s_cRDD, .T., cAlias,, IIF( hb_cdpExists( s_cCodePage ), s_cCodePage, "EN" ) )
+

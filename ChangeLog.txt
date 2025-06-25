@@ -3,6 +3,22 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-06-24 10:56 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * examples/yadbu/yadbu.prg
+    * fix and hopefully finalize drag and drop loading of
+      DBF-s and ancillaries on WebAssembly build
+
+    * fix deleting empty files/folders in drag and drop PrepFiles()
+
+    ! force additional drivers to be linked in emscripten (hack)
+
+  * sokol/hbemfile.prg
+    ! fix off-by-one of file index argument in
+      hb_sokol_wasm_droppedFileSize( <nFileIndex> ) -> <nSize>
+
+  * ChangeLog.txt
+    ; mistakes corrected
+
 2025-06-24 16:17 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * cimgui-docking/cimgui.hbp
   + cimgui-docking/hbimcontext.ch
@@ -33,19 +49,19 @@
      * regenerated with recent changes evaluated in docking branch
 
 2025-06-23 20:27 UTC+0200 Aleksander Czajczynski (hb fki.pl)
-   * yadbu/ebrowse.prg
+   * examples/yadbu/ebrowse.prg
      + added more #ifdef based hooks, for inheriting the code using
        preprocessor tricks
 
-   * yadbu/ebrowseidx.prg
+   * examples/yadbu/ebrowseidx.prg
      * updated to reposition browser if field changes influence record
        order
 
-   * yadbu/tabstru.prg
+   * examples/yadbu/tabstru.prg
      ! fixed copy/paste bug
 
-   * yadbu/yadbu.hbp
-   * yadbu/yadbu.prg
+   * examples/yadbu/yadbu.hbp
+   * examples/yadbu/yadbu.prg
      + added toggle checkboxes:
        - disable/enable focusing next control in table on Enter
        - disable/enable scrolling of the table when order is changed
@@ -133,7 +149,7 @@
      * navigation toolbox working (a demo of ImGuiListClipper capability
        of table scrolling to a record that is currently invisible)
 
-     * records shown in read&only browser are now hoverable and selectable
+     * records shown in read-only browser are now hoverable and selectable
 
      ! fix dragging files up and down when opening multiple
 

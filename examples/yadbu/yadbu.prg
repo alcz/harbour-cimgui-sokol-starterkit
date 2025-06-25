@@ -371,7 +371,7 @@ PROCEDURE ImDropToMem( aTable, lShared, lReadOnly, lOpen )
 #endif
 
 FUNCTION OpenFromDisk( aTable, lShared, lReadOnly )
-   LOCAL a, c, i
+   LOCAL a, c, i, e
 
    IF ! HB_IsArray( aTable )
       aTable := { { 1, aTable, 0, "", .T., } }
@@ -398,13 +398,29 @@ FUNCTION OpenFromDisk( aTable, lShared, lReadOnly )
             NEXT
          ENDIF
 
-         DBUseArea( .T., s_cRDD, a[ _OO_PATH ] + a[ _OO_NAME ], IIF( ! Empty( a[ _OO_ALIAS ] ), a[ _OO_ALIAS ], NIL ), lShared, lReadOnly, IIF( hb_cdpExists( s_cCodePage ), s_cCodePage, "EN" ) )
+         BEGIN SEQUENCE WITH __BreakBlock()
+#ifdef __PLATFORM__WINDOWS__
+            IF AScan( aTable, { |x| Lower( HB_FNameName( x[ _OO_NAME ] ) ) == Lower( HB_FNameName( a[ _OO_NAME ] ) ) .AND. Lower( HB_FNameExt( x[ _OO_NAME ] ) ) == ".cdx" } ) > 0
+#else
+            IF AScan( aTable, { |x| HB_FNameName( x[ _OO_NAME ] ) == HB_FNameName( a[ _OO_NAME ] ) .AND. Lower( HB_FNameExt( x[ _OO_NAME ] ) ) == ".cdx" } ) > 0
+#endif
+               c := "DBFCDX"
+            ELSE
+               c := s_cRDD
+            ENDIF
+            DBUseArea( .T., c, a[ _OO_PATH ] + a[ _OO_NAME ], IIF( ! Empty( a[ _OO_ALIAS ] ), a[ _OO_ALIAS ], NIL ), lShared, lReadOnly, IIF( hb_cdpExists( s_cCodePage ), s_cCodePage, "EN" ) )
+         RECOVER USING e
+            __ErrorWindow_Create( "DBUseArea " + c + " error", a[ _OO_NAME ] + ": " + e:Operation + " " + e:Description )
+         END SEQUENCE
 
       ELSEIF Used()
          IF c == ".cdx" .OR. c == ".ntx" .OR. c == ".nsx"
 
-            OrdListAdd( a[ _OO_PATH ] + a[ _OO_NAME ], IIF( ! Empty( a[ _OO_ALIAS ] ), a[ _OO_ALIAS ], NIL ) /* only specific order from file */ )
-
+            BEGIN SEQUENCE WITH __BreakBlock()
+               OrdListAdd( a[ _OO_PATH ] + a[ _OO_NAME ], IIF( ! Empty( a[ _OO_ALIAS ] ), a[ _OO_ALIAS ], NIL ) /* only specific order from file */ )
+            RECOVER USING e
+               __ErrorWindow_Create( "OrdListAdd error", a[ _OO_NAME ] + ": " + e:Operation + " " + e:Description )
+            END SEQUENCE
          ENDIF
       ENDIF
    NEXT

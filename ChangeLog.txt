@@ -3,7 +3,15 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
-2025-06-24 10:56 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+2025-06-25 13:01 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * examples/yadbu/yadbu.prg
+    * use BEGIN SEQUENCE in db opening routine
+
+    * switch to DBFCDX RDD from the default RDD in db opening
+      routine, if the list already contains *.cdx file listed
+      by the same name
+
+2025-06-25 10:56 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * examples/yadbu/yadbu.prg
     * fix and hopefully finalize drag and drop loading of
       DBF-s and ancillaries on WebAssembly build

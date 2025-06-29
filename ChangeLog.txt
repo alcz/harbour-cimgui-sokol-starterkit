@@ -3,6 +3,34 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-06-29 20:58 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * cimgui/cimgui.cpp
+   * cimgui/cimgui.h
+   * cimgui/cimgui.hbx
+   * cimgui/hbimenum.ch
+   * cimgui/hbimgui.cpp
+   * cimgui/hbimstru.ch
+   * cimgui/imgui/LICENSE.txt
+   * cimgui/imgui/imconfig.h
+   * cimgui/imgui/imgui.cpp
+   * cimgui/imgui/imgui.h
+   * cimgui/imgui/imgui_demo.cpp
+   * cimgui/imgui/imgui_draw.cpp
+   * cimgui/imgui/imgui_internal.h
+   * cimgui/imgui/imgui_tables.cpp
+   * cimgui/imgui/imgui_widgets.cpp
+   * cimgui/imgui/imstb_rectpack.h
+   * cimgui/imgui/imstb_textedit.h
+   * cimgui/imgui/imstb_truetype.h
+     * updated Dear ImGui default branch + cimgui + our wrapper
+       to 1.85
+
+   + checkout-imgui-1841.bat
+     * final commit id of 1.84.1 stored here
+
+   * ChangeLog.txt
+     ! correct copy/paste mistakes
+
 2025-06-29 20:36 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * cimgui/cimgui.cpp
    * cimgui/cimgui.h
@@ -27,8 +55,8 @@
 
      ; 1.83 skipped (not released/tagged under cimgui repo)
 
-   * checkout-imgui-182.bat
-     * final commit id of 1.82 docking stored branch here
+   + checkout-imgui-182.bat
+     * final commit id of 1.82 stored here
 
 2025-06-29 20:21 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * cimgui/hbimenum.ch
@@ -58,8 +86,8 @@
      * updated Dear ImGui default branch + cimgui + our wrapper
        to 1.82
 
-   * checkout-imgui-181.bat
-     * final commit id of 1.81 docking stored branch here
+   + checkout-imgui-181.bat
+     * final commit id of 1.81 stored here
 
 2025-06-29 19:47 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * cimgui/cimgui.cpp
@@ -83,8 +111,8 @@
      * updated Dear ImGui default branch + cimgui + our wrapper
        to 1.81
 
-   * checkout-imgui-180.bat
-     * final commit id of 1.80 docking stored branch here
+   + checkout-imgui-180.bat
+     * final commit id of 1.80 stored here
 
    * img/ -> images/
    * README.md

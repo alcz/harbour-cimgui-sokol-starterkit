@@ -3,6 +3,39 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-06-29 21:23 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * cimgui/cimgui.cpp
+   * cimgui/cimgui.h
+   * cimgui/cimgui.hbx
+   * cimgui/hbimenum.ch
+   * cimgui/hbimgui.cpp
+   * cimgui/hbimstru.ch
+   * cimgui/imgui/LICENSE.txt
+   * cimgui/imgui/imconfig.h
+   * cimgui/imgui/imgui.cpp
+   * cimgui/imgui/imgui.h
+   * cimgui/imgui/imgui_demo.cpp
+   * cimgui/imgui/imgui_draw.cpp
+   * cimgui/imgui/imgui_internal.h
+   * cimgui/imgui/imgui_tables.cpp
+   * cimgui/imgui/imgui_widgets.cpp
+   * cimgui/imgui/imstb_rectpack.h
+   * cimgui/imgui/imstb_textedit.h
+   * cimgui/imgui/imstb_truetype.h
+     * updated Dear ImGui default branch + cimgui + our wrapper
+       to 1.86
+
+     ; default branch is now in line with docking branch.
+
+   + checkout-imgui-185.bat
+     * final commit id of 1.85 stored here
+
+     ; In future I'll switch to git submodule feature to request
+       specific versions, so there will be no more batches like
+       these. But it is yet to be decided if submodules will
+       appear in master branch or in a special branch. In master
+       they would make the default checkout slightly longer process. 
+
 2025-06-29 20:58 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * cimgui/cimgui.cpp
    * cimgui/cimgui.h

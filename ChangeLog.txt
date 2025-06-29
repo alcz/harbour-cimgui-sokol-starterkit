@@ -3,6 +3,12 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-06-29 20:21 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * cimgui/hbimenum.ch
+   * cimgui/hbimgui.cpp
+   * cimgui/hbimstru.ch
+     ! fix wrong ver in header
+
 2025-06-29 20:06 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * cimgui/cimgui.cpp
    * cimgui/cimgui.h

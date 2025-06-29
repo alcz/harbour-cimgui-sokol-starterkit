@@ -236,7 +236,7 @@
 #define ImGuiStyle_AntiAliasedLinesUseTex              36
 #define ImGuiStyle_AntiAliasedFill                     37
 #define ImGuiStyle_CurveTessellationTol                38
-#define ImGuiStyle_CircleSegmentMaxError               39
+#define ImGuiStyle_CircleTessellationMaxError          39
 #define ImGuiStyle_Colors                              40
 #xtranslate ImGuiStyle( <p> ):Alpha => ImGuiStyle_Get( <p>, 1 )
 #xtranslate ImGuiStyle( <p> ):WindowPadding => ImGuiStyle_Get( <p>, 2 )
@@ -276,7 +276,7 @@
 #xtranslate ImGuiStyle( <p> ):AntiAliasedLinesUseTex => ImGuiStyle_Get( <p>, 36 )
 #xtranslate ImGuiStyle( <p> ):AntiAliasedFill => ImGuiStyle_Get( <p>, 37 )
 #xtranslate ImGuiStyle( <p> ):CurveTessellationTol => ImGuiStyle_Get( <p>, 38 )
-#xtranslate ImGuiStyle( <p> ):CircleSegmentMaxError => ImGuiStyle_Get( <p>, 39 )
+#xtranslate ImGuiStyle( <p> ):CircleTessellationMaxError => ImGuiStyle_Get( <p>, 39 )
 #xtranslate ImGuiStyle( <p> ):Colors\[ <n> \] => ImGuiStyle_Get( <p>, 40, <n> )
 #xtranslate ImGuiStyle( <p> ):Alpha := <v> => ImGuiStyle_Set( <p>, 1, <v> )
 #xtranslate ImGuiStyle( <p> ):WindowPadding := <v> => ImGuiStyle_Set( <p>, 2, <v> )
@@ -316,7 +316,7 @@
 #xtranslate ImGuiStyle( <p> ):AntiAliasedLinesUseTex := <v> => ImGuiStyle_Set( <p>, 36, <v> )
 #xtranslate ImGuiStyle( <p> ):AntiAliasedFill := <v> => ImGuiStyle_Set( <p>, 37, <v> )
 #xtranslate ImGuiStyle( <p> ):CurveTessellationTol := <v> => ImGuiStyle_Set( <p>, 38, <v> )
-#xtranslate ImGuiStyle( <p> ):CircleSegmentMaxError := <v> => ImGuiStyle_Set( <p>, 39, <v> )
+#xtranslate ImGuiStyle( <p> ):CircleTessellationMaxError := <v> => ImGuiStyle_Set( <p>, 39, <v> )
 #xtranslate ImGuiStyle( <p> ):Colors\[ <n> \] := <v> => ImGuiStyle_Set( <p>, 40, <v>, <n> )
 #define ImGuiViewport_Flags                             1
 #define ImGuiViewport_Pos                               2

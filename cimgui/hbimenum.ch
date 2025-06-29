@@ -13,16 +13,20 @@
 #define FLT_MAX 0.9999998 * 2^127
 #endif
 
-#define ImDrawCornerFlags_None                                          0 /* 0 */
-#define ImDrawCornerFlags_TopLeft                                       1 /* 1 << 0 */
-#define ImDrawCornerFlags_TopRight                                      2 /* 1 << 1 */
-#define ImDrawCornerFlags_BotLeft                                       4 /* 1 << 2 */
-#define ImDrawCornerFlags_BotRight                                      8 /* 1 << 3 */
-#define ImDrawCornerFlags_Top                                           3 /* ImDrawCornerFlags_TopLeft | ImDrawCornerFlags_TopRight */
-#define ImDrawCornerFlags_Bot                                          12 /* ImDrawCornerFlags_BotLeft | ImDrawCornerFlags_BotRight */
-#define ImDrawCornerFlags_Left                                          5 /* ImDrawCornerFlags_TopLeft | ImDrawCornerFlags_BotLeft */
-#define ImDrawCornerFlags_Right                                        10 /* ImDrawCornerFlags_TopRight | ImDrawCornerFlags_BotRight */
-#define ImDrawCornerFlags_All                                          15 /* 0xF */
+#define ImDrawFlags_None                                                0 /* 0 */
+#define ImDrawFlags_Closed                                              1 /* 1 << 0 */
+#define ImDrawFlags_RoundCornersTopLeft                                16 /* 1 << 4 */
+#define ImDrawFlags_RoundCornersTopRight                               32 /* 1 << 5 */
+#define ImDrawFlags_RoundCornersBottomLeft                             64 /* 1 << 6 */
+#define ImDrawFlags_RoundCornersBottomRight                           128 /* 1 << 7 */
+#define ImDrawFlags_RoundCornersNone                                  256 /* 1 << 8 */
+#define ImDrawFlags_RoundCornersTop                                    48 /* ImDrawFlags_RoundCornersTopLeft | ImDrawFlags_RoundCornersTopRight */
+#define ImDrawFlags_RoundCornersBottom                                192 /* ImDrawFlags_RoundCornersBottomLeft | ImDrawFlags_RoundCornersBottomRight */
+#define ImDrawFlags_RoundCornersLeft                                   80 /* ImDrawFlags_RoundCornersBottomLeft | ImDrawFlags_RoundCornersTopLeft */
+#define ImDrawFlags_RoundCornersRight                                 160 /* ImDrawFlags_RoundCornersBottomRight | ImDrawFlags_RoundCornersTopRight */
+#define ImDrawFlags_RoundCornersAll                                   240 /* ImDrawFlags_RoundCornersTopLeft | ImDrawFlags_RoundCornersTopRight | ImDrawFlags_RoundCornersBottomLeft | ImDrawFlags_RoundCornersBottomRight */
+#define ImDrawFlags_RoundCornersDefault_                              240 /* ImDrawFlags_RoundCornersAll */
+#define ImDrawFlags_RoundCornersMask_                                 496 /* ImDrawFlags_RoundCornersAll | ImDrawFlags_RoundCornersNone */
 #define ImDrawListFlags_None                                            0 /* 0 */
 #define ImDrawListFlags_AntiAliasedLines                                1 /* 1 << 0 */
 #define ImDrawListFlags_AntiAliasedLinesUseTex                          2 /* 1 << 1 */
@@ -232,9 +236,9 @@
 #define ImGuiInputReadMode_RepeatFast                                   5 /* 5 */
 #define ImGuiInputSource_None                                           0 /* 0 */
 #define ImGuiInputSource_Mouse                                          1 /* 1 */
-#define ImGuiInputSource_Nav                                            2 /* 2 */
-#define ImGuiInputSource_NavKeyboard                                    3 /* 3 */
-#define ImGuiInputSource_NavGamepad                                     4 /* 4 */
+#define ImGuiInputSource_Keyboard                                       2 /* 2 */
+#define ImGuiInputSource_Gamepad                                        3 /* 3 */
+#define ImGuiInputSource_Nav                                            4 /* 4 */
 #define ImGuiInputSource_COUNT                                          5 /* 5 */
 #define ImGuiInputTextFlags_None                                        0 /* 0 */
 #define ImGuiInputTextFlags_CharsDecimal                                1 /* 1 << 0 */
@@ -250,7 +254,7 @@
 #define ImGuiInputTextFlags_AllowTabInput                            1024 /* 1 << 10 */
 #define ImGuiInputTextFlags_CtrlEnterForNewLine                      2048 /* 1 << 11 */
 #define ImGuiInputTextFlags_NoHorizontalScroll                       4096 /* 1 << 12 */
-#define ImGuiInputTextFlags_AlwaysInsertMode                         8192 /* 1 << 13 */
+#define ImGuiInputTextFlags_AlwaysOverwrite                          8192 /* 1 << 13 */
 #define ImGuiInputTextFlags_ReadOnly                                16384 /* 1 << 14 */
 #define ImGuiInputTextFlags_Password                                32768 /* 1 << 15 */
 #define ImGuiInputTextFlags_NoUndoRedo                              65536 /* 1 << 16 */
@@ -277,6 +281,7 @@
 #define ImGuiItemStatusFlags_ToggledOpen                               16 /* 1 << 4 */
 #define ImGuiItemStatusFlags_HasDeactivated                            32 /* 1 << 5 */
 #define ImGuiItemStatusFlags_Deactivated                               64 /* 1 << 6 */
+#define ImGuiItemStatusFlags_HoveredWindow                            128 /* 1 << 7 */
 #define ImGuiKeyModFlags_None                                           0 /* 0 */
 #define ImGuiKeyModFlags_Ctrl                                           1 /* 1 << 0 */
 #define ImGuiKeyModFlags_Shift                                          2 /* 1 << 1 */

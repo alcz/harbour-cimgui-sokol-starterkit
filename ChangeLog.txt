@@ -3,6 +3,31 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-06-29 20:06 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * cimgui/cimgui.cpp
+   * cimgui/cimgui.h
+   * cimgui/cimgui.hbx
+   * cimgui/hbimenum.ch
+   * cimgui/hbimgui.cpp
+   * cimgui/hbimstru.ch
+   * cimgui/imgui/LICENSE.txt
+   * cimgui/imgui/imconfig.h
+   * cimgui/imgui/imgui.cpp
+   * cimgui/imgui/imgui.h
+   * cimgui/imgui/imgui_demo.cpp
+   * cimgui/imgui/imgui_draw.cpp
+   * cimgui/imgui/imgui_internal.h
+   * cimgui/imgui/imgui_tables.cpp
+   * cimgui/imgui/imgui_widgets.cpp
+   * cimgui/imgui/imstb_rectpack.h
+   * cimgui/imgui/imstb_textedit.h
+   * cimgui/imgui/imstb_truetype.h
+     * updated Dear ImGui default branch + cimgui + our wrapper
+       to 1.82
+
+   * checkout-imgui-181.bat
+     * final commit id of 1.81 docking stored branch here
+
 2025-06-29 19:47 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * cimgui/cimgui.cpp
    * cimgui/cimgui.h

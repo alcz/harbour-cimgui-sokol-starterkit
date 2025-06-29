@@ -153,11 +153,11 @@ Enjoy!
 
 ## **Screenshots**
 
-![Playground](/img/playground.png?raw=true "Playground")
-![Playground coding](/img/playground-code.png?raw=true "Playground coding")
-![yadbu Win64](/img/yadbu-win64.png?raw=true "yadbu on Windows 64-bit")
-![yadbu Firefox](/img/yadbu-firefox.png?raw=true "yadbu WebAssembly in Firefox")
-![yadbu Debian](/img/yadbu-debian.png?raw=true "yadbu running on Debian")
+![Playground](/images/playground.png?raw=true "Playground")
+![Playground coding](/images/playground-code.png?raw=true "Playground coding")
+![yadbu Win64](/images/yadbu-win64.png?raw=true "yadbu on Windows 64-bit")
+![yadbu Firefox](/images/yadbu-firefox.png?raw=true "yadbu WebAssembly in Firefox")
+![yadbu Debian](/images/yadbu-debian.png?raw=true "yadbu running on Debian")
 
 ## **Bonus chatter**
 

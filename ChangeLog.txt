@@ -3,6 +3,20 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-07-02 09:36 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * examples/yadbu/ebrowse.prg
+     + allow memo/varchar field editing in a popup (currently double-click)
+
+     + show timestamp kind of values, still editing may be quite hard
+       without a PICTURE-d control
+
+   * examples/yadbu/yadbu.prg
+     * SET CENTURY
+
+     * BEGIN SEQUENCE around DBCreate()
+
+     ! trying to fix new database window "crash" in WebAssembly
+
 2025-06-29 22:33 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    ! image/ -> images/
      ! fix typo'ed folder rename ...

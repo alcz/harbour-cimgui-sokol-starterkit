@@ -71,6 +71,8 @@ THREAD STATIC s_hFontNumOnly, s_lKeepRec := .T.
 PROCEDURE MAIN
    LOCAL i, hFiles := { => }
 
+   SET CENTURY ON
+
    hb_cdpSelect("UTF8EX")
 
    IG_MultiWin_Init()
@@ -105,6 +107,7 @@ PROCEDURE MAIN
       DBFFPT()
       DBFBLOB()
       HB_MEMIO()
+      FieldDesigner() /* referenced in a symbol only */
    ENDIF
 #endif
    RETURN
@@ -1278,6 +1281,9 @@ STATIC PROCEDURE Browser( lFit, nGoTo )
                   CASE "C"
                      ImGui::Text( RTrim( x ) )
                      EXIT
+                  CASE "T"
+                     ImGui::Text( HB_TToC( x ) )
+                     EXIT
                ENDSWITCH
             NEXT
 
@@ -1452,5 +1458,12 @@ FUNCTION OnShiftRetStruct()
    RETURN NIL
 
 FUNCTION UIDBCreate( cFile, aStruct, cAlias )
-   RETURN DBCreate( cFile, aStruct, s_cRDD, .T., cAlias,, IIF( hb_cdpExists( s_cCodePage ), s_cCodePage, "EN" ) )
+   LOCAL lRet := .F.
 
+   BEGIN SEQUENCE WITH __BreakBlock()
+      lRet := DBCreate( cFile, aStruct, s_cRDD, .T., cAlias,, IIF( hb_cdpExists( s_cCodePage ), s_cCodePage, "EN" ) )
+   RECOVER USING e
+      __ErrorWindow_Create( "DBCreate " + s_cRDD + " error", cFile + ": " + e:Operation + " " + e:Description )
+   END SEQUENCE
+
+   RETURN lRet

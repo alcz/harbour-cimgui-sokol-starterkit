@@ -11,6 +11,7 @@
 #include "hbimstru.ch"
 
 STATIC s_lEnterAdvances := .T.
+STATIC s_lMemoEditIsCombo := .F.
 
 PROCEDURE EBrowser( lFit, nGoTo )
    STATIC nTableFlags := ImGuiTableFlags_BordersV + ImGuiTableFlags_BordersOuterH + ;
@@ -29,7 +30,8 @@ PROCEDURE EBrowser( lFit, nGoTo )
    LOCAL nFieldValue, fFieldValue, cFieldValue, lFieldValue
 
    /* CHECKME do we need to move these statics to aWA, it's rather impossible to have a collision/race condition here */
-   STATIC aNewFocus := NIL, cDatePickerOpenKey := NIL, aPickerState := { NIL }, dFieldValue
+   STATIC aNewFocus := NIL, cMemoEditOpenKey := NIL, cDatePickerOpenKey := NIL, aPickerState := { NIL }, dFieldValue
+   STATIC cMemoEdit := "", nMemoBuf := 0
 
    IF nTextBHeight == NIL
       ImGui::CalcTextSize( @nTextBHeight, "A" ) // -> {x,y}
@@ -164,10 +166,49 @@ PROCEDURE EBrowser( lFit, nGoTo )
                      EXIT
                   CASE "C"
                      cFieldValue := x
-                     IF ImGui::InputText( WIDGET_KEY, @cFieldValue,, ImGuiInputTextFlags_EnterReturnsTrue )
+                     IF cMemoEditOpenKey == WIDGET_KEY
+                        IF s_lMemoEditIsCombo .AND. ;
+                           ImGui::BeginCombo( "Popup" + WIDGET_KEY, Left( cFieldValue, 4 ) + "...", ImGuiComboFlags_HeightLargest )
+
+                           IF ImGui::InputTextMultiline( WIDGET_KEY + "_MEMO", @cMemoEdit, @nMemoBuf, { 320, 100 }, ImGuiInputTextFlags_CallbackResize )
+                              __Commit( nF, cMemoEdit ) /* commit change */
+                           ENDIF
+
+                           ImGui::EndCombo()
+                        ELSE
+                           ImGui::GetCursorScreenPos( @a )
+                           ImGui::SetNextWindowPos( a ) /* see BeginPopupEx( ImGui::GetIDStr( "Popup" ), ) to make it resizable */
+                           IF ImGui::BeginPopup( "Popup" + WIDGET_KEY, ImGuiWindowFlags_NoMove )
+
+                              IF ImGui::InputTextMultiline( WIDGET_KEY + "_MEMO", @cMemoEdit, @nMemoBuf, { 320, 100 }, ImGuiInputTextFlags_CallbackResize )
+                                 __Commit( nF, cMemoEdit ) /* commit change */
+                              ENDIF
+                              /*
+                                 IF ImGui::Button("Edit in a window")
+                                    // just an idea
+                                 ENDIF
+                              */
+                              ImGui::EndPopup()
+                           ELSE
+                              cMemoEditOpenKey := NIL
+                           ENDIF
+                        ENDIF
+                     ELSEIF ImGui::InputText( WIDGET_KEY, @cFieldValue,, ImGuiInputTextFlags_EnterReturnsTrue )
+                        /* NOTE: this widget does not have resizable buffer, to extend a memo/varchar length
+                                 double-click to open a popup, or patch the code to use cMemoEdit */
                         __Commit( nF, cFieldValue ) /* commit change */
                         __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
                      ENDIF
+                     IF ImGui::IsItemHovered() .AND. ImGui::IsMouseDoubleClicked( 0 ) .AND. ( FieldType( nF ) == "M" .OR. ;
+                                                                                              FieldType( nF ) == "V" )
+                        IF ! cMemoEditOpenKey == WIDGET_KEY
+                           ImGui::OpenPopup( "Popup" + WIDGET_KEY )
+                           cMemoEditOpenKey := WIDGET_KEY
+                           cMemoEdit := cFieldValue
+                           nMemoBuf := Len( cMemoEdit )
+                        ENDIF
+                     ENDIF
+
                      EXIT
                      /* add a popup for multiline memos in similar fashion to date picker */
                   CASE "L"
@@ -190,7 +231,7 @@ PROCEDURE EBrowser( lFit, nGoTo )
                         IF dFieldValue <> x
                            __Commit( nF, dFieldValue ) /* commit change */
                         ENDIF
-                     ELSEIF ImGui::InputText( WIDGET_KEY, @cFieldValue,, ImGuiInputTextFlags_EnterReturnsTrue )
+                     ELSEIF ImGui::InputText( WIDGET_KEY, @cFieldValue,, ImGuiInputTextFlags_EnterReturnsTrue + ImGuiInputTextFlags_AlwaysOverwrite )
                         __Commit( nF, CtoD( cFieldValue ) ) /* commit change */
                         __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
                      ENDIF
@@ -201,11 +242,30 @@ PROCEDURE EBrowser( lFit, nGoTo )
                         ENDIF
                      ENDIF
                      EXIT
+                  CASE "T" /* case based on ValType() */
+                  /* CASE "@" */
+                  /* CASE "=" */
+                     cFieldValue := HB_TtoC( x )
+                     IF ImGui::InputText( WIDGET_KEY, @cFieldValue,, ImGuiInputTextFlags_EnterReturnsTrue + ImGuiInputTextFlags_AlwaysOverwrite )
+                        /* lazy try to prevent malformed input from emptying previous value */
+                        IF Empty( cFieldValue ) .OR. ! Empty( HB_CtoT( cFieldValue ) )
+                           __Commit( nF, HB_CtoT( cFieldValue ) ) /* commit change */
+                        ENDIF
+                        __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
+                     ENDIF
+                     EXIT
+                  /* TODO: DateTime picker */
                ENDSWITCH
                IF ! cDatePickerOpenKey == NIL
                   IF ! cDatePickerOpenKey == WIDGET_KEY
                      IF ImGui::IsItemHovered()
                         cDatePickerOpenKey := NIL
+                     ENDIF
+                  ENDIF
+               ELSEIF ! cMemoEditOpenKey == NIL
+                  IF ! cMemoEditOpenKey == WIDGET_KEY
+                     IF ImGui::IsItemHovered()
+                        cMemoEditOpenKey := NIL
                      ENDIF
                   ENDIF
                ENDIF

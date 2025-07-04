@@ -1,4 +1,4 @@
-/*
+/*                                                                                                    ^
     ebrowse.prg    -- yet another database utility, table editor
 
     license is MIT, see ../LICENSE
@@ -180,8 +180,12 @@ PROCEDURE EBrowser( lFit, nGoTo )
                            ImGui::SetNextWindowPos( a ) /* see BeginPopupEx( ImGui::GetIDStr( "Popup" ), ) to make it resizable */
                            IF ImGui::BeginPopup( "Popup" + WIDGET_KEY, ImGuiWindowFlags_NoMove )
 
-                              IF ImGui::InputTextMultiline( WIDGET_KEY + "_MEMO", @cMemoEdit, @nMemoBuf, { 320, 100 }, ImGuiInputTextFlags_CallbackResize )
-                                 __Commit( nF, cMemoEdit ) /* commit change */
+                              ImGui::SetKeyboardFocusHere()
+                              IF ImGui::InputTextMultiline( WIDGET_KEY + "_MEMO", @cMemoEdit, @nMemoBuf, { 320, 100 }, ImGuiInputTextFlags_CallbackResize + ;
+                                                                                                                       ImGuiInputTextFlags_EnterReturnsTrue )
+                                 ImGui::CloseCurrentPopup()
+                              ELSEIF ImGui::IsKeyPressed( ImGuiIO( igGetIO() ):KeyMap[ ImGuiKey_Escape + 1 /* offset BUG */ ] )
+                                 cMemoEditOpenKey := NIL
                               ENDIF
                               /*
                                  IF ImGui::Button("Edit in a window")
@@ -190,6 +194,7 @@ PROCEDURE EBrowser( lFit, nGoTo )
                               */
                               ImGui::EndPopup()
                            ELSE
+                              __Commit( nF, cMemoEdit ) /* commit change */
                               cMemoEditOpenKey := NIL
                            ENDIF
                         ENDIF
@@ -197,10 +202,21 @@ PROCEDURE EBrowser( lFit, nGoTo )
                         /* NOTE: this widget does not have resizable buffer, to extend a memo/varchar length
                                  double-click to open a popup, or patch the code to use cMemoEdit */
                         __Commit( nF, cFieldValue ) /* commit change */
-                        __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
+                        IF FieldType( nF ) $ "MVQ" .AND. ImGuiIO( igGetIO() ):KeyCtrl /* Ctrl-Enter to open popup */
+                           ImGui::OpenPopup( "Popup" + WIDGET_KEY )
+                           cMemoEditOpenKey := WIDGET_KEY
+                           cMemoEdit := cFieldValue
+                           nMemoBuf := Len( cMemoEdit )
+                        ELSE
+                           __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
+                        ENDIF
+                     ELSEIF FieldType( nF ) $ "MVQ"
+                        IF ImGui::IsItemHovered()
+                           ImGui::SetToolTip("this is a MEMO or variable length field" + HB_EoL() + ;
+                                             "double-click to fully edit or extend it's size")
+                        ENDIF
                      ENDIF
-                     IF ImGui::IsItemHovered() .AND. ImGui::IsMouseDoubleClicked( 0 ) .AND. ( FieldType( nF ) == "M" .OR. ;
-                                                                                              FieldType( nF ) == "V" )
+                     IF ImGui::IsItemHovered() .AND. ImGui::IsMouseDoubleClicked( 0 ) .AND. FieldType( nF ) $ "MVQ"
                         IF ! cMemoEditOpenKey == WIDGET_KEY
                            ImGui::OpenPopup( "Popup" + WIDGET_KEY )
                            cMemoEditOpenKey := WIDGET_KEY

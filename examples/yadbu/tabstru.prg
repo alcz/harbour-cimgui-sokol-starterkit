@@ -62,7 +62,26 @@ FUNCTION FieldDesigner( aFields, nSelectedField, cDataTypes, lModStru, cAlias, l
    STATIC a, lHasDup := .F., lInMemory := .T.
 
    ImGui::SetNextWindowSize( { 600, 400 }, ImGuiCond_Once )
+#ifndef __PLATFORM__WASM
    ImGui::SetNextWindowSizeConstraints( { 500, 300 }, { FLT_MAX, FLT_MAX } )
+/* needs extensive debugging or rechecking in later releases on WebAssembly (crash):
+   RuntimeError: table index is out of bounds
+    at CalcWindowSizeAfterConstraint(ImGuiWindow*, ImVec2 const&) (wasm://wasm/0097fe0a)
+    at CalcWindowAutoFitSize(ImGuiWindow*, ImVec2 const&) (wasm://wasm/0097fe0a)
+    at ImGui::Begin(char const*, bool*, int) (wasm://wasm/0097fe0a)
+    at igBegin (0097fe0a:0x39699)
+    at HB_FUN_IGBEGIN (0097fe0a:0x3ae29)
+    at hb_vmProc (0097fe0a:0xc4be7)
+    at hb_xvmFunction (0097fe0a:0xd9d9b)
+    at HB_FUN_FIELDDESIGNER (0097fe0a:0x1e849)
+
+   may be related to GetMainViewPort() which fails sometimes too in WASM
+   RuntimeError: memory access out of bounds
+    at ImGui::GetMainViewport() (wasm://wasm/0097fe0a)
+    at igGetMainViewport (0097fe0a:0x39a99)
+    at HB_FUN_IGGETMAINVIEWPORT (0097fe0a:0x3b733)
+*/
+#endif
    IF ImGui::Begin( "DBF Field Designer##" + IG_WinKeyCurrent(), @lOpen )
       ImGui::GetContentRegionAvail( @a )
       // --- Left Panel: Field List with Drag & Drop Reordering ---

@@ -107,7 +107,6 @@ PROCEDURE MAIN
       DBFFPT()
       DBFBLOB()
       HB_MEMIO()
-      FieldDesigner() /* referenced in a symbol only */
    ENDIF
 #endif
    RETURN
@@ -121,7 +120,7 @@ PROCEDURE ImInit
    hb_igAddFontFromMemoryTTF( cFontABuf, 18.0 * ( 3 / 4 ), , { ICON_MIN_FA, ICON_MAX_FA, 0 }, .F., .T. )
    s_hFontNumOnly := hb_igAddFontFromMemoryTTF( cFontABuf, 18.0 * ( 3 / 4 ), , { Asc("0"), Asc("9"), 0 }, .F., .F. )
    hb_igAddFontFromMemoryTTF( cFontBuf, 38.0, , { 32, 32, 0 }, .F., .T. )
-   /* fixed with font for numbers (something better? icon font doesn't even have a space, therefore a hack) */
+   /* fixed width font for numbers (something better? icon font doesn't even have a space, therefore a hack) */
 #else
    hb_igAddFontFromFileTTF( "OpenSans-Regular.ttf", 18.0, , ATLAS_CDPLIST, .T., .F. )
    hb_igAddFontFromFileTTF( "fonts/fa-solid-900.ttf", 18.0 * ( 3 / 4 ), , { ICON_MIN_FA, ICON_MAX_FA, 0 }, .F., .T. )

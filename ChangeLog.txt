@@ -3,6 +3,25 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-07-04 19:30 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * examples/yadbu/tabstru.prg
+     ! added a note and workaround for hard crashes in WebAssembly
+       due to ImGui::SetNextWindowSizeConstraints(), may be related to
+       sokol and ImGui::GetMainViewPort() being faulty there too
+
+     ; can create a .dbf table in WASM using a window now
+
+   * examples/yadbu/yadbu.prg
+     * minor cleanup
+
+   * examples/yadbu/ebrowse.prg
+     * extra setfocus on memoedit popup and a tooltip
+
+     * slight alterations to memo editing in a popup,
+       can now finish editing using Ctrl-Enter (previously only
+       Ctrl-Tab did) and Escape to abort changes. Ctrl-Enter
+       also to switch from single line edit to popup.
+
 2025-07-02 09:36 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * examples/yadbu/ebrowse.prg
      + allow memo/varchar field editing in a popup (currently double-click)

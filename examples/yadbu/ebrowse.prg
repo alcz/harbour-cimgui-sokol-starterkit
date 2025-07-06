@@ -119,7 +119,7 @@ PROCEDURE EBrowser( lFit, nGoTo )
 
             FOR nF := 1 TO FCount()
                ImGui::TableNextColumn()
-               x := FieldGet(nF)
+               x := FieldGet( nF )
 
                IF FieldLen() > 48
                   ImGui::PushItemWidth( ImGui::GetColumnWidth() )
@@ -143,7 +143,7 @@ PROCEDURE EBrowser( lFit, nGoTo )
 
                SWITCH ValType( x )
                   CASE "N"
-                     IF FieldDec( nF ) > 0
+                     IF FieldDec( nF ) > 0 .OR. FieldLen( nF ) >= 10 /* signed int overflow */
                         fFieldValue := x
                         cFormat := "%." + hb_NtoS( FieldDec( nF ) ) + "f" /* adjust precision */
                         IF ImGui::InputDouble( WIDGET_KEY, @fFieldValue, 0.0, 0.0, cFormat, ImGuiInputTextFlags_EnterReturnsTrue )

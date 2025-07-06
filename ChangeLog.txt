@@ -3,6 +3,22 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-07-06 16:18 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+   * examples/yadbu/ebrowse.prg
+   * examples/edit1.prg
+     ! prevent overflowing InputInt() control, use InputDouble()
+       for FieldLen() >= 10 even if FieldDec() = 0
+
+   * examples/implot/wmake.sh
+   * examples/wmake.sh
+   * examples/wmake_runner.sh
+   * wmake.sh
+   * hbdemo.hbp
+   * cdemo.hbp
+   * hexeterminal/tdemo.hbp
+   - sigalt.c
+     - remove old hack, unneeded in current HB
+
 2025-07-04 19:30 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * examples/yadbu/tabstru.prg
      ! added a note and workaround for hard crashes in WebAssembly

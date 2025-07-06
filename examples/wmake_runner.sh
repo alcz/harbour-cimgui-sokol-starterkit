@@ -9,7 +9,6 @@ export HB_BUILD_3RDEXT=no
 export HB_HOST_BIN=/home/$USER/harbour/bin/linux/gcc/
 export LLVM_ROOT=/home/$USER/emsdk/upstream/bin
 
-# currently silences sigaltstack undefined symbol (why?)
 # export HB_USER_LDFLAGS="-s ERROR_ON_UNDEFINED_SYMBOLS=0"
 
 # NOTE: wmake.sh uses a different --shell-file, closure, (no) exported FS

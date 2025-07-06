@@ -5,7 +5,6 @@
 #-depincpathlocal=sokol:sokol
 
 hbdemo.prg
-{abstr}sigalt.c
 
 -ohbdemo
 

@@ -187,7 +187,7 @@ STATIC PROCEDURE DBEditor( lFit, lAppend )
 
                SWITCH ValType( x )
                   CASE "N"
-                     IF FieldDec( nF ) > 0
+                     IF FieldDec( nF ) > 0 .OR. FieldLen( nF ) >= 10 /* signed int overflow */
                         fFieldValue := x
                         cFormat := "%." + hb_NtoS( FieldDec( nF ) ) + "f" /* adjust precision */
                         /* these numeric widgets also return TRUE when clicked, testing in 1.86, cannot tell the difference between Enter and mouseclick */

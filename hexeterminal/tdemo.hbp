@@ -15,7 +15,6 @@
 
 tdemo.prg
 tdemo_.cpp
-{abstr}../sigalt.c
 
 hexeterminal.hbc
 ../cimgui/cimgui.hbc

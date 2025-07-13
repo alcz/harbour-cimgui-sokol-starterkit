@@ -1,0 +1,4 @@
+cimgui,master,,https://github.com/cimgui/cimgui,!dock,!v,>1.85
+cimgui,docking_inter,,https://github.com/cimgui/cimgui,dock,!v,>1.85dock
+sokol,master,1776998de341bc68b2e25aae6374f5fa3648f4ec,https://github.com/floooh/sokol,
+

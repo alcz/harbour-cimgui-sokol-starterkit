@@ -3,6 +3,18 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-07-13 20:22 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  + generator/gettags.hb
+  + generator/precommit.hb
+  + generator/catalog.dbf
+  + generator/catalog.txt
+  + generator/projects.dbf
+  + generator/projects.txt
+    + added bits needed for branch that will use git submodules
+
+    ; "hbmk2 gettags.hb" will query git repositories listed
+      in projects.dbf, catalog.dbf will contain possible
+      choices for mini-package-manager
 
 2025-07-13 14:40 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * examples/yadbu/ebrowse.prg
@@ -12,6 +24,7 @@
   * examples/yadbu/ebrowse.prg
   * examples/yadbu/yadbu.prg
   * examples/edit1.prg
+    * use ImGuiCompat:: for IsKeyDown(), IsKeyPressed()
 
   + cimgui/hbimcompat.ch
   + cimgui-docking/hbimcompat.ch

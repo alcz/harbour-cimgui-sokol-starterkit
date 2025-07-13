@@ -212,10 +212,25 @@ FUNCTION FieldDesigner( aFields, nSelectedField, cDataTypes, lModStru, cAlias, l
             // ImGui::Text( hField["dataType"] )
 
             // Input for field Length
-            ImGui::InputInt( "Length", @hField["length"] )
+            IF ImGui::InputInt( "Length", @hField["length"] )
+               IF hField["length"] < 0
+                  hField["length"] := 0
+               ENDIF
+               IF hField["decimalPoints"] > hField["length"] - 2
+                  hField["decimalPoints"] := Max( hField["length"] - 2, 0 )
+               ENDIF
+            ENDIF
+
             IF HB_LeftEq( hField["dataType"], "N")
                // Input for Decimal Points
-               ImGui::InputInt( "Decimal", @hField["decimalPoints"] )
+               IF ImGui::InputInt( "Decimal", @hField["decimalPoints"] )
+                  IF hField["decimalPoints"] < 0
+                     hField["decimalPoints"] := 0
+                  ENDIF
+                  IF hField["decimalPoints"] > hField["length"] - 2
+                     hField["decimalPoints"] := Max( hField["length"] - 2, 0 )
+                  ENDIF
+               ENDIF
             ELSEIF HB_LeftEq( hField["dataType"], "Y")
                ImGui::Text("4 decimal digits")
             ENDIF

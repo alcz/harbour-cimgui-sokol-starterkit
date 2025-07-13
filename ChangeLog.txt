@@ -4,6 +4,10 @@
    See license at the end of file. */
 
 
+2025-07-13 14:40 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * examples/yadbu/ebrowse.prg
+    * verify field length >= 0, decimal < field length - 2 
+
 2025-07-13 14:04 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * examples/yadbu/ebrowse.prg
   * examples/yadbu/yadbu.prg

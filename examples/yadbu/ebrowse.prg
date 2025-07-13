@@ -9,6 +9,7 @@
 #include "fonts/IconsFontAwesome6.ch"
 #include "hbimenum.ch"
 #include "hbimstru.ch"
+#include "hbimcompat.ch"
 
 STATIC s_lEnterAdvances := .T.
 STATIC s_lMemoEditIsCombo := .F.
@@ -149,7 +150,7 @@ PROCEDURE EBrowser( lFit, nGoTo )
                         IF ImGui::InputDouble( WIDGET_KEY, @fFieldValue, 0.0, 0.0, cFormat, ImGuiInputTextFlags_EnterReturnsTrue )
                            __Commit( nF, fFieldValue ) /* commit change */
                            __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
-                        ELSEIF ImGui::IsItemDeactivated() /* AfterEdit() */ .AND. ImGui::IsKeyDown( ImGuiIO( igGetIO() ):KeyMap[ ImGuiKey_Enter + 1 /* offset BUG */ ] )
+                        ELSEIF ImGui::IsItemDeactivated() /* AfterEdit() */ .AND. ImGuiCompat::IsKeyDown( ImGuiKey_Enter )
                            /* these do not return .T. on unchanged (confirmed) value, unlike plain InputText(), which does @ 1.86 */
                            __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
                         ENDIF
@@ -158,7 +159,7 @@ PROCEDURE EBrowser( lFit, nGoTo )
                         IF ImGui::InputInt( WIDGET_KEY, @nFieldValue, 0, 0, ImGuiInputTextFlags_EnterReturnsTrue )
                            __Commit( nF, nFieldValue ) /* commit change */
                            __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
-                        ELSEIF ImGui::IsItemDeactivated() /* AfterEdit() */ .AND. ImGui::IsKeyDown( ImGuiIO( igGetIO() ):KeyMap[ ImGuiKey_Enter + 1 /* offset BUG */ ] )
+                        ELSEIF ImGui::IsItemDeactivated() /* AfterEdit() */ .AND. ImGuiCompat::IsKeyDown( ImGuiKey_Enter )
                            /* these do not return .T. on unchanged (confirmed) value, unlike plain InputText(), which does @ 1.86 */
                            __AdvanceOnEnter( nF, @aNewFocus, @nOldRec, @nGoto )
                         ENDIF
@@ -184,7 +185,7 @@ PROCEDURE EBrowser( lFit, nGoTo )
                               IF ImGui::InputTextMultiline( WIDGET_KEY + "_MEMO", @cMemoEdit, @nMemoBuf, { 320, 100 }, ImGuiInputTextFlags_CallbackResize + ;
                                                                                                                        ImGuiInputTextFlags_EnterReturnsTrue )
                                  ImGui::CloseCurrentPopup()
-                              ELSEIF ImGui::IsKeyPressed( ImGuiIO( igGetIO() ):KeyMap[ ImGuiKey_Escape + 1 /* offset BUG */ ] )
+                              ELSEIF ImGuiCompat::IsKeyPressed( ImGuiKey_Escape )
                                  cMemoEditOpenKey := NIL
                               ENDIF
                               /*
@@ -325,9 +326,8 @@ PROCEDURE EBrowser( lFit, nGoTo )
 
 STATIC PROCEDURE __EditInFocus( aNewFocus, nF, pClip )
    LOCAL a
-   /* FIXME: keymap shouldn't be offset */
    IF ImGui::IsItemFocused()
-      IF ImGui::IsKeyPressed( ImGuiIO( igGetIO() ):KeyMap[ ImGuiKey_UpArrow + 1 /* offset BUG */ ] ) .AND. RecNo() > 1
+      IF ImGuiCompat::IsKeyPressed( ImGuiKey_UpArrow ) .AND. RecNo() > 1
          aNewFocus := { RecNo() - 1, nF }
          IF ImGuiListClipper( pClip ):DisplayStart + 1 == RecNo()
             ImGui::GetWindowPos( @a )
@@ -339,7 +339,7 @@ STATIC PROCEDURE __EditInFocus( aNewFocus, nF, pClip )
          ENDIF
 
       ENDIF
-      IF ImGui::IsKeyPressed( ImGuiIO( igGetIO() ):KeyMap[ ImGuiKey_DownArrow + 1 /* offset BUG */ ] )
+      IF ImGuiCompat::IsKeyPressed( ImGuiKey_DownArrow )
          IF RecNo() < RecCount()
             aNewFocus := { RecNo() + 1, nF }
          ENDIF

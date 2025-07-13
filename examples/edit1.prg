@@ -8,6 +8,7 @@
 
 #include "hbimenum.ch"
 #include "hbimstru.ch"
+#include "hbimcompat.ch"
 
 REQUEST HB_CODEPAGE_UTF8EX
 REQUEST HB_MEMIO
@@ -263,9 +264,9 @@ STATIC PROCEDURE DBEditor( lFit, lAppend )
 
 STATIC PROCEDURE __EditInFocus( aNewFocus, nF, pClip )
    LOCAL a
-   /* FIXME: keymap shouldn't be offset */
    IF ImGui::IsItemFocused()
-      IF ImGui::IsKeyPressed( ImGuiIO( igGetIO() ):KeyMap[ ImGuiKey_UpArrow + 1 /* offset BUG */ ] ) .AND. RecNo() > 1
+      IF ImGuiCompat::IsKeyPressed( ImGuiKey_UpArrow ) .AND. RecNo() > 1
+//    IF ImGui::IsKeyPressed( ImGuiIO( igGetIO() ):KeyMap[ ImGuiKey_UpArrow + 1 /* offset BUG */ ] ) .AND. RecNo() > 1
          aNewFocus := { RecNo() - 1, nF }
          IF ImGuiListClipper( pClip ):DisplayStart + 1 == RecNo()
             ImGui::GetWindowPos( @a )
@@ -277,7 +278,7 @@ STATIC PROCEDURE __EditInFocus( aNewFocus, nF, pClip )
          ENDIF
 
       ENDIF
-      IF ImGui::IsKeyPressed( ImGuiIO( igGetIO() ):KeyMap[ ImGuiKey_DownArrow + 1 /* offset BUG */ ] )
+      IF ImGuiCompat::IsKeyPressed( ImGuiKey_DownArrow )
          IF RecNo() < RecCount()
             aNewFocus := { RecNo() + 1, nF }
          ENDIF

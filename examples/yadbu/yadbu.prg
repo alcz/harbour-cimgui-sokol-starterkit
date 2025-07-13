@@ -9,6 +9,7 @@
 #include "fonts/IconsFontAwesome6.ch"
 #include "hbimenum.ch"
 #include "hbimstru.ch"
+#include "hbimcompat.ch"
 
 /* example requires Dear ImGui version 1.86+ */
 
@@ -16,15 +17,6 @@
 #define TB_FLAGS ImGuiWindowFlags_NoDocking + ImGuiWindowFlags_NoTitleBar + ImGuiWindowFlags_NoResize + ImGuiWindowFlags_NoMove + ImGuiWindowFlags_NoScrollbar // + ImGuiWindowFlags_NoNavInputs
 #define BTN_SIZE 30
 #define TAB_SIZE 25
-
-#ifndef ImGuiHoveredFlags_DelayNormal
-#define ImGuiHoveredFlags_DelayNormal 0
-#xtranslate ImGui::Shortcut( <v>, <r> ) => .F.
-#endif
-
-#ifndef ImGuiDockNodeFlags_NoDockingOverCentralNode
-#define ImGuiDockNodeFlags_NoDockingOverCentralNode ImGuiDockNodeFlags_NoDockingInCentralNode
-#endif
 
 REQUEST HB_CODEPAGE_PL852, HB_CODEPAGE_PLISO, HB_CODEPAGE_PLWIN
 REQUEST HB_CODEPAGE_HU852, HB_CODEPAGE_HU852C, HB_CODEPAGE_HUISO, HB_CODEPAGE_HUWIN

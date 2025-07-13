@@ -3,6 +3,21 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+
+2025-07-13 14:04 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * examples/yadbu/ebrowse.prg
+  * examples/yadbu/yadbu.prg
+  * examples/edit1.prg
+
+  + cimgui/hbimcompat.ch
+  + cimgui-docking/hbimcompat.ch
+    + added helper header and namespace ImGuiCompat:: for currently
+      unstable syntax (or somehow expected to be unstable)
+
+    ; currently this file should be included AFTER "hbimenum.ch", though
+      this requirement may be waived in the future and it's contents will
+      be auto-generated together with wrappers
+
 2025-07-06 16:18 UTC+0200 Aleksander Czajczynski (hb fki.pl)
    * examples/yadbu/ebrowse.prg
    * examples/edit1.prg
